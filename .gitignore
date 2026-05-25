@@ -1,0 +1,27 @@
+# ============================================================
+# Fichiers et dossiers à ignorer par Git
+# ============================================================
+
+# Dépendances
+node_modules/
+
+# Fichiers compilés (regénérés par le build)
+assets/application.css
+assets/application.js
+assets/*.map
+
+# Shopify CLI
+.shopify/
+config.yml
+
+# Éditeurs / OS
+.DS_Store
+Thumbs.db
+*.log
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# Environnement
+.env
+.env.local

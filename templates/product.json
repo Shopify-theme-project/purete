@@ -1,0 +1,6 @@
+{
+  "sections": {
+    "principal": { "type": "fiche-produit" }
+  },
+  "order": ["principal"]
+}

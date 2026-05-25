@@ -1,0 +1,47 @@
+{%- comment -%}
+  Section : Bannière d'accueil (hero)
+  Image de fond + titre + bouton d'appel à l'action.
+{%- endcomment -%}
+
+<section class="banniere-accueil" style="background-color: {{ section.settings.couleur_fond }};">
+  {%- if section.settings.image != blank -%}
+    {{
+      section.settings.image
+      | image_url: width: 2000
+      | image_tag: class: 'banniere-accueil__image', loading: 'eager'
+    }}
+  {%- endif -%}
+
+  <div class="banniere-accueil__contenu">
+    {%- if section.settings.titre != blank -%}
+      <h1 class="banniere-accueil__titre">{{ section.settings.titre }}</h1>
+    {%- endif -%}
+
+    {%- if section.settings.sous_titre != blank -%}
+      <p class="banniere-accueil__sous-titre">{{ section.settings.sous_titre }}</p>
+    {%- endif -%}
+
+    {%- if section.settings.lien_bouton != blank and section.settings.texte_bouton != blank -%}
+      <a href="{{ section.settings.lien_bouton }}" class="bouton bouton--primaire">
+        {{ section.settings.texte_bouton }}
+      </a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Bannière d'accueil",
+  "tag": "section",
+  "class": "section-banniere",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image de fond" },
+    { "type": "color", "id": "couleur_fond", "label": "Couleur de fond", "default": "#f7f3ee" },
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Pureté & beauté naturelle" },
+    { "type": "text", "id": "sous_titre", "label": "Sous-titre" },
+    { "type": "text", "id": "texte_bouton", "label": "Texte du bouton", "default": "Découvrir" },
+    { "type": "url", "id": "lien_bouton", "label": "Lien du bouton" }
+  ],
+  "presets": [{ "name": "Bannière d'accueil" }]
+}
+{% endschema %}

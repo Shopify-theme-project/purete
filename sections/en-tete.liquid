@@ -1,0 +1,78 @@
+{%- comment -%}
+  ============================================================
+  Section : En-tête du site
+  Contient le logo, la navigation principale et les icônes
+  utilisateur (recherche, compte, panier).
+  ============================================================
+{%- endcomment -%}
+
+<header class="en-tete" role="banner">
+  <div class="en-tete__conteneur">
+    {%- comment -%} Logo ou nom de la boutique {%- endcomment -%}
+    <a href="{{ routes.root_url }}" class="en-tete__logo">
+      {%- if section.settings.logo != blank -%}
+        {{ section.settings.logo | image_url: width: 200 | image_tag: alt: shop.name, loading: 'eager' }}
+      {%- else -%}
+        <span>{{ shop.name }}</span>
+      {%- endif -%}
+    </a>
+
+    {%- comment -%} Navigation principale {%- endcomment -%}
+    <nav class="en-tete__navigation" role="navigation" aria-label="{{ 'accessibilite.navigation_principale' | t }}">
+      <ul>
+        {%- for lien in section.settings.menu.links -%}
+          <li>
+            <a
+              href="{{ lien.url }}"
+              {% if lien.active %}
+                aria-current="page"
+              {% endif %}
+            >
+              {{ lien.title }}
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+
+    {%- comment -%} Actions utilisateur {%- endcomment -%}
+    <div class="en-tete__actions">
+      <a href="{{ routes.search_url }}" aria-label="{{ 'general.recherche.titre' | t }}">
+        {%- render 'icone', nom: 'recherche' -%}
+      </a>
+      <a href="{{ routes.account_url }}" aria-label="{{ 'compte.titre' | t }}">
+        {%- render 'icone', nom: 'compte' -%}
+      </a>
+      <a href="{{ routes.cart_url }}" aria-label="{{ 'panier.titre' | t }}">
+        {%- render 'icone', nom: 'panier' -%}
+        <span class="en-tete__panier-compteur" data-compteur-panier>{{ cart.item_count }}</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "En-tête",
+  "tag": "section",
+  "class": "section-en-tete",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo de la boutique"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu principal",
+      "default": "main-menu"
+    }
+  ],
+  "presets": [
+    {
+      "name": "En-tête"
+    }
+  ]
+}
+{% endschema %}

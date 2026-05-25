@@ -1,0 +1,23 @@
+{%- comment -%}
+  Snippet : Pagination
+  Paramètre attendu :
+    - paginate : objet paginate Shopify
+{%- endcomment -%}
+
+<nav class="pagination" role="navigation" aria-label="{{ 'general.pagination.titre' | t }}">
+  {%- if paginate.previous -%}
+    <a href="{{ paginate.previous.url }}" class="pagination__lien">&laquo; {{ 'general.pagination.precedent' | t }}</a>
+  {%- endif -%}
+
+  {%- for part in paginate.parts -%}
+    {%- if part.is_link -%}
+      <a href="{{ part.url }}" class="pagination__lien">{{ part.title }}</a>
+    {%- else -%}
+      <span class="pagination__lien pagination__lien--actif">{{ part.title }}</span>
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- if paginate.next -%}
+    <a href="{{ paginate.next.url }}" class="pagination__lien">{{ 'general.pagination.suivant' | t }} &raquo;</a>
+  {%- endif -%}
+</nav>

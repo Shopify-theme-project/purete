@@ -1,0 +1,29 @@
+/* ============================================================
+   Feuille de style globale du thème Pureté
+   Compilée vers /assets/application.css par Tailwind.
+   ============================================================ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ----- Composants personnalisés ----- */
+@layer components {
+  /* Bouton générique */
+  .bouton {
+    @apply inline-flex items-center justify-center px-6 py-3 font-medium transition-colors duration-200;
+  }
+  .bouton--primaire {
+    @apply bg-primaire text-secondaire hover:bg-accent;
+  }
+
+  /* Lien d'évitement (accessibilité) */
+  .lien-evitement {
+    @apply sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:bg-primaire focus:text-secondaire focus:px-4 focus:py-2;
+  }
+
+  /* Grille de collection */
+  .collection__grille {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6;
+  }
+}

@@ -1,0 +1,25 @@
+{%- comment -%}
+  Snippet : Carte produit (vignette dans une grille)
+  Paramètre attendu :
+    - produit : objet produit Shopify
+{%- endcomment -%}
+
+<article class="carte-produit">
+  <a href="{{ produit.url }}" class="carte-produit__lien">
+    {%- if produit.featured_image -%}
+      {{
+        produit.featured_image
+        | image_url: width: 600
+        | image_tag: loading: 'lazy', class: 'carte-produit__image', alt: produit.title
+      }}
+    {%- endif -%}
+
+    <h2 class="carte-produit__titre">{{ produit.title }}</h2>
+    <p class="carte-produit__prix">
+      {%- if produit.compare_at_price > produit.price -%}
+        <span class="carte-produit__prix--barre">{{ produit.compare_at_price | money }}</span>
+      {%- endif -%}
+      <span>{{ produit.price | money }}</span>
+    </p>
+  </a>
+</article>

@@ -1,0 +1,48 @@
+{%- comment -%}
+  Section : Affichage principal d'un produit
+  Utilisée par les templates produit (templates/product.json).
+{%- endcomment -%}
+
+<section class="produit" data-section-id="{{ section.id }}">
+  <div class="produit__galerie">
+    {%- for media in product.media -%}
+      {{ media | image_url: width: 1200 | image_tag: loading: forloop.first | default: 'lazy' }}
+    {%- endfor -%}
+  </div>
+
+  <div class="produit__informations">
+    <h1 class="produit__titre">{{ product.title }}</h1>
+    <p class="produit__prix">{{ product.price | money }}</p>
+
+    {%- form 'product', product, class: 'formulaire-produit' -%}
+      <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+
+      <button
+        type="submit"
+        class="bouton bouton--primaire"
+        {% if product.selected_or_first_available_variant.available == false %}
+          disabled
+        {% endif %}
+      >
+        {%- if product.selected_or_first_available_variant.available -%}
+          {{ 'produit.ajouter_au_panier' | t }}
+        {%- else -%}
+          {{ 'produit.epuise' | t }}
+        {%- endif -%}
+      </button>
+    {%- endform -%}
+
+    <div class="produit__description">
+      {{ product.description }}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Fiche produit",
+  "tag": "section",
+  "class": "section-produit",
+  "settings": []
+}
+{% endschema %}

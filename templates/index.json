@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "banniere": {
+      "type": "banniere-accueil",
+      "settings": {
+        "titre": "Pureté & beauté naturelle",
+        "sous_titre": "Des soins sains pour une peau éclatante.",
+        "texte_bouton": "Découvrir la collection"
+      }
+    }
+  },
+  "order": ["banniere"]
+}

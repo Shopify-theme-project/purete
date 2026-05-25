@@ -1,0 +1,55 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Pureté",
+    "theme_version": "0.1.0",
+    "theme_author": "Studio Pureté",
+    "theme_documentation_url": "https://example.com",
+    "theme_support_url": "https://example.com/support"
+  },
+  {
+    "name": "Identité visuelle",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      },
+      {
+        "type": "color",
+        "id": "couleur_primaire",
+        "label": "Couleur principale",
+        "default": "#1f2d2a"
+      },
+      {
+        "type": "color",
+        "id": "couleur_secondaire",
+        "label": "Couleur secondaire",
+        "default": "#f7f3ee"
+      },
+      {
+        "type": "color",
+        "id": "couleur_accent",
+        "label": "Couleur d'accent",
+        "default": "#c89f7a"
+      }
+    ]
+  },
+  {
+    "name": "Typographie",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "police_titre",
+        "label": "Police des titres",
+        "default": "assistant_n4"
+      },
+      {
+        "type": "font_picker",
+        "id": "police_corps",
+        "label": "Police du corps",
+        "default": "assistant_n4"
+      }
+    ]
+  }
+]

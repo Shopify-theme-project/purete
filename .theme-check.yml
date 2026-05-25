@@ -1,0 +1,21 @@
+# ============================================================
+# Configuration Theme Check (linter officiel Shopify)
+# Documentation : https://shopify.dev/themes/tools/theme-check
+# ============================================================
+
+root: "."
+
+extends: theme-check:recommended
+
+# Règles personnalisées
+MissingTemplate:
+  enabled: true
+
+UnusedAssign:
+  enabled: true
+
+# Ignore les fichiers générés / dépendances
+ignore:
+  - node_modules/
+  - src/
+  - .github/

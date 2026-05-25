@@ -1,0 +1,6 @@
+{
+  "sections": {
+    "principal": { "type": "liste-collection" }
+  },
+  "order": ["principal"]
+}

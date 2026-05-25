@@ -1,0 +1,13 @@
+{%- comment -%}
+  Snippet : Icône SVG
+  Paramètres attendus :
+    - nom : nom du fichier SVG dans /assets/icones/ (sans extension)
+    - classe (optionnel) : classe CSS additionnelle
+{%- endcomment -%}
+
+{%- liquid
+  assign chemin = 'icones/' | append: nom | append: '.svg'
+-%}
+<span class="icone icone--{{ nom }} {{ classe }}" aria-hidden="true">
+  {{ chemin | asset_url | inline_asset_content }}
+</span>

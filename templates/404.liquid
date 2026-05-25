@@ -1,0 +1,10 @@
+{%- comment -%}
+  Template par défaut pour les pages 404.
+{%- endcomment -%}
+<section class="page-404">
+  <h1>{{ 'erreur_404.titre' | t }}</h1>
+  <p>{{ 'erreur_404.message' | t }}</p>
+  <a href="{{ routes.root_url }}" class="bouton bouton--primaire">
+    {{ 'erreur_404.retour_accueil' | t }}
+  </a>
+</section>

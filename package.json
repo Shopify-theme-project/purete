@@ -1,0 +1,37 @@
+{
+  "name": "purete-theme",
+  "version": "0.1.0",
+  "description": "Thème Shopify Pureté — clean & beauty",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm:css:watch\" \"npm:js:watch\" \"npm:shopify:dev\"",
+    "build": "npm run css:build && npm run js:build",
+    "css:build": "tailwindcss -i ./src/styles/application.css -o ./assets/application.css --minify",
+    "css:watch": "tailwindcss -i ./src/styles/application.css -o ./assets/application.css --watch",
+    "js:build": "esbuild src/scripts/application.js --bundle --minify --outfile=assets/application.js",
+    "js:watch": "esbuild src/scripts/application.js --bundle --sourcemap --watch --outfile=assets/application.js",
+    "shopify:dev": "shopify theme dev",
+    "shopify:push": "shopify theme push",
+    "shopify:pull": "shopify theme pull",
+    "lint": "npm run lint:theme && npm run lint:js && npm run lint:css && npm run format:check",
+    "lint:theme": "shopify theme check",
+    "lint:js": "eslint \"src/**/*.js\"",
+    "lint:css": "stylelint \"src/**/*.css\"",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "@shopify/cli": "^3.66.0",
+    "@shopify/prettier-plugin-liquid": "^1.6.0",
+    "@shopify/theme-check-node": "^3.5.0",
+    "autoprefixer": "^10.4.20",
+    "concurrently": "^9.0.0",
+    "esbuild": "^0.24.0",
+    "eslint": "^9.10.0",
+    "postcss": "^8.4.47",
+    "prettier": "^3.3.3",
+    "stylelint": "^16.9.0",
+    "stylelint-config-standard": "^36.0.1",
+    "tailwindcss": "^3.4.13"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "accessibilite": {
+    "aller_au_contenu": "Aller au contenu principal",
+    "navigation_principale": "Navigation principale"
+  },
+  "general": {
+    "meta": {
+      "tags": "Étiquettes : {{ tags }}",
+      "page": "Page {{ page }}"
+    },
+    "recherche": {
+      "titre": "Recherche"
+    },
+    "pagination": {
+      "titre": "Pagination",
+      "precedent": "Précédent",
+      "suivant": "Suivant"
+    }
+  },
+  "compte": {
+    "titre": "Mon compte"
+  },
+  "panier": {
+    "titre": "Panier"
+  },
+  "produit": {
+    "ajouter_au_panier": "Ajouter au panier",
+    "epuise": "Épuisé"
+  },
+  "collection": {
+    "aucun_produit": "Aucun produit dans cette collection."
+  },
+  "pied_de_page": {
+    "tous_droits_reserves": "Tous droits réservés."
+  },
+  "erreur_404": {
+    "titre": "Page introuvable",
+    "message": "Désolé, la page que vous cherchez n'existe pas.",
+    "retour_accueil": "Retour à l'accueil"
+  },
+  "mot_de_passe": {
+    "message": "Boutique protégée par mot de passe.",
+    "label": "Mot de passe",
+    "entrer": "Entrer"
+  }
+}

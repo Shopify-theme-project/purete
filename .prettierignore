@@ -1,0 +1,6 @@
+node_modules/
+assets/application.css
+assets/application.js
+assets/*.css.map
+assets/*.js.map
+.shopify/

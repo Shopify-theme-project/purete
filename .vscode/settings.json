@@ -1,0 +1,13 @@
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[liquid]": {
+    "editor.defaultFormatter": "Shopify.theme-check-vscode"
+  },
+  "files.associations": {
+    "*.liquid": "liquid"
+  },
+  "themeCheck.checkOnOpen": true,
+  "themeCheck.checkOnSave": true,
+  "themeCheck.checkOnChange": true
+}

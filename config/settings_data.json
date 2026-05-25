@@ -1,0 +1,14 @@
+{
+  "current": {
+    "couleur_primaire": "#1f2d2a",
+    "couleur_secondaire": "#f7f3ee",
+    "couleur_accent": "#c89f7a"
+  },
+  "presets": {
+    "Défaut": {
+      "couleur_primaire": "#1f2d2a",
+      "couleur_secondaire": "#f7f3ee",
+      "couleur_accent": "#c89f7a"
+    }
+  }
+}

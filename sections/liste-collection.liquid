@@ -1,0 +1,33 @@
+{%- comment -%}
+  Section : Liste de produits d'une collection.
+{%- endcomment -%}
+
+<section class="collection" data-section-id="{{ section.id }}">
+  <header class="collection__entete">
+    <h1>{{ collection.title }}</h1>
+    {%- if collection.description != blank -%}
+      <div class="collection__description">{{ collection.description }}</div>
+    {%- endif -%}
+  </header>
+
+  <div class="collection__grille">
+    {%- for produit in collection.products -%}
+      {%- render 'carte-produit', produit: produit -%}
+    {%- else -%}
+      <p>{{ 'collection.aucun_produit' | t }}</p>
+    {%- endfor -%}
+  </div>
+
+  {%- if paginate.pages > 1 -%}
+    {%- render 'pagination', paginate: paginate -%}
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Collection",
+  "tag": "section",
+  "class": "section-collection",
+  "settings": []
+}
+{% endschema %}

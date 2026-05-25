@@ -1,0 +1,41 @@
+# Workflow CI : vérifie le thème à chaque push / PR
+name: Qualité du thème
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  controle-qualite:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupération du code
+        uses: actions/checkout@v4
+
+      - name: Installation Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Installation des dépendances
+        run: npm ci
+
+      - name: Build des assets
+        run: npm run build
+
+      - name: Vérification du formatage
+        run: npm run format:check
+
+      - name: Lint JS
+        run: npm run lint:js
+
+      - name: Lint CSS
+        run: npm run lint:css
+
+      - name: Theme Check Shopify
+        uses: shopify/theme-check-action@v2
+        with:
+          version: latest
