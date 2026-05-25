@@ -1,29 +1,117 @@
 /* ============================================================
-   Feuille de style globale du thème Pureté
+   Feuille de style globale — Thème Pureté
    Compilée vers /assets/application.css par Tailwind.
    ============================================================ */
+
+/* ----- Polices auto-hébergées -----
+   Les fichiers .woff2 sont placés à plat dans /assets/
+   (Shopify n'autorise pas les sous-dossiers dans /assets/).
+   Convention de nommage : police-<famille>-<graisse>[-italic].woff2
+*/
+
+/* Cormorant Garamond — Titres */
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('police-cormorant-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('police-cormorant-400-italic.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('police-cormorant-500.woff2') format('woff2');
+}
+
+/* Inter — Corps & UI */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('police-inter-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('police-inter-500.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('police-inter-600.woff2') format('woff2');
+}
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ----- Réglages globaux ----- */
+@layer base {
+  html {
+    /* Active le rendu de qualité pour les serifs */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply font-corps text-vert-profond bg-creme antialiased;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  /* Hiérarchie titres : par défaut en serif */
+  h1, h2, h3, h4 {
+    @apply font-titre text-vert-profond;
+    font-weight: 400;
+  }
+
+  a {
+    @apply transition-colors duration-200;
+  }
+}
+
 /* ----- Composants personnalisés ----- */
 @layer components {
-  /* Bouton générique */
+  /* ----- Boutons ----- */
   .bouton {
-    @apply inline-flex items-center justify-center px-6 py-3 font-medium transition-colors duration-200;
+    @apply inline-flex items-center justify-center px-8 py-4 font-corps text-bouton uppercase transition-colors duration-200;
+    font-weight: 600;
   }
   .bouton--primaire {
-    @apply bg-primaire text-secondaire hover:bg-accent;
+    @apply bg-vert-profond text-creme hover:bg-sauge-fonce;
+  }
+  .bouton--secondaire {
+    @apply bg-transparent border border-vert-profond text-vert-profond hover:bg-vert-profond hover:text-creme;
   }
 
-  /* Lien d'évitement (accessibilité) */
+  /* ----- Accessibilité : lien d'évitement ----- */
   .lien-evitement {
-    @apply sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:bg-primaire focus:text-secondaire focus:px-4 focus:py-2;
+    @apply sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:bg-vert-profond focus:text-creme focus:px-4 focus:py-2;
   }
 
-  /* Grille de collection */
+  /* ----- Titres de section ("NOS ESSENTIELS CLEAN") ----- */
+  .titre-section {
+    @apply font-corps text-h2-section uppercase text-center text-vert-profond;
+    font-weight: 500;
+  }
+
+  /* ----- Grille de collection ----- */
   .collection__grille {
-    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6;
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6;
   }
 }

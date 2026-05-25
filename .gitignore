@@ -10,6 +10,11 @@ assets/application.css
 assets/application.js
 assets/*.map
 
+# Médias synchronisés depuis src/medias/ (regénérés par assets:sync)
+assets/img-*
+assets/icone-*
+assets/police-*
+
 # Shopify CLI
 .shopify/
 config.yml

@@ -1,13 +1,16 @@
 {%- comment -%}
   Snippet : Icône SVG
   Paramètres attendus :
-    - nom : nom du fichier SVG dans /assets/icones/ (sans extension)
-    - classe (optionnel) : classe CSS additionnelle
+    - nom    : nom de l'icône (ex. 'panier' → fichier /assets/icone-panier.svg)
+    - classe : classe CSS additionnelle (optionnel)
+
+  Convention : toutes les icônes sont à plat dans /assets/ avec le
+  préfixe "icone-" (limitation Shopify : pas de sous-dossiers).
 {%- endcomment -%}
 
 {%- liquid
-  assign chemin = 'icones/' | append: nom | append: '.svg'
+  assign nom_fichier = 'icone-' | append: nom | append: '.svg'
 -%}
 <span class="icone icone--{{ nom }} {{ classe }}" aria-hidden="true">
-  {{ chemin | asset_url | inline_asset_content }}
+  {{ nom_fichier | asset_url | inline_asset_content }}
 </span>

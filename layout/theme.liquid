@@ -30,7 +30,10 @@
       <meta name="description" content="{{ page_description | escape }}">
     {%- endif -%}
 
-    {%- comment -%} -- Préchargement des polices critiques -- {%- endcomment -%}
+    {%- comment -%} -- Préchargement des polices critiques (above the fold) -- {%- endcomment -%}
+    <link rel="preload" as="font" type="font/woff2" href="{{ 'police-cormorant-400.woff2' | asset_url }}" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="{{ 'police-inter-400.woff2' | asset_url }}" crossorigin>
+
     {{ content_for_header }}
 
     {%- comment -%} -- Feuille de style globale (Tailwind compilé) -- {%- endcomment -%}

@@ -16,22 +16,50 @@
         "label": "Favicon"
       },
       {
-        "type": "color",
-        "id": "couleur_primaire",
-        "label": "Couleur principale",
-        "default": "#1f2d2a"
+        "type": "header",
+        "content": "Palette de couleurs"
       },
       {
         "type": "color",
-        "id": "couleur_secondaire",
-        "label": "Couleur secondaire",
-        "default": "#f7f3ee"
+        "id": "couleur_creme",
+        "label": "Crème (fond principal)",
+        "default": "#F2EADB"
       },
       {
         "type": "color",
-        "id": "couleur_accent",
-        "label": "Couleur d'accent",
-        "default": "#c89f7a"
+        "id": "couleur_ivoire",
+        "label": "Ivoire (cartes / zones secondaires)",
+        "default": "#FAF5EB"
+      },
+      {
+        "type": "color",
+        "id": "couleur_sauge",
+        "label": "Sauge (top bar, sections accent)",
+        "default": "#A8B89D"
+      },
+      {
+        "type": "color",
+        "id": "couleur_sauge_fonce",
+        "label": "Sauge foncé (hover)",
+        "default": "#8A9D7E"
+      },
+      {
+        "type": "color",
+        "id": "couleur_vert_profond",
+        "label": "Vert profond (texte, boutons)",
+        "default": "#1F2D2A"
+      },
+      {
+        "type": "color",
+        "id": "couleur_gris_doux",
+        "label": "Gris doux (texte secondaire)",
+        "default": "#6B6B6B"
+      },
+      {
+        "type": "color",
+        "id": "couleur_or",
+        "label": "Or (étoiles, accents premium)",
+        "default": "#D4A656"
       }
     ]
   },
@@ -39,16 +67,8 @@
     "name": "Typographie",
     "settings": [
       {
-        "type": "font_picker",
-        "id": "police_titre",
-        "label": "Police des titres",
-        "default": "assistant_n4"
-      },
-      {
-        "type": "font_picker",
-        "id": "police_corps",
-        "label": "Police du corps",
-        "default": "assistant_n4"
+        "type": "paragraph",
+        "content": "Les polices Cormorant Garamond (titres) et Inter (corps) sont auto-hébergées dans /assets/. Pour les changer, modifier les fichiers .woff2 et la déclaration @font-face dans src/styles/application.css."
       }
     ]
   }

@@ -1,14 +1,22 @@
 {
   "current": {
-    "couleur_primaire": "#1f2d2a",
-    "couleur_secondaire": "#f7f3ee",
-    "couleur_accent": "#c89f7a"
+    "couleur_creme": "#F2EADB",
+    "couleur_ivoire": "#FAF5EB",
+    "couleur_sauge": "#A8B89D",
+    "couleur_sauge_fonce": "#8A9D7E",
+    "couleur_vert_profond": "#1F2D2A",
+    "couleur_gris_doux": "#6B6B6B",
+    "couleur_or": "#D4A656"
   },
   "presets": {
-    "Défaut": {
-      "couleur_primaire": "#1f2d2a",
-      "couleur_secondaire": "#f7f3ee",
-      "couleur_accent": "#c89f7a"
+    "Pureté — Clean & Beauty": {
+      "couleur_creme": "#F2EADB",
+      "couleur_ivoire": "#FAF5EB",
+      "couleur_sauge": "#A8B89D",
+      "couleur_sauge_fonce": "#8A9D7E",
+      "couleur_vert_profond": "#1F2D2A",
+      "couleur_gris_doux": "#6B6B6B",
+      "couleur_or": "#D4A656"
     }
   }
 }

@@ -4,8 +4,9 @@
   "description": "Thème Shopify Pureté — clean & beauty",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"npm:css:watch\" \"npm:js:watch\" \"npm:shopify:dev\"",
-    "build": "npm run css:build && npm run js:build",
+    "dev": "npm run assets:sync && concurrently \"npm:css:watch\" \"npm:js:watch\" \"npm:shopify:dev\"",
+    "build": "npm run assets:sync && npm run css:build && npm run js:build",
+    "assets:sync": "node scripts/sync-medias.mjs",
     "css:build": "tailwindcss -i ./src/styles/application.css -o ./assets/application.css --minify",
     "css:watch": "tailwindcss -i ./src/styles/application.css -o ./assets/application.css --watch",
     "js:build": "esbuild src/scripts/application.js --bundle --minify --outfile=assets/application.js",
