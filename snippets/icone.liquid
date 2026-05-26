@@ -1,16 +1,85 @@
 {%- comment -%}
-  Snippet : Icône SVG
-  Paramètres attendus :
-    - nom    : nom de l'icône (ex. 'panier' → fichier /assets/icone-panier.svg)
+  ============================================================
+  Snippet : Icône SVG (inline)
+  Paramètres :
+    - nom    : identifiant de l'icône (recherche, compte, panier, chevron-bas…)
     - classe : classe CSS additionnelle (optionnel)
+    - taille : px (optionnel, défaut 22)
 
-  Convention : toutes les icônes sont à plat dans /assets/ avec le
-  préfixe "icone-" (limitation Shopify : pas de sous-dossiers).
+  Avantages de l'inline :
+    - Aucune requête HTTP supplémentaire
+    - currentColor hérite de la couleur du parent (text-vert-profond…)
+    - Aucune dépendance à inline_asset_content
+  ============================================================
 {%- endcomment -%}
 
 {%- liquid
-  assign nom_fichier = 'icone-' | append: nom | append: '.svg'
+  assign taille = taille | default: 22
 -%}
-<span class="icone icone--{{ nom }} {{ classe }}" aria-hidden="true">
-  {{ nom_fichier | asset_url | inline_asset_content }}
+
+<span class="icone icone--{{ nom }} {{ classe }} inline-flex" aria-hidden="true">
+  {%- case nom -%}
+    {%- when 'recherche' -%}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        width="{{ taille }}"
+        height="{{ taille }}"
+      >
+        <circle cx="11" cy="11" r="7"/>
+        <line x1="16.2" y1="16.2" x2="21" y2="21"/>
+      </svg>
+
+    {%- when 'compte' -%}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        width="{{ taille }}"
+        height="{{ taille }}"
+      >
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/>
+      </svg>
+
+    {%- when 'panier' -%}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        width="{{ taille }}"
+        height="{{ taille }}"
+      >
+        <path d="M6 8h12l-1 12.5a1.5 1.5 0 0 1-1.5 1.4h-9A1.5 1.5 0 0 1 5 20.5L6 8z"/>
+        <path d="M9 8V6a3 3 0 0 1 6 0v2"/>
+      </svg>
+
+    {%- when 'chevron-bas' -%}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        width="14"
+        height="14"
+      >
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
+  {%- endcase -%}
 </span>

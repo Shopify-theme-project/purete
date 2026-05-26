@@ -3,9 +3,11 @@
     "banniere": {
       "type": "banniere-accueil",
       "settings": {
-        "titre": "Pureté & beauté naturelle",
-        "sous_titre": "Des soins sains pour une peau éclatante.",
-        "texte_bouton": "Découvrir la collection"
+        "surtitre": "La beauté sans compromis",
+        "titre": "Des soins purs pour révéler votre éclat naturel.",
+        "description": "<p>Formules clean, ingrédients d'origine naturelle, packagings éco-responsables.</p>",
+        "texte_bouton": "Découvrir la collection",
+        "lien_bouton": "/collections/all"
       }
     }
   },

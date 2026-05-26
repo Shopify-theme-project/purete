@@ -1,0 +1,114 @@
+{%- comment -%}
+  ============================================================
+  Section : Barre d'annonces défilante (top bar)
+  - Fond sauge, texte vert profond
+  - Animation marquee CSS pure (sans JS)
+  - Pause au survol
+  - Respecte prefers-reduced-motion (animation désactivée)
+  - Chaque message est un bloc (ajout/suppression côté éditeur)
+  ============================================================
+{%- endcomment -%}
+
+{%- if section.blocks.size > 0 -%}
+  <aside
+    class="barre-annonces bg-sauge text-vert-profond overflow-hidden"
+    role="region"
+    aria-label="{{ 'barre_annonces.titre' | t }}"
+    data-section-id="{{ section.id }}"
+  >
+    <div class="barre-annonces__piste flex whitespace-nowrap py-2.5">
+      {%- comment -%}
+        On duplique la liste pour boucler en continu sans saut visuel.
+        La largeur de la piste = 2× la liste réelle, l'animation translateX(-50%)
+        donne une boucle parfaite.
+      {%- endcomment -%}
+      {%- for repetition in (1..2) -%}
+        <ul
+          class="barre-annonces__liste flex shrink-0 items-center"
+          aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}"
+        >
+          {%- for bloc in section.blocks -%}
+            <li
+              class="barre-annonces__message font-corps text-[0.78rem] uppercase tracking-[0.18em] px-8 flex items-center gap-3"
+              style="font-weight: 500;"
+              {{ bloc.shopify_attributes }}
+            >
+              <span>{{ bloc.settings.message }}</span>
+              <span class="barre-annonces__separateur opacity-60" aria-hidden="true">•</span>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endfor -%}
+    </div>
+  </aside>
+
+  <style>
+    /* Animation marquee : translation continue de la piste */
+    .barre-annonces__piste {
+      animation: defilement-annonces {{ section.settings.vitesse | default: 30 }}s linear infinite;
+      will-change: transform;
+    }
+    .barre-annonces:hover .barre-annonces__piste {
+      animation-play-state: paused;
+    }
+
+    @keyframes defilement-annonces {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* Accessibilité : on désactive l'animation si l'utilisateur préfère
+       réduire les mouvements (paramètre OS). */
+    @media (prefers-reduced-motion: reduce) {
+      .barre-annonces__piste {
+        animation: none;
+        transform: none;
+        justify-content: center;
+        white-space: normal;
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Barre d'annonces",
+  "tag": "section",
+  "class": "section-barre-annonces",
+  "settings": [
+    {
+      "type": "range",
+      "id": "vitesse",
+      "label": "Vitesse de défilement (secondes par boucle)",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "default": 30,
+      "info": "Plus la valeur est élevée, plus le défilement est lent."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "message",
+      "name": "Message",
+      "settings": [
+        {
+          "type": "text",
+          "id": "message",
+          "label": "Texte de l'annonce",
+          "default": "Livraison offerte dès 50€ d'achat"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 10,
+  "default": {
+    "blocks": [
+      { "type": "message", "settings": { "message": "Livraison offerte dès 50€ d'achat" } },
+      { "type": "message", "settings": { "message": "Éco-responsable" } },
+      { "type": "message", "settings": { "message": "Cosmétiques vegan & cruelty-free" } }
+    ]
+  }
+}
+{% endschema %}

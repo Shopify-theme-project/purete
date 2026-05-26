@@ -114,4 +114,174 @@
   .collection__grille {
     @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6;
   }
+
+  /* ============================================================
+     En-tête — Sous-menu dropdown
+     ============================================================ */
+
+  /* Conteneur dropdown : invisible par défaut, apparaît au hover du parent .group */
+  .en-tete__sous-menu {
+    @apply absolute left-1/2 top-full min-w-[15rem] bg-ivoire py-3 invisible opacity-0;
+    /* Centrage horizontal sous le lien parent */
+    transform: translateX(-50%) translateY(0.5rem);
+    /* Bordure top en sauge pour rappeler la palette */
+    border-top: 2px solid theme('colors.sauge');
+    /* Ombre douce moderne */
+    box-shadow:
+      0 8px 24px -8px rgba(31, 45, 42, 0.15),
+      0 2px 6px -2px rgba(31, 45, 42, 0.08);
+    /* Transition fluide : opacity + translation */
+    transition: opacity 220ms ease-out, transform 220ms ease-out, visibility 220ms;
+    z-index: 50;
+  }
+
+  /* Pont invisible entre le label et le menu (évite la fermeture en survolant l'espace) */
+  .en-tete__sous-menu::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -0.5rem;
+    height: 0.5rem;
+  }
+
+  /* Petite flèche pointant vers le haut */
+  .en-tete__sous-menu::after {
+    content: '';
+    position: absolute;
+    top: -7px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 12px;
+    height: 12px;
+    background: theme('colors.ivoire');
+    border-top: 2px solid theme('colors.sauge');
+    border-left: 2px solid theme('colors.sauge');
+  }
+
+  /* État ouvert : apparition glissée */
+  .group:hover > .en-tete__sous-menu,
+  .group:focus-within > .en-tete__sous-menu {
+    @apply visible opacity-100;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* Liens du sous-menu : effet underline élégant au hover */
+  .en-tete__sous-lien {
+    @apply relative block px-6 py-2.5 font-corps text-nav text-vert-profond no-underline transition-colors;
+  }
+  .en-tete__sous-lien::after {
+    content: '';
+    position: absolute;
+    left: 1.5rem;
+    right: 1.5rem;
+    bottom: 0.5rem;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 250ms ease;
+    opacity: 0.5;
+  }
+  .en-tete__sous-lien:hover {
+    color: theme('colors.sauge-fonce');
+  }
+  .en-tete__sous-lien:hover::after {
+    transform: scaleX(1);
+  }
+
+  /* ============================================================
+     Bannière d'accueil (hero) — 2 colonnes texte + image
+     ============================================================ */
+
+  .banniere-accueil {
+    background-color: var(--banniere-fond, theme('colors.creme'));
+    @apply w-full overflow-hidden;
+  }
+
+  .banniere-accueil__conteneur {
+    @apply max-w-screen-2xl mx-auto grid grid-cols-1 lg:grid-cols-2 items-center gap-10 lg:gap-16 px-6 lg:px-12 py-12 lg:py-20;
+  }
+
+  /* Inversion des colonnes : image à gauche, texte à droite */
+  .banniere-accueil__conteneur--inverse .banniere-accueil__texte {
+    @apply lg:order-2;
+  }
+  .banniere-accueil__conteneur--inverse .banniere-accueil__media {
+    @apply lg:order-1;
+  }
+
+  /* ----- Colonne texte ----- */
+  .banniere-accueil__texte {
+    @apply flex flex-col items-start max-w-xl;
+    /* Légère apparition au chargement */
+    animation: banniere-apparition 700ms ease-out both;
+  }
+
+  .banniere-accueil__surtitre {
+    @apply font-titre italic text-vert-profond/70 mb-4;
+    font-size: clamp(1.125rem, 1.5vw, 1.375rem);
+    font-weight: 400;
+  }
+
+  .banniere-accueil__titre {
+    @apply font-titre text-vert-profond mb-6;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    line-height: 1.05;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+
+  .banniere-accueil__description {
+    @apply font-corps text-vert-profond/80 mb-8;
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    max-width: 32rem;
+  }
+  .banniere-accueil__description p {
+    @apply mb-2;
+  }
+
+  .banniere-accueil__bouton {
+    /* Hérite de .bouton .bouton--primaire ; espace au-dessus si description vide */
+    @apply mt-2;
+  }
+
+  /* ----- Colonne image ----- */
+  .banniere-accueil__media {
+    @apply relative w-full;
+    /* Animation d'entrée discrète */
+    animation: banniere-apparition 800ms 100ms ease-out both;
+  }
+
+  .banniere-accueil__image {
+    @apply w-full h-auto object-cover;
+    /* Ratio portrait élégant */
+    aspect-ratio: 4 / 5;
+    /* Coin arrondi très subtil pour une touche premium */
+    border-radius: 2px;
+  }
+
+  .banniere-accueil__image--placeholder {
+    @apply bg-ivoire;
+  }
+
+  @keyframes banniere-apparition {
+    from {
+      opacity: 0;
+      transform: translateY(1rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Respect du choix utilisateur : pas d'animation */
+  @media (prefers-reduced-motion: reduce) {
+    .banniere-accueil__texte,
+    .banniere-accueil__media {
+      animation: none;
+    }
+  }
 }

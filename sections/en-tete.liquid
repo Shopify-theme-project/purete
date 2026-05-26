@@ -1,51 +1,184 @@
 {%- comment -%}
   ============================================================
-  Section : En-tête du site
-  Contient le logo, la navigation principale et les icônes
-  utilisateur (recherche, compte, panier).
+  Section : En-tête principal du site
+  - Logo texte « PURETÉ » (Cormorant 500), option image disponible
+  - Navigation centrée avec sous-menus (caret automatique)
+  - Icônes recherche / compte / panier (badge dynamique)
+  - Sticky : reste fixé en haut au scroll
   ============================================================
 {%- endcomment -%}
 
-<header class="en-tete" role="banner">
-  <div class="en-tete__conteneur">
-    {%- comment -%} Logo ou nom de la boutique {%- endcomment -%}
-    <a href="{{ routes.root_url }}" class="en-tete__logo">
-      {%- if section.settings.logo != blank -%}
-        {{ section.settings.logo | image_url: width: 200 | image_tag: alt: shop.name, loading: 'eager' }}
+<header
+  class="en-tete sticky top-0 z-40 bg-creme border-b border-vert-profond/10 backdrop-blur-sm"
+  role="banner"
+  data-section-id="{{ section.id }}"
+>
+  <div class="container mx-auto flex items-center justify-between gap-6 py-5">
+    {%- comment -%} ---------- Logo ---------- {%- endcomment -%}
+    <a
+      href="{{ routes.root_url }}"
+      class="en-tete__logo font-titre text-logo text-vert-profond hover:text-sauge-fonce no-underline shrink-0"
+      style="font-weight: 500;"
+      aria-label="{{ shop.name }}"
+    >
+      {%- if section.settings.logo_image != blank -%}
+        {{
+          section.settings.logo_image
+          | image_url: width: 400
+          | image_tag: class: 'h-8 w-auto', alt: shop.name, loading: 'eager'
+        }}
       {%- else -%}
-        <span>{{ shop.name }}</span>
+        {{ section.settings.logo_texte | default: shop.name }}
       {%- endif -%}
     </a>
 
-    {%- comment -%} Navigation principale {%- endcomment -%}
-    <nav class="en-tete__navigation" role="navigation" aria-label="{{ 'accessibilite.navigation_principale' | t }}">
-      <ul>
-        {%- for lien in section.settings.menu.links -%}
-          <li>
+    {%- comment -%} ---------- Navigation principale (desktop) ---------- {%- endcomment -%}
+    <nav
+      class="en-tete__navigation hidden lg:flex flex-1 justify-center"
+      role="navigation"
+      aria-label="{{ 'accessibilite.navigation_principale' | t }}"
+    >
+      {%- liquid
+        # ----------------------------------------------------------------
+        # Fallback statique : si le menu admin Shopify est vide, on affiche
+        # les liens du design (mockup). Dès que le client ajoutera des liens
+        # dans Boutique en ligne → Navigation → main-menu, ceux-ci prendront
+        # automatiquement le relais.
+        # ----------------------------------------------------------------
+        assign menu_admin = section.settings.menu.links
+        assign utiliser_fallback = false
+        if menu_admin.size == 0
+          assign utiliser_fallback = true
+        endif
+      -%}
+
+      <ul class="flex items-center gap-8">
+        {%- if utiliser_fallback -%}
+          {%- comment -%} ----- Menu statique de secours (4 entrées du mockup) ----- {%- endcomment -%}
+
+          {%- comment -%} Boutique (avec sous-menu placeholder) {%- endcomment -%}
+          <li class="en-tete__item-nav relative group">
             <a
-              href="{{ lien.url }}"
-              {% if lien.active %}
-                aria-current="page"
-              {% endif %}
+              href="{{ routes.collections_url }}"
+              class="en-tete__lien-nav font-corps text-nav text-vert-profond hover:text-sauge-fonce no-underline inline-flex items-center gap-1 py-2"
+              style="font-weight: 500;"
             >
-              {{ lien.title }}
+              Boutique
+              {%- render 'icone',
+                nom: 'chevron-bas',
+                classe: 'inline-block transition-transform group-hover:rotate-180'
+              -%}
             </a>
+            <ul class="en-tete__sous-menu">
+              <li><a href="{{ routes.collections_url }}" class="en-tete__sous-lien">Toutes les collections</a></li>
+              <li><a href="#" class="en-tete__sous-lien">Soins du visage</a></li>
+              <li><a href="#" class="en-tete__sous-lien">Sérums</a></li>
+              <li><a href="#" class="en-tete__sous-lien">Nettoyants</a></li>
+              <li><a href="#" class="en-tete__sous-lien">Hydratants</a></li>
+            </ul>
           </li>
-        {%- endfor -%}
+
+          {%- comment -%} Engagements {%- endcomment -%}
+          <li class="en-tete__item-nav">
+            <a
+              href="/pages/engagements"
+              class="en-tete__lien-nav font-corps text-nav text-vert-profond hover:text-sauge-fonce no-underline py-2 inline-block"
+              style="font-weight: 500;"
+              >Engagements</a
+            >
+          </li>
+
+          {%- comment -%} Quiz Peau {%- endcomment -%}
+          <li class="en-tete__item-nav">
+            <a
+              href="/pages/quiz-peau"
+              class="en-tete__lien-nav font-corps text-nav text-vert-profond hover:text-sauge-fonce no-underline py-2 inline-block"
+              style="font-weight: 500;"
+              >Quiz Peau</a
+            >
+          </li>
+
+          {%- comment -%} Blog {%- endcomment -%}
+          <li class="en-tete__item-nav">
+            <a
+              href="{{ blogs.first.url | default: '/blogs/news' }}"
+              class="en-tete__lien-nav font-corps text-nav text-vert-profond hover:text-sauge-fonce no-underline py-2 inline-block"
+              style="font-weight: 500;"
+              >Blog</a
+            >
+          </li>
+
+        {%- else -%}
+          {%- comment -%} ----- Menu dynamique (depuis Shopify Navigation) ----- {%- endcomment -%}
+          {%- for lien in menu_admin -%}
+            <li class="en-tete__item-nav relative group">
+              <a
+                href="{{ lien.url }}"
+                class="en-tete__lien-nav font-corps text-nav text-vert-profond hover:text-sauge-fonce no-underline inline-flex items-center gap-1 py-2"
+                style="font-weight: 500;"
+                {% if lien.active or lien.child_active %}
+                  aria-current="page"
+                {% endif %}
+              >
+                {{ lien.title }}
+                {%- if lien.links.size > 0 -%}
+                  {%- render 'icone',
+                    nom: 'chevron-bas',
+                    classe: 'inline-block transition-transform group-hover:rotate-180'
+                  -%}
+                {%- endif -%}
+              </a>
+
+              {%- if lien.links.size > 0 -%}
+                <ul class="en-tete__sous-menu">
+                  {%- for sous_lien in lien.links -%}
+                    <li>
+                      <a href="{{ sous_lien.url }}" class="en-tete__sous-lien">
+                        {{ sous_lien.title }}
+                      </a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        {%- endif -%}
       </ul>
     </nav>
 
-    {%- comment -%} Actions utilisateur {%- endcomment -%}
-    <div class="en-tete__actions">
-      <a href="{{ routes.search_url }}" aria-label="{{ 'general.recherche.titre' | t }}">
+    {%- comment -%} ---------- Actions utilisateur ---------- {%- endcomment -%}
+    <div class="en-tete__actions flex items-center gap-5 shrink-0 text-vert-profond">
+      <a
+        href="{{ routes.search_url }}"
+        class="en-tete__action hover:text-sauge-fonce no-underline"
+        aria-label="{{ 'general.recherche.titre' | t }}"
+      >
         {%- render 'icone', nom: 'recherche' -%}
       </a>
-      <a href="{{ routes.account_url }}" aria-label="{{ 'compte.titre' | t }}">
+
+      <a
+        href="{{ routes.account_url }}"
+        class="en-tete__action hover:text-sauge-fonce no-underline"
+        aria-label="{{ 'compte.titre' | t }}"
+      >
         {%- render 'icone', nom: 'compte' -%}
       </a>
-      <a href="{{ routes.cart_url }}" aria-label="{{ 'panier.titre' | t }}">
+
+      <a
+        href="{{ routes.cart_url }}"
+        class="en-tete__action en-tete__action--panier relative hover:text-sauge-fonce no-underline"
+        aria-label="{{ 'panier.titre' | t }} ({{ cart.item_count }})"
+      >
         {%- render 'icone', nom: 'panier' -%}
-        <span class="en-tete__panier-compteur" data-compteur-panier>{{ cart.item_count }}</span>
+
+        {%- comment -%} Badge compteur (caché si panier vide) {%- endcomment -%}
+        <span
+          class="en-tete__panier-compteur absolute -top-1 -right-2 min-w-[1.125rem] h-[1.125rem] px-1 inline-flex items-center justify-center rounded-full bg-vert-profond text-creme text-[0.65rem] font-corps {% if cart.item_count == 0 %}hidden{% endif %}"
+          style="font-weight: 600;"
+          data-compteur-panier
+        >
+          {{ cart.item_count }}
+        </span>
       </a>
     </div>
   </div>
@@ -58,9 +191,25 @@
   "class": "section-en-tete",
   "settings": [
     {
+      "type": "header",
+      "content": "Logo"
+    },
+    {
+      "type": "text",
+      "id": "logo_texte",
+      "label": "Logo (texte stylisé)",
+      "default": "PURETÉ",
+      "info": "Affiché en Cormorant Garamond. Laissez vide si vous utilisez une image."
+    },
+    {
       "type": "image_picker",
-      "id": "logo",
-      "label": "Logo de la boutique"
+      "id": "logo_image",
+      "label": "Logo (image)",
+      "info": "Si défini, remplace le logo texte."
+    },
+    {
+      "type": "header",
+      "content": "Navigation"
     },
     {
       "type": "link_list",

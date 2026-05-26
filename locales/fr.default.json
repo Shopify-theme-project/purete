@@ -3,6 +3,9 @@
     "aller_au_contenu": "Aller au contenu principal",
     "navigation_principale": "Navigation principale"
   },
+  "barre_annonces": {
+    "titre": "Annonces de la boutique"
+  },
   "general": {
     "meta": {
       "tags": "Étiquettes : {{ tags }}",
@@ -21,7 +24,15 @@
     "titre": "Mon compte"
   },
   "panier": {
-    "titre": "Panier"
+    "titre": "Panier",
+    "vide": "Votre panier est vide.",
+    "continuer_achats": "Continuer mes achats",
+    "quantite": "Quantité",
+    "supprimer": "Supprimer",
+    "mettre_a_jour": "Mettre à jour",
+    "sous_total": "Sous-total",
+    "taxes_livraison": "Taxes et livraison calculées au paiement.",
+    "passer_commande": "Passer la commande"
   },
   "produit": {
     "ajouter_au_panier": "Ajouter au panier",

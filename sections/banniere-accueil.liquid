@@ -1,31 +1,61 @@
 {%- comment -%}
   Section : Bannière d'accueil (hero)
-  Image de fond + titre + bouton d'appel à l'action.
+  Mise en page 2 colonnes : texte à gauche, image à droite.
+  Personnalisable depuis l'éditeur de thème.
 {%- endcomment -%}
 
-<section class="banniere-accueil" style="background-color: {{ section.settings.couleur_fond }};">
-  {%- if section.settings.image != blank -%}
-    {{
-      section.settings.image
-      | image_url: width: 2000
-      | image_tag: class: 'banniere-accueil__image', loading: 'eager'
-    }}
-  {%- endif -%}
+{%- liquid
+  assign inverser = section.settings.inverser_colonnes
+  assign couleur_fond = section.settings.couleur_fond
+-%}
 
-  <div class="banniere-accueil__contenu">
-    {%- if section.settings.titre != blank -%}
-      <h1 class="banniere-accueil__titre">{{ section.settings.titre }}</h1>
-    {%- endif -%}
+<section
+  class="banniere-accueil"
+  style="--banniere-fond: {{ couleur_fond }};"
+>
+  <div class="banniere-accueil__conteneur {% if inverser %}banniere-accueil__conteneur--inverse{% endif %}">
+    {%- comment -%} Colonne texte {%- endcomment -%}
+    <div class="banniere-accueil__texte">
+      {%- if section.settings.surtitre != blank -%}
+        <p class="banniere-accueil__surtitre">{{ section.settings.surtitre }}</p>
+      {%- endif -%}
 
-    {%- if section.settings.sous_titre != blank -%}
-      <p class="banniere-accueil__sous-titre">{{ section.settings.sous_titre }}</p>
-    {%- endif -%}
+      {%- if section.settings.titre != blank -%}
+        <h1 class="banniere-accueil__titre">{{ section.settings.titre }}</h1>
+      {%- endif -%}
 
-    {%- if section.settings.lien_bouton != blank and section.settings.texte_bouton != blank -%}
-      <a href="{{ section.settings.lien_bouton }}" class="bouton bouton--primaire">
-        {{ section.settings.texte_bouton }}
-      </a>
-    {%- endif -%}
+      {%- if section.settings.description != blank -%}
+        <div class="banniere-accueil__description">{{ section.settings.description }}</div>
+      {%- endif -%}
+
+      {%- if section.settings.lien_bouton != blank and section.settings.texte_bouton != blank -%}
+        <a
+          href="{{ section.settings.lien_bouton }}"
+          class="bouton bouton--primaire banniere-accueil__bouton"
+        >
+          {{ section.settings.texte_bouton }}
+        </a>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Colonne image {%- endcomment -%}
+    <div class="banniere-accueil__media">
+      {%- if section.settings.image != blank -%}
+        {%- assign image_hero = section.settings.image -%}
+        {{
+          image_hero
+          | image_url: width: 1400
+          | image_tag:
+            class: 'banniere-accueil__image',
+            loading: 'eager',
+            fetchpriority: 'high',
+            widths: '400, 600, 800, 1200, 1400',
+            sizes: '(min-width: 1024px) 50vw, 100vw'
+        }}
+      {%- else -%}
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'banniere-accueil__image banniere-accueil__image--placeholder' }}
+      {%- endif -%}
+    </div>
   </div>
 </section>
 
@@ -35,12 +65,54 @@
   "tag": "section",
   "class": "section-banniere",
   "settings": [
-    { "type": "image_picker", "id": "image", "label": "Image de fond" },
-    { "type": "color", "id": "couleur_fond", "label": "Couleur de fond", "default": "#F2EADB" },
-    { "type": "text", "id": "titre", "label": "Titre", "default": "Pureté & beauté naturelle" },
-    { "type": "text", "id": "sous_titre", "label": "Sous-titre" },
-    { "type": "text", "id": "texte_bouton", "label": "Texte du bouton", "default": "Découvrir" },
-    { "type": "url", "id": "lien_bouton", "label": "Lien du bouton" }
+    { "type": "header", "content": "Contenu" },
+    {
+      "type": "text",
+      "id": "surtitre",
+      "label": "Surtitre (italique)",
+      "default": "La beauté sans compromis"
+    },
+    {
+      "type": "text",
+      "id": "titre",
+      "label": "Titre principal",
+      "default": "Des soins purs pour révéler votre éclat naturel."
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Formules clean, ingrédients d'origine naturelle, packagings éco-responsables.</p>"
+    },
+    {
+      "type": "text",
+      "id": "texte_bouton",
+      "label": "Texte du bouton",
+      "default": "Découvrir la collection"
+    },
+    { "type": "url", "id": "lien_bouton", "label": "Lien du bouton" },
+
+    { "type": "header", "content": "Visuel" },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image principale",
+      "info": "Format portrait recommandé (ex. 1200×1400 px)."
+    },
+    {
+      "type": "checkbox",
+      "id": "inverser_colonnes",
+      "label": "Inverser les colonnes (image à gauche)",
+      "default": false
+    },
+
+    { "type": "header", "content": "Apparence" },
+    {
+      "type": "color",
+      "id": "couleur_fond",
+      "label": "Couleur de fond",
+      "default": "#F2EADB"
+    }
   ],
   "presets": [{ "name": "Bannière d'accueil" }]
 }

@@ -3,6 +3,9 @@
     "aller_au_contenu": "Skip to main content",
     "navigation_principale": "Main navigation"
   },
+  "barre_annonces": {
+    "titre": "Store announcements"
+  },
   "general": {
     "meta": {
       "tags": "Tags: {{ tags }}",
@@ -16,7 +19,17 @@
     }
   },
   "compte": { "titre": "My account" },
-  "panier": { "titre": "Cart" },
+  "panier": {
+    "titre": "Cart",
+    "vide": "Your cart is empty.",
+    "continuer_achats": "Continue shopping",
+    "quantite": "Quantity",
+    "supprimer": "Remove",
+    "mettre_a_jour": "Update",
+    "sous_total": "Subtotal",
+    "taxes_livraison": "Taxes and shipping calculated at checkout.",
+    "passer_commande": "Check out"
+  },
   "produit": {
     "ajouter_au_panier": "Add to cart",
     "epuise": "Sold out"
