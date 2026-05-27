@@ -14,7 +14,6 @@
 
 <section
   class="laissons-de-cote"
-  style="background-color: {{ couleur_fond }};"
   data-anim-au-scroll
 >
   <div class="laissons-de-cote__conteneur {% if inverser %}laissons-de-cote__conteneur--inverse{% endif %}">
@@ -37,7 +36,8 @@
     </div>
 
     {%- comment -%} Colonne contenu {%- endcomment -%}
-    <div class="laissons-de-cote__contenu">
+    {%- comment -%} Colonne contenu (carte avec fond coloré) {%- endcomment -%}
+    <div class="laissons-de-cote__contenu" style="background-color: {{ couleur_fond }};">
       {%- if section.settings.surtitre != blank -%}
         <p class="laissons-de-cote__surtitre">{{ section.settings.surtitre }}</p>
       {%- endif -%}

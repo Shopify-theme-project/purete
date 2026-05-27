@@ -18,7 +18,9 @@
         "texte_bouton": "Découvrir la collection",
         "lien_bouton": "/collections/all",
         "image": "shopify://shop_images/Gemini_Generated_Image_wm9f4kwm9f4kwm9f.png",
-        "inverser_colonnes": false,
+        "alignement_texte": "gauche",
+        "hauteur": "grande",
+        "intensite_overlay": 25,
         "couleur_fond": "#f2eadb"
       }
     },
@@ -27,21 +29,34 @@
       "blocks": {
         "vegan": {
           "type": "benefice",
-          "settings": { "icone": "feuille", "label": "100% VÉGAN" }
+          "settings": {
+            "icone": "feuille",
+            "label": "100% VÉGAN"
+          }
         },
         "toxines": {
           "type": "benefice",
-          "settings": { "icone": "erlenmeyer", "label": "SANS TOXINES" }
+          "settings": {
+            "icone": "erlenmeyer",
+            "label": "SANS TOXINES"
+          }
         },
         "eco": {
           "type": "benefice",
-          "settings": { "icone": "carton", "label": "PACKAGINGS ÉCO" }
+          "settings": {
+            "icone": "carton",
+            "label": "PACKAGINGS ÉCO"
+          }
         }
       },
-      "block_order": ["vegan", "toxines", "eco"],
+      "block_order": [
+        "vegan",
+        "toxines",
+        "eco"
+      ],
       "settings": {
-        "couleur_fond": "#FAF5EB",
-        "couleur_texte": "#1F2D2A"
+        "couleur_fond": "#faf5eb",
+        "couleur_texte": "#1f2d2a"
       }
     },
     "essentiels": {
@@ -59,22 +74,60 @@
     "laissons_de_cote": {
       "type": "laissons-de-cote",
       "blocks": {
-        "ing-1": { "type": "ingredient_exclu", "settings": { "nom": "Parabens" } },
-        "ing-2": { "type": "ingredient_exclu", "settings": { "nom": "Silicones" } },
-        "ing-3": { "type": "ingredient_exclu", "settings": { "nom": "Sulfates (SLS / SLES)" } },
-        "ing-4": { "type": "ingredient_exclu", "settings": { "nom": "Phénoxyéthanol" } },
-        "ing-5": { "type": "ingredient_exclu", "settings": { "nom": "Huiles minérales" } },
-        "ing-6": { "type": "ingredient_exclu", "settings": { "nom": "Parfums synthétiques" } }
+        "ing-1": {
+          "type": "ingredient_exclu",
+          "settings": {
+            "nom": "Parabens"
+          }
+        },
+        "ing-2": {
+          "type": "ingredient_exclu",
+          "settings": {
+            "nom": "Silicones"
+          }
+        },
+        "ing-3": {
+          "type": "ingredient_exclu",
+          "settings": {
+            "nom": "Sulfates (SLS / SLES)"
+          }
+        },
+        "ing-4": {
+          "type": "ingredient_exclu",
+          "settings": {
+            "nom": "Phénoxyéthanol"
+          }
+        },
+        "ing-5": {
+          "type": "ingredient_exclu",
+          "settings": {
+            "nom": "Huiles minérales"
+          }
+        },
+        "ing-6": {
+          "type": "ingredient_exclu",
+          "settings": {
+            "nom": "Parfums synthétiques"
+          }
+        }
       },
-      "block_order": ["ing-1", "ing-2", "ing-3", "ing-4", "ing-5", "ing-6"],
+      "block_order": [
+        "ing-1",
+        "ing-2",
+        "ing-3",
+        "ing-4",
+        "ing-5",
+        "ing-6"
+      ],
       "settings": {
         "surtitre": "Notre charte clean",
         "titre": "Ce que nous laissons de côté",
         "description": "<p>Nos formules excluent strictement les ingrédients controversés pour préserver votre peau et la planète.</p>",
+        "image": "shopify://shop_images/aleo_vera.png",
+        "inverser_colonnes": false,
         "texte_lien": "Lire notre charte",
         "lien": "/pages/charte",
-        "inverser_colonnes": false,
-        "couleur_fond": "#F2EADB"
+        "couleur_fond": "#f2eadb"
       }
     }
   },

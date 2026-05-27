@@ -543,11 +543,11 @@
      ============================================================ */
 
   .laissons-de-cote {
-    @apply w-full overflow-hidden;
+    @apply w-full overflow-hidden bg-white;
   }
 
   .laissons-de-cote__conteneur {
-    @apply max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-2 items-center gap-10 lg:gap-16 px-6 lg:px-12 py-16 lg:py-20;
+    @apply max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-2 items-stretch gap-0 px-6 lg:px-12 py-6 lg:py-10;
   }
 
   /* Inversion des colonnes : image à droite */
@@ -564,7 +564,8 @@
   }
 
   .laissons-de-cote__image {
-    @apply w-full h-auto object-cover;
+    @apply w-full h-full object-cover;
+    min-height: 100%;
     aspect-ratio: 4 / 3;
     border-radius: 2px;
   }
@@ -573,9 +574,24 @@
     @apply bg-ivoire;
   }
 
-  /* ----- Colonne contenu ----- */
+  /* ----- Colonne contenu (carte beige qui chevauche l'image) ----- */
   .laissons-de-cote__contenu {
-    @apply flex flex-col;
+    @apply flex flex-col justify-center relative;
+    padding: 2.5rem 2rem;
+  }
+
+  @media (min-width: 1024px) {
+    .laissons-de-cote__contenu {
+      padding: 3.5rem 3rem;
+      /* Léger chevauchement à gauche par-dessus l'image pour un effet éditorial */
+      margin-left: -3rem;
+      z-index: 2;
+      box-shadow: 0 10px 40px -20px rgba(31, 45, 42, 0.15);
+    }
+    .laissons-de-cote__conteneur--inverse .laissons-de-cote__contenu {
+      margin-left: 0;
+      margin-right: -3rem;
+    }
   }
 
   .laissons-de-cote__surtitre {
