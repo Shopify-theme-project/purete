@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "banniere": {
@@ -7,9 +16,50 @@
         "titre": "Des soins purs pour révéler votre éclat naturel.",
         "description": "<p>Formules clean, ingrédients d'origine naturelle, packagings éco-responsables.</p>",
         "texte_bouton": "Découvrir la collection",
-        "lien_bouton": "/collections/all"
+        "lien_bouton": "/collections/all",
+        "image": "shopify://shop_images/Gemini_Generated_Image_wm9f4kwm9f4kwm9f.png",
+        "inverser_colonnes": false,
+        "couleur_fond": "#f2eadb"
+      }
+    },
+    "benefices": {
+      "type": "barre-benefices",
+      "blocks": {
+        "vegan": {
+          "type": "benefice",
+          "settings": { "icone": "feuille", "label": "100% VÉGAN" }
+        },
+        "toxines": {
+          "type": "benefice",
+          "settings": { "icone": "erlenmeyer", "label": "SANS TOXINES" }
+        },
+        "eco": {
+          "type": "benefice",
+          "settings": { "icone": "carton", "label": "PACKAGINGS ÉCO" }
+        }
+      },
+      "block_order": ["vegan", "toxines", "eco"],
+      "settings": {
+        "couleur_fond": "#FAF5EB",
+        "couleur_texte": "#1F2D2A"
+      }
+    },
+    "essentiels": {
+      "type": "grille-produits",
+      "settings": {
+        "titre": "Nos essentiels clean",
+        "sous_titre": "Une routine épurée, des ingrédients triés sur le volet.",
+        "collection": "all",
+        "nb_produits": 4,
+        "afficher_lien_voir_tout": true,
+        "texte_voir_tout": "Voir toute la collection",
+        "lien_voir_tout": "/collections/all"
       }
     }
   },
-  "order": ["banniere"]
+  "order": [
+    "banniere",
+    "benefices",
+    "essentiels"
+  ]
 }

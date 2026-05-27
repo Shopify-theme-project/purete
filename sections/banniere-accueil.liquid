@@ -1,20 +1,37 @@
 {%- comment -%}
   Section : Bannière d'accueil (hero)
-  Mise en page 2 colonnes : texte à gauche, image à droite.
+  Image en arrière-plan plein écran + bloc texte aligné.
   Personnalisable depuis l'éditeur de thème.
 {%- endcomment -%}
 
 {%- liquid
-  assign inverser = section.settings.inverser_colonnes
   assign couleur_fond = section.settings.couleur_fond
+  assign alignement_texte = section.settings.alignement_texte
+  assign hauteur = section.settings.hauteur
+  assign intensite_overlay = section.settings.intensite_overlay
 -%}
 
 <section
-  class="banniere-accueil"
-  style="--banniere-fond: {{ couleur_fond }};"
+  class="banniere-accueil banniere-accueil--{{ hauteur }} banniere-accueil--align-{{ alignement_texte }}"
+  style="--banniere-fond: {{ couleur_fond }}; --banniere-overlay: {{ intensite_overlay | divided_by: 100.0 }};"
 >
-  <div class="banniere-accueil__conteneur {% if inverser %}banniere-accueil__conteneur--inverse{% endif %}">
-    {%- comment -%} Colonne texte {%- endcomment -%}
+  {%- if section.settings.image != blank -%}
+    {%- assign image_hero = section.settings.image -%}
+    {{
+      image_hero
+      | image_url: width: 2400
+      | image_tag:
+        class: 'banniere-accueil__image-fond',
+        loading: 'eager',
+        fetchpriority: 'high',
+        widths: '600, 900, 1200, 1600, 2000, 2400',
+        sizes: '100vw'
+    }}
+  {%- endif -%}
+
+  <div class="banniere-accueil__voile" aria-hidden="true"></div>
+
+  <div class="banniere-accueil__contenu">
     <div class="banniere-accueil__texte">
       {%- if section.settings.surtitre != blank -%}
         <p class="banniere-accueil__surtitre">{{ section.settings.surtitre }}</p>
@@ -35,25 +52,6 @@
         >
           {{ section.settings.texte_bouton }}
         </a>
-      {%- endif -%}
-    </div>
-
-    {%- comment -%} Colonne image {%- endcomment -%}
-    <div class="banniere-accueil__media">
-      {%- if section.settings.image != blank -%}
-        {%- assign image_hero = section.settings.image -%}
-        {{
-          image_hero
-          | image_url: width: 1400
-          | image_tag:
-            class: 'banniere-accueil__image',
-            loading: 'eager',
-            fetchpriority: 'high',
-            widths: '400, 600, 800, 1200, 1400',
-            sizes: '(min-width: 1024px) 50vw, 100vw'
-        }}
-      {%- else -%}
-        {{ 'lifestyle-1' | placeholder_svg_tag: 'banniere-accueil__image banniere-accueil__image--placeholder' }}
       {%- endif -%}
     </div>
   </div>
@@ -96,21 +94,47 @@
     {
       "type": "image_picker",
       "id": "image",
-      "label": "Image principale",
-      "info": "Format portrait recommandé (ex. 1200×1400 px)."
+      "label": "Image d'arrière-plan",
+      "info": "Format paysage recommandé (ex. 2400×1400 px)."
     },
     {
-      "type": "checkbox",
-      "id": "inverser_colonnes",
-      "label": "Inverser les colonnes (image à gauche)",
-      "default": false
+      "type": "select",
+      "id": "alignement_texte",
+      "label": "Alignement du texte",
+      "options": [
+        { "value": "gauche", "label": "Gauche" },
+        { "value": "centre", "label": "Centre" },
+        { "value": "droite", "label": "Droite" }
+      ],
+      "default": "gauche"
+    },
+    {
+      "type": "select",
+      "id": "hauteur",
+      "label": "Hauteur de la bannière",
+      "options": [
+        { "value": "moyenne", "label": "Moyenne (70vh)" },
+        { "value": "grande", "label": "Grande (85vh)" },
+        { "value": "plein-ecran", "label": "Plein écran (100vh)" }
+      ],
+      "default": "grande"
+    },
+    {
+      "type": "range",
+      "id": "intensite_overlay",
+      "label": "Intensité du voile sur l'image",
+      "min": 0,
+      "max": 70,
+      "step": 5,
+      "unit": "%",
+      "default": 25
     },
 
     { "type": "header", "content": "Apparence" },
     {
       "type": "color",
       "id": "couleur_fond",
-      "label": "Couleur de fond",
+      "label": "Couleur de fond (sans image)",
       "default": "#F2EADB"
     }
   ],

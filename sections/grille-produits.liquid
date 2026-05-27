@@ -1,0 +1,127 @@
+{%- comment -%}
+  ============================================================
+  Section : Grille de produits (Nos essentiels clean)
+  Affiche les produits d'une collection. Si la collection
+  est vide ou non choisie, affiche un fallback démo statique.
+  ============================================================
+{%- endcomment -%}
+
+{%- liquid
+  assign collection_cible = collections[section.settings.collection]
+  assign nb_produits = section.settings.nb_produits | default: 4
+  assign mode_demo = false
+  if collection_cible == empty or collection_cible.products_count == 0
+    assign mode_demo = true
+  endif
+-%}
+
+<section class="grille-produits">
+  <div class="grille-produits__conteneur">
+    {%- if section.settings.titre != blank -%}
+      <h2 class="titre-section grille-produits__titre">{{ section.settings.titre }}</h2>
+    {%- endif -%}
+
+    {%- if section.settings.sous_titre != blank -%}
+      <p class="grille-produits__sous-titre">{{ section.settings.sous_titre }}</p>
+    {%- endif -%}
+
+    <div class="grille-produits__grille">
+      {%- if mode_demo -%}
+        {%- comment -%} Fallback démo : 4 cartes statiques pour visualisation {%- endcomment -%}
+        {%- render 'carte-produit', demo: true, nom: 'Sérum Éclat', prix: '28,00 €', note: 4.8, marque: 'PURETÉ' -%}
+        {%- render 'carte-produit',
+          demo: true,
+          nom: 'Crème Hydratante',
+          prix: '34,00 €',
+          note: 4.6,
+          marque: 'PURETÉ'
+        -%}
+        {%- render 'carte-produit',
+          demo: true,
+          nom: 'Huile Visage Bio',
+          prix: '34,00 €',
+          note: 4.9,
+          marque: 'PURETÉ'
+        -%}
+        {%- render 'carte-produit', demo: true, nom: 'Nettoyant Doux', prix: '28,00 €', note: 4.7, marque: 'PURETÉ' -%}
+      {%- else -%}
+        {%- for produit in collection_cible.products limit: nb_produits -%}
+          {%- render 'carte-produit', produit: produit -%}
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+
+    {%- if mode_demo -%}
+      <p class="grille-produits__avis-demo" role="status">
+        Mode démo : ajoutez des produits à la collection «&nbsp;
+        {{- section.settings.collection | default: 'all' -}}
+        &nbsp;» pour les voir apparaître ici.
+      </p>
+    {%- endif -%}
+
+    {%- if section.settings.afficher_lien_voir_tout and section.settings.lien_voir_tout != blank -%}
+      <div class="grille-produits__action">
+        <a href="{{ section.settings.lien_voir_tout }}" class="bouton bouton--secondaire">
+          {{ section.settings.texte_voir_tout | default: 'Voir toute la collection' }}
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Grille de produits",
+  "tag": "section",
+  "class": "section-grille-produits",
+  "settings": [
+    { "type": "header", "content": "Contenu" },
+    {
+      "type": "text",
+      "id": "titre",
+      "label": "Titre",
+      "default": "Nos essentiels clean"
+    },
+    {
+      "type": "text",
+      "id": "sous_titre",
+      "label": "Sous-titre"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection à afficher",
+      "info": "Si vide ou aucun produit, un mode démo s'affiche."
+    },
+    {
+      "type": "range",
+      "id": "nb_produits",
+      "label": "Nombre de produits",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4
+    },
+
+    { "type": "header", "content": "Lien « voir tout »" },
+    {
+      "type": "checkbox",
+      "id": "afficher_lien_voir_tout",
+      "label": "Afficher un bouton sous la grille",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "texte_voir_tout",
+      "label": "Texte du bouton",
+      "default": "Voir toute la collection"
+    },
+    {
+      "type": "url",
+      "id": "lien_voir_tout",
+      "label": "Lien du bouton"
+    }
+  ],
+  "presets": [{ "name": "Grille de produits" }]
+}
+{% endschema %}

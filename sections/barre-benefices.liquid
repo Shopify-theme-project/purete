@@ -1,0 +1,100 @@
+{%- comment -%}
+  ============================================================
+  Section : Barre de bénéfices
+  Affiche les piliers de la marque (vegan, sans toxines, éco…).
+  Architecture par blocs pour permettre l'ajout/réordonnancement
+  depuis l'éditeur de thème.
+  ============================================================
+{%- endcomment -%}
+
+{%- liquid
+  assign couleur_fond = section.settings.couleur_fond
+  assign couleur_texte = section.settings.couleur_texte
+-%}
+
+<section
+  class="barre-benefices"
+  style="background-color: {{ couleur_fond }}; color: {{ couleur_texte }};"
+>
+  <div class="barre-benefices__conteneur">
+    <ul class="barre-benefices__liste" role="list">
+      {%- for block in section.blocks -%}
+        <li class="barre-benefices__item" {{ block.shopify_attributes }}>
+          {%- if block.settings.icone != 'aucune' -%}
+            {%- render 'icone', nom: block.settings.icone, classe: 'barre-benefices__icone', taille: 32 -%}
+          {%- endif -%}
+          <span class="barre-benefices__label">{{ block.settings.label }}</span>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Barre de bénéfices",
+  "tag": "section",
+  "class": "section-barre-benefices",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "color",
+      "id": "couleur_fond",
+      "label": "Couleur de fond",
+      "default": "#FAF5EB"
+    },
+    {
+      "type": "color",
+      "id": "couleur_texte",
+      "label": "Couleur du texte et des icônes",
+      "default": "#1F2D2A"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefice",
+      "name": "Bénéfice",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icone",
+          "label": "Icône",
+          "options": [
+            { "value": "feuille", "label": "Feuille (végan)" },
+            { "value": "erlenmeyer", "label": "Erlenmeyer (sans toxines)" },
+            { "value": "carton", "label": "Carton (éco-responsable)" },
+            { "value": "aucune", "label": "Aucune" }
+          ],
+          "default": "feuille"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Texte",
+          "default": "100% VÉGAN"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Barre de bénéfices",
+      "blocks": [
+        {
+          "type": "benefice",
+          "settings": { "icone": "feuille", "label": "100% VÉGAN" }
+        },
+        {
+          "type": "benefice",
+          "settings": { "icone": "erlenmeyer", "label": "SANS TOXINES" }
+        },
+        {
+          "type": "benefice",
+          "settings": { "icone": "carton", "label": "PACKAGINGS ÉCO" }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

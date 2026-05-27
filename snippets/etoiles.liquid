@@ -1,0 +1,47 @@
+{%- comment -%}
+  ============================================================
+  Snippet : Affichage d'une note en étoiles (sur 5)
+  Paramètres :
+    - note         : nombre décimal (ex. 4.5)
+    - nb_avis      : nombre d'avis (optionnel, affiché entre parenthèses)
+    - taille       : taille en px de chaque étoile (défaut 14)
+  ============================================================
+{%- endcomment -%}
+
+{%- liquid
+  assign note = note | default: 0 | times: 1.0
+  assign taille = taille | default: 14
+  assign etoiles_pleines = note | floor
+  assign reste = note | minus: etoiles_pleines
+  assign demi_etoile = false
+  if reste >= 0.25 and reste < 0.75
+    assign demi_etoile = true
+  elsif reste >= 0.75
+    assign etoiles_pleines = etoiles_pleines | plus: 1
+  endif
+  assign etoiles_vides = 5 | minus: etoiles_pleines
+  if demi_etoile
+    assign etoiles_vides = etoiles_vides | minus: 1
+  endif
+-%}
+
+<div
+  class="etoiles"
+  role="img"
+  aria-label="Note : {{ note }} sur 5{% if nb_avis %} ({{ nb_avis }} avis){% endif %}"
+>
+  {%- for i in (1..etoiles_pleines) -%}
+    {%- render 'icone', nom: 'etoile-pleine', classe: 'etoiles__icone', taille: taille -%}
+  {%- endfor -%}
+  {%- if demi_etoile -%}
+    {%- render 'icone', nom: 'etoile-demi', classe: 'etoiles__icone', taille: taille -%}
+  {%- endif -%}
+  {%- if etoiles_vides > 0 -%}
+    {%- for i in (1..etoiles_vides) -%}
+      {%- render 'icone', nom: 'etoile-vide', classe: 'etoiles__icone', taille: taille -%}
+    {%- endfor -%}
+  {%- endif -%}
+  {%- if nb_avis -%}
+    <span class="etoiles__nb">({{ nb_avis }})</span>
+  {%- endif -%}
+</div>

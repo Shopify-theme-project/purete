@@ -81,5 +81,117 @@
       >
         <polyline points="6 9 12 15 18 9"/>
       </svg>
+
+      {%- comment -%} ----- Icônes bénéfices ----- {%- endcomment -%}
+
+    {%- when 'feuille' -%}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.4"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        width="{{ taille }}"
+        height="{{ taille }}"
+      >
+        <path d="M5 21c0-9 7-16 16-16 0 9-7 16-16 16z"/>
+        <path d="M5 21c2-6 6-10 12-12"/>
+      </svg>
+
+    {%- when 'erlenmeyer' -%}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.4"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        width="{{ taille }}"
+        height="{{ taille }}"
+      >
+        <path d="M9 3h6"/>
+        <path d="M10 3v6L4.5 19a1.5 1.5 0 0 0 1.3 2.3h12.4A1.5 1.5 0 0 0 19.5 19L14 9V3"/>
+        <path d="M7 15h10"/>
+      </svg>
+
+    {%- when 'carton' -%}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.4"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        width="{{ taille }}"
+        height="{{ taille }}"
+      >
+        <path d="M3 7l9-4 9 4v10l-9 4-9-4V7z"/>
+        <path d="M3 7l9 4 9-4"/>
+        <path d="M12 11v10"/>
+        <path d="M8 5l8 4"/>
+      </svg>
+
+      {%- comment -%} ----- Notation produit ----- {%- endcomment -%}
+
+    {%- when 'etoile-pleine' -%}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        width="{{ taille }}"
+        height="{{ taille }}"
+      >
+        <path d="M12 2l2.95 6.97L22 9.97l-5.5 4.78L18.18 22 12 18.27 5.82 22l1.68-7.25L2 9.97l7.05-1L12 2z"/>
+      </svg>
+
+    {%- when 'etoile-demi' -%}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        width="{{ taille }}"
+        height="{{ taille }}"
+      >
+        <defs>
+          <linearGradient id="demi-etoile-{{ taille }}">
+            <stop offset="50%" stop-color="currentColor"/>
+            <stop offset="50%" stop-color="currentColor" stop-opacity="0.25"/>
+          </linearGradient>
+        </defs>
+        <path
+          fill="url(#demi-etoile-{{ taille }})"
+          d="M12 2l2.95 6.97L22 9.97l-5.5 4.78L18.18 22 12 18.27 5.82 22l1.68-7.25L2 9.97l7.05-1L12 2z"
+        />
+      </svg>
+
+    {%- when 'etoile-vide' -%}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        fill-opacity="0.25"
+        width="{{ taille }}"
+        height="{{ taille }}"
+      >
+        <path d="M12 2l2.95 6.97L22 9.97l-5.5 4.78L18.18 22 12 18.27 5.82 22l1.68-7.25L2 9.97l7.05-1L12 2z"/>
+      </svg>
+
+    {%- when 'plus' -%}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.6"
+        stroke-linecap="round"
+        width="{{ taille }}"
+        height="{{ taille }}"
+      >
+        <line x1="12" y1="5" x2="12" y2="19"/>
+        <line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
   {%- endcase -%}
 </span>

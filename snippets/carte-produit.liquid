@@ -1,25 +1,119 @@
 {%- comment -%}
-  Snippet : Carte produit (vignette dans une grille)
-  Paramètre attendu :
-    - produit : objet produit Shopify
+  ============================================================
+  Snippet : Carte produit
+  Modes :
+    1) Produit réel  → passer `produit` (objet Shopify product)
+    2) Démo statique → passer `demo: true` + `nom`, `prix`, `note`,
+                       `image_url` (URL absolue ou Shopify file)
+
+  Paramètres optionnels :
+    - afficher_ajout : true|false (défaut true)
+    - marque         : forçage du nom de marque
+  ============================================================
 {%- endcomment -%}
 
-<article class="carte-produit">
-  <a href="{{ produit.url }}" class="carte-produit__lien">
-    {%- if produit.featured_image -%}
-      {{
-        produit.featured_image
-        | image_url: width: 600
-        | image_tag: loading: 'lazy', class: 'carte-produit__image', alt: produit.title
-      }}
+{%- liquid
+  assign afficher_ajout = afficher_ajout | default: true
+
+  if demo
+    assign carte_nom = nom
+    assign carte_prix_formate = prix
+    assign carte_note = note | default: 4.8
+    assign carte_url = '#'
+    assign carte_marque = marque | default: 'PURETÉ'
+    assign carte_id_variante = 0
+    assign carte_disponible = false
+    assign carte_demo = true
+  else
+    assign carte_nom = produit.title
+    assign carte_prix_formate = produit.price | money
+    assign carte_note = produit.metafields.reviews.rating.value | default: 0
+    assign carte_url = produit.url
+    assign carte_marque = marque | default: produit.vendor
+    assign carte_id_variante = produit.selected_or_first_available_variant.id
+    assign carte_disponible = produit.available
+    assign carte_demo = false
+  endif
+-%}
+
+<article class="carte-produit{% if carte_demo %} carte-produit--demo{% endif %}">
+  <div class="carte-produit__media">
+    <a
+      href="{{ carte_url }}"
+      class="carte-produit__lien-image"
+      {% if carte_demo %}
+        aria-disabled="true" tabindex="-1"
+      {% endif %}
+    >
+      {%- if carte_demo -%}
+        {%- if image_url != blank -%}
+          <img
+            src="{{ image_url }}"
+            alt="{{ carte_nom }}"
+            class="carte-produit__image"
+            loading="lazy"
+            width="600"
+            height="600"
+          >
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'carte-produit__image' }}
+        {%- endif -%}
+      {%- elsif produit.featured_image -%}
+        {{
+          produit.featured_image
+          | image_url: width: 600
+          | image_tag:
+            class: 'carte-produit__image',
+            loading: 'lazy',
+            widths: '300, 450, 600',
+            sizes: '(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw',
+            alt: produit.featured_image.alt
+        }}
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'carte-produit__image' }}
+      {%- endif -%}
+    </a>
+
+    {%- if afficher_ajout and carte_id_variante != 0 -%}
+      <button
+        type="button"
+        class="carte-produit__ajout-rapide"
+        data-quick-add
+        data-id-variante="{{ carte_id_variante }}"
+        {% unless carte_disponible %}
+          disabled
+        {% endunless %}
+        aria-label="Ajouter {{ carte_nom }} au panier"
+      >
+        {%- render 'icone', nom: 'plus', taille: 14, classe: 'carte-produit__ajout-icone' -%}
+        <span>Ajouter vite</span>
+      </button>
+    {%- elsif afficher_ajout and carte_demo -%}
+      <button
+        type="button"
+        class="carte-produit__ajout-rapide"
+        disabled
+        aria-label="Aperçu démo - ajout indisponible"
+      >
+        {%- render 'icone', nom: 'plus', taille: 14, classe: 'carte-produit__ajout-icone' -%}
+        <span>Ajouter vite</span>
+      </button>
+    {%- endif -%}
+  </div>
+
+  <div class="carte-produit__infos">
+    {%- if carte_marque != blank -%}
+      <p class="carte-produit__marque">{{ carte_marque }}</p>
     {%- endif -%}
 
-    <h2 class="carte-produit__titre">{{ produit.title }}</h2>
-    <p class="carte-produit__prix">
-      {%- if produit.compare_at_price > produit.price -%}
-        <span class="carte-produit__prix--barre">{{ produit.compare_at_price | money }}</span>
-      {%- endif -%}
-      <span>{{ produit.price | money }}</span>
-    </p>
-  </a>
+    <h3 class="carte-produit__nom">
+      <a href="{{ carte_url }}">{{ carte_nom }}</a>
+    </h3>
+
+    {%- if carte_note > 0 -%}
+      {%- render 'etoiles', note: carte_note, taille: 12 -%}
+    {%- endif -%}
+
+    <p class="carte-produit__prix">{{ carte_prix_formate }}</p>
+  </div>
 </article>
