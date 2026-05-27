@@ -183,6 +183,20 @@
         "nb_avis": "1 247",
         "couleur_fond": "#FAF5EB"
       }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "surtitre": "Rejoignez la communauté",
+        "titre": "Restons en contact",
+        "description": "<p>Conseils beauté, lancements en avant-première et -10% offerts à l'inscription.</p>",
+        "label_email": "votre@email.com",
+        "texte_bouton": "S'inscrire",
+        "message_succes": "Merci ! Votre inscription est confirmée.",
+        "mention": "<p>En vous inscrivant, vous acceptez de recevoir nos communications. Désinscription en 1 clic.</p>",
+        "couleur_fond": "#F2EADB",
+        "couleur_texte": "#1F2D2A"
+      }
     }
   },
   "order": [
@@ -191,6 +205,7 @@
     "essentiels",
     "laissons_de_cote",
     "quiz_cta",
-    "temoignages"
+    "temoignages",
+    "newsletter"
   ]
 }

@@ -1,0 +1,143 @@
+{%- comment -%}
+  ============================================================
+  Section : Newsletter
+  Bandeau d'inscription épuré (formulaire Shopify natif).
+  Utilise customer.create_form pour la conformité RGPD et
+  l'intégration native avec la liste de diffusion Shopify.
+  ============================================================
+{%- endcomment -%}
+
+{%- liquid
+  assign couleur_fond = section.settings.couleur_fond
+  assign couleur_texte = section.settings.couleur_texte
+-%}
+
+<section
+  class="newsletter"
+  style="background-color: {{ couleur_fond }}; color: {{ couleur_texte }};"
+  data-anim-au-scroll
+>
+  <div class="newsletter__conteneur">
+    {%- if section.settings.surtitre != blank -%}
+      <p class="newsletter__surtitre">{{ section.settings.surtitre }}</p>
+    {%- endif -%}
+
+    {%- if section.settings.titre != blank -%}
+      <h2 class="newsletter__titre">{{ section.settings.titre }}</h2>
+    {%- endif -%}
+
+    {%- if section.settings.description != blank -%}
+      <div class="newsletter__description">{{ section.settings.description }}</div>
+    {%- endif -%}
+
+    {%- form 'customer', class: 'newsletter__formulaire' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <input type="hidden" name="contact[accepts_marketing]" value="true">
+
+      <div class="newsletter__champ">
+        <label for="newsletter-email-{{ section.id }}" class="sr-only">
+          {{ section.settings.label_email | default: 'Votre adresse email' }}
+        </label>
+        <input
+          id="newsletter-email-{{ section.id }}"
+          type="email"
+          name="contact[email]"
+          class="newsletter__input"
+          placeholder="{{ section.settings.label_email | default: 'votre@email.com' }}"
+          autocorrect="off"
+          autocapitalize="off"
+          autocomplete="email"
+          required
+        >
+        <button type="submit" class="newsletter__bouton" aria-label="S'inscrire">
+          <span>{{ section.settings.texte_bouton | default: "S'inscrire" }}</span>
+          {%- render 'icone', nom: 'fleche-droite', taille: 16, classe: 'newsletter__bouton-icone' -%}
+        </button>
+      </div>
+
+      {%- if form.posted_successfully? -%}
+        <p class="newsletter__message newsletter__message--succes" role="status">
+          {{ section.settings.message_succes | default: 'Merci ! Votre inscription est confirmée.' }}
+        </p>
+      {%- elsif form.errors -%}
+        <p class="newsletter__message newsletter__message--erreur" role="alert">
+          {{ form.errors | default_errors }}
+        </p>
+      {%- endif -%}
+
+      {%- if section.settings.mention != blank -%}
+        <p class="newsletter__mention">{{ section.settings.mention }}</p>
+      {%- endif -%}
+    {%- endform -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "tag": "section",
+  "class": "section-newsletter",
+  "settings": [
+    { "type": "header", "content": "Contenu" },
+    {
+      "type": "text",
+      "id": "surtitre",
+      "label": "Surtitre",
+      "default": "Rejoignez la communauté"
+    },
+    {
+      "type": "text",
+      "id": "titre",
+      "label": "Titre",
+      "default": "Restons en contact"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Conseils beauté, lancements en avant-première et -10% offerts à l'inscription.</p>"
+    },
+
+    { "type": "header", "content": "Formulaire" },
+    {
+      "type": "text",
+      "id": "label_email",
+      "label": "Placeholder du champ email",
+      "default": "votre@email.com"
+    },
+    {
+      "type": "text",
+      "id": "texte_bouton",
+      "label": "Texte du bouton",
+      "default": "S'inscrire"
+    },
+    {
+      "type": "text",
+      "id": "message_succes",
+      "label": "Message de succès",
+      "default": "Merci ! Votre inscription est confirmée."
+    },
+    {
+      "type": "richtext",
+      "id": "mention",
+      "label": "Mention sous le formulaire (RGPD)",
+      "default": "<p>En vous inscrivant, vous acceptez de recevoir nos communications. Désinscription en 1 clic.</p>"
+    },
+
+    { "type": "header", "content": "Apparence" },
+    {
+      "type": "color",
+      "id": "couleur_fond",
+      "label": "Couleur de fond",
+      "default": "#F2EADB"
+    },
+    {
+      "type": "color",
+      "id": "couleur_texte",
+      "label": "Couleur du texte",
+      "default": "#1F2D2A"
+    }
+  ],
+  "presets": [{ "name": "Newsletter" }]
+}
+{% endschema %}

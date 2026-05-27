@@ -1,38 +1,126 @@
 {%- comment -%}
   ============================================================
-  Section : Pied de page
-  Liens secondaires, mentions légales, réseaux sociaux,
-  inscription à la newsletter.
+  Section : Pied de page (footer)
+  Layout 4 colonnes : marque, menus, contact/réseaux.
+  Bandeau bas : copyright + mentions légales + moyens de paiement.
   ============================================================
 {%- endcomment -%}
 
 <footer class="pied-de-page" role="contentinfo">
-  <div class="pied-de-page__conteneur">
-    {%- for bloc in section.blocks -%}
-      <div class="pied-de-page__colonne" {{ bloc.shopify_attributes }}>
-        {%- case bloc.type -%}
-          {%- when 'menu' -%}
-            <h3>{{ bloc.settings.titre }}</h3>
-            <ul>
-              {%- for lien in bloc.settings.menu.links -%}
-                <li>
-                  <a href="{{ lien.url }}">{{ lien.title }}</a>
-                </li>
-              {%- endfor -%}
-            </ul>
-          {%- when 'texte' -%}
-            <h3>{{ bloc.settings.titre }}</h3>
-            <div>{{ bloc.settings.contenu }}</div>
-        {%- endcase -%}
+  <div class="pied-de-page__principal">
+    <div class="pied-de-page__grille">
+      {%- comment -%} Colonne marque (toujours en premier) {%- endcomment -%}
+      <div class="pied-de-page__colonne pied-de-page__colonne--marque">
+        <a href="{{ routes.root_url }}" class="pied-de-page__logo">
+          {{ shop.name | upcase }}
+        </a>
+        {%- if section.settings.signature != blank -%}
+          <div class="pied-de-page__signature">
+            {{ section.settings.signature }}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.afficher_reseaux -%}
+          <ul class="pied-de-page__reseaux" role="list">
+            {%- if section.settings.url_instagram != blank -%}
+              <li>
+                <a href="{{ section.settings.url_instagram }}" target="_blank" rel="noopener noreferrer">Instagram</a>
+              </li>
+            {%- endif -%}
+            {%- if section.settings.url_facebook != blank -%}
+              <li>
+                <a href="{{ section.settings.url_facebook }}" target="_blank" rel="noopener noreferrer">Facebook</a>
+              </li>
+            {%- endif -%}
+            {%- if section.settings.url_tiktok != blank -%}
+              <li><a href="{{ section.settings.url_tiktok }}" target="_blank" rel="noopener noreferrer">TikTok</a></li>
+            {%- endif -%}
+            {%- if section.settings.url_pinterest != blank -%}
+              <li>
+                <a href="{{ section.settings.url_pinterest }}" target="_blank" rel="noopener noreferrer">Pinterest</a>
+              </li>
+            {%- endif -%}
+          </ul>
+        {%- endif -%}
       </div>
-    {%- endfor -%}
+
+      {%- comment -%} Colonnes dynamiques (avec fallback si vides) {%- endcomment -%}
+      {%- if section.blocks.size > 0 -%}
+        {%- for bloc in section.blocks -%}
+          <div class="pied-de-page__colonne" {{ bloc.shopify_attributes }}>
+            {%- case bloc.type -%}
+              {%- when 'menu' -%}
+                {%- if bloc.settings.titre != blank -%}
+                  <h3 class="pied-de-page__titre">{{ bloc.settings.titre }}</h3>
+                {%- endif -%}
+                {%- if bloc.settings.menu != blank -%}
+                  <ul class="pied-de-page__liste" role="list">
+                    {%- for lien in bloc.settings.menu.links -%}
+                      <li>
+                        <a href="{{ lien.url }}" class="pied-de-page__lien">{{ lien.title }}</a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endif -%}
+              {%- when 'texte' -%}
+                {%- if bloc.settings.titre != blank -%}
+                  <h3 class="pied-de-page__titre">{{ bloc.settings.titre }}</h3>
+                {%- endif -%}
+                {%- if bloc.settings.contenu != blank -%}
+                  <div class="pied-de-page__contenu">{{ bloc.settings.contenu }}</div>
+                {%- endif -%}
+            {%- endcase -%}
+          </div>
+        {%- endfor -%}
+      {%- else -%}
+        {%- comment -%} Contenu par défaut tant qu'aucun bloc n'est configuré {%- endcomment -%}
+        <div class="pied-de-page__colonne">
+          <h3 class="pied-de-page__titre">Boutique</h3>
+          <ul class="pied-de-page__liste" role="list">
+            <li><a href="{{ routes.collections_url }}" class="pied-de-page__lien">Tous les produits</a></li>
+            <li><a href="{{ routes.collections_url }}/visage" class="pied-de-page__lien">Soins visage</a></li>
+            <li><a href="{{ routes.collections_url }}/corps" class="pied-de-page__lien">Soins corps</a></li>
+            <li><a href="{{ routes.collections_url }}/coffrets" class="pied-de-page__lien">Coffrets</a></li>
+          </ul>
+        </div>
+        <div class="pied-de-page__colonne">
+          <h3 class="pied-de-page__titre">Aide</h3>
+          <ul class="pied-de-page__liste" role="list">
+            <li><a href="/pages/livraison" class="pied-de-page__lien">Livraison &amp; retours</a></li>
+            <li><a href="/pages/faq" class="pied-de-page__lien">FAQ</a></li>
+            <li><a href="/pages/contact" class="pied-de-page__lien">Nous contacter</a></li>
+            <li><a href="/policies/terms-of-service" class="pied-de-page__lien">CGV</a></li>
+          </ul>
+        </div>
+        <div class="pied-de-page__colonne">
+          <h3 class="pied-de-page__titre">Contact</h3>
+          <div class="pied-de-page__contenu">
+            <p>
+              contact@purete.fr<br>
+              Du lundi au vendredi<br>
+              9h — 18h
+            </p>
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
   </div>
 
-  <div class="pied-de-page__copyright">
-    <small
-      >&copy; {{ 'now' | date: '%Y' }}
-      {{ shop.name }}. {{ 'pied_de_page.tous_droits_reserves' | t -}}
-    </small>
+  <div class="pied-de-page__bas">
+    <div class="pied-de-page__bas-conteneur">
+      <small class="pied-de-page__copyright">
+        &copy; {{ 'now' | date: '%Y' }}
+        {{ shop.name }} — Tous droits réservés.
+      </small>
+
+      {%- if section.settings.afficher_paiements -%}
+        <ul class="pied-de-page__paiements" role="list" aria-label="Moyens de paiement acceptés">
+          {%- for type in shop.enabled_payment_types -%}
+            <li>{{ type | payment_type_svg_tag: class: 'pied-de-page__paiement-icone' }}</li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
   </div>
 </footer>
 
@@ -41,19 +129,48 @@
   "name": "Pied de page",
   "tag": "section",
   "class": "section-pied-de-page",
-  "settings": [],
+  "max_blocks": 4,
+  "settings": [
+    { "type": "header", "content": "Marque" },
+    {
+      "type": "richtext",
+      "id": "signature",
+      "label": "Signature / baseline",
+      "default": "<p>Soins clean &amp; éco-responsables, formulés en France.</p>"
+    },
+
+    { "type": "header", "content": "Réseaux sociaux" },
+    {
+      "type": "checkbox",
+      "id": "afficher_reseaux",
+      "label": "Afficher les liens sociaux",
+      "default": true
+    },
+    { "type": "url", "id": "url_instagram", "label": "Instagram" },
+    { "type": "url", "id": "url_facebook", "label": "Facebook" },
+    { "type": "url", "id": "url_tiktok", "label": "TikTok" },
+    { "type": "url", "id": "url_pinterest", "label": "Pinterest" },
+
+    { "type": "header", "content": "Bandeau bas" },
+    {
+      "type": "checkbox",
+      "id": "afficher_paiements",
+      "label": "Afficher les moyens de paiement",
+      "default": true
+    }
+  ],
   "blocks": [
     {
       "type": "menu",
-      "name": "Menu",
+      "name": "Colonne menu",
       "settings": [
-        { "type": "text", "id": "titre", "label": "Titre", "default": "Liens utiles" },
+        { "type": "text", "id": "titre", "label": "Titre", "default": "Boutique" },
         { "type": "link_list", "id": "menu", "label": "Menu", "default": "footer" }
       ]
     },
     {
       "type": "texte",
-      "name": "Bloc texte",
+      "name": "Colonne texte",
       "settings": [
         { "type": "text", "id": "titre", "label": "Titre" },
         { "type": "richtext", "id": "contenu", "label": "Contenu" }
@@ -63,7 +180,17 @@
   "presets": [
     {
       "name": "Pied de page",
-      "blocks": [{ "type": "menu" }, { "type": "texte" }]
+      "blocks": [
+        { "type": "menu", "settings": { "titre": "Boutique" } },
+        { "type": "menu", "settings": { "titre": "Aide" } },
+        {
+          "type": "texte",
+          "settings": {
+            "titre": "Contact",
+            "contenu": "<p>contact@purete.fr<br>Du lundi au vendredi<br>9h — 18h</p>"
+          }
+        }
+      ]
     }
   ]
 }

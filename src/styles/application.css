@@ -909,4 +909,258 @@
     font-size: 0.8125rem;
     font-style: italic;
   }
+
+  /* ============================================================
+     Section Newsletter
+     ============================================================ */
+
+  .newsletter {
+    @apply w-full;
+    padding: 4rem 1.5rem;
+  }
+  @media (min-width: 1024px) {
+    .newsletter {
+      padding: 5rem 3rem;
+    }
+  }
+
+  .newsletter__conteneur {
+    @apply max-w-2xl mx-auto text-center flex flex-col items-center;
+  }
+
+  .newsletter__surtitre {
+    @apply font-corps uppercase text-sauge-fonce mb-3;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+  }
+
+  .newsletter__titre {
+    @apply font-titre mb-4;
+    font-size: clamp(1.875rem, 3.5vw, 2.75rem);
+    line-height: 1.15;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+
+  .newsletter__description {
+    @apply font-corps mb-8;
+    font-size: 1rem;
+    line-height: 1.6;
+    opacity: 0.85;
+  }
+  .newsletter__description p {
+    @apply m-0;
+  }
+
+  .newsletter__formulaire {
+    @apply w-full flex flex-col items-center;
+  }
+
+  .newsletter__champ {
+    @apply flex flex-col sm:flex-row items-stretch w-full max-w-md gap-2 sm:gap-0;
+  }
+
+  .newsletter__input {
+    @apply flex-1 font-corps bg-white text-vert-profond w-full;
+    padding: 0.875rem 1.25rem;
+    font-size: 0.95rem;
+    border: 1px solid rgba(31, 45, 42, 0.15);
+    border-radius: 2px 0 0 2px;
+    outline: none;
+    transition: border-color 200ms ease;
+  }
+  .newsletter__input:focus {
+    border-color: theme('colors.vert-profond');
+  }
+  .newsletter__input::placeholder {
+    color: rgba(31, 45, 42, 0.4);
+  }
+
+  .newsletter__bouton {
+    @apply inline-flex items-center justify-center gap-2 font-corps uppercase cursor-pointer;
+    background-color: theme('colors.vert-profond');
+    color: theme('colors.creme');
+    padding: 0.875rem 1.75rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    border: 1px solid theme('colors.vert-profond');
+    border-radius: 0 2px 2px 0;
+    transition: background-color 200ms ease, gap 250ms ease;
+  }
+  .newsletter__bouton:hover {
+    background-color: theme('colors.sauge-fonce');
+    border-color: theme('colors.sauge-fonce');
+    gap: 0.75rem;
+  }
+
+  @media (max-width: 639px) {
+    .newsletter__input,
+    .newsletter__bouton {
+      border-radius: 2px;
+    }
+  }
+
+  .newsletter__message {
+    @apply font-corps mt-4;
+    font-size: 0.9rem;
+  }
+  .newsletter__message--succes {
+    color: theme('colors.sauge-fonce');
+    font-weight: 500;
+  }
+  .newsletter__message--erreur {
+    color: #c0392b;
+  }
+
+  .newsletter__mention {
+    @apply font-corps mt-5;
+    font-size: 0.75rem;
+    opacity: 0.6;
+    line-height: 1.5;
+    max-width: 28rem;
+  }
+  .newsletter__mention p {
+    @apply m-0;
+  }
+
+  /* ============================================================
+     Pied de page (footer)
+     ============================================================ */
+
+  .pied-de-page {
+    @apply w-full;
+    background-color: theme('colors.vert-profond');
+    color: theme('colors.creme');
+  }
+
+  /* ----- Partie principale (colonnes) ----- */
+  .pied-de-page__principal {
+    @apply w-full;
+    padding: 4rem 1.5rem 3rem;
+  }
+  @media (min-width: 1024px) {
+    .pied-de-page__principal {
+      padding: 5rem 3rem 3.5rem;
+    }
+  }
+
+  .pied-de-page__grille {
+    @apply max-w-screen-xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12;
+  }
+
+  /* ----- Colonne marque ----- */
+  .pied-de-page__colonne--marque {
+    @apply sm:col-span-2 lg:col-span-1;
+  }
+
+  .pied-de-page__logo {
+    @apply font-titre block no-underline;
+    color: theme('colors.creme');
+    font-size: 1.75rem;
+    letter-spacing: 0.08em;
+    margin-bottom: 1rem;
+  }
+
+  .pied-de-page__signature {
+    @apply font-corps;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    opacity: 0.75;
+    margin-bottom: 1.5rem;
+    max-width: 22rem;
+  }
+  .pied-de-page__signature p {
+    @apply m-0;
+  }
+
+  .pied-de-page__reseaux {
+    @apply flex flex-wrap gap-x-5 gap-y-2 list-none m-0 p-0;
+  }
+  .pied-de-page__reseaux a {
+    @apply font-corps uppercase no-underline;
+    color: theme('colors.creme');
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    opacity: 0.75;
+    transition: opacity 200ms ease;
+  }
+  .pied-de-page__reseaux a:hover {
+    opacity: 1;
+  }
+
+  /* ----- Colonnes menus / textes ----- */
+  .pied-de-page__titre {
+    @apply font-corps uppercase;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    margin-bottom: 1.25rem;
+    opacity: 0.9;
+  }
+
+  .pied-de-page__liste {
+    @apply list-none m-0 p-0 flex flex-col gap-2.5;
+  }
+
+  .pied-de-page__lien {
+    @apply font-corps no-underline;
+    color: theme('colors.creme');
+    font-size: 0.9rem;
+    opacity: 0.75;
+    transition: opacity 200ms ease, padding-left 200ms ease;
+  }
+  .pied-de-page__lien:hover {
+    opacity: 1;
+    padding-left: 4px;
+  }
+
+  .pied-de-page__contenu {
+    @apply font-corps;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    opacity: 0.75;
+  }
+  .pied-de-page__contenu p {
+    @apply m-0;
+  }
+  .pied-de-page__contenu a {
+    color: inherit;
+  }
+
+  /* ----- Bandeau bas ----- */
+  .pied-de-page__bas {
+    @apply w-full;
+    border-top: 1px solid rgba(242, 234, 219, 0.12);
+    padding: 1.5rem;
+  }
+  @media (min-width: 1024px) {
+    .pied-de-page__bas {
+      padding: 1.5rem 3rem;
+    }
+  }
+
+  .pied-de-page__bas-conteneur {
+    @apply max-w-screen-xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4;
+  }
+
+  .pied-de-page__copyright {
+    @apply font-corps;
+    font-size: 0.75rem;
+    opacity: 0.6;
+    letter-spacing: 0.03em;
+  }
+
+  .pied-de-page__paiements {
+    @apply flex flex-wrap items-center gap-2 list-none m-0 p-0;
+  }
+  .pied-de-page__paiements li {
+    @apply inline-flex;
+  }
+  .pied-de-page__paiement-icone {
+    height: 22px;
+    width: auto;
+    opacity: 0.85;
+  }
 }
