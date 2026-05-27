@@ -1,0 +1,197 @@
+{%- comment -%}
+  ============================================================
+  Section : Témoignages clients
+  Affichage de 3 témoignages par défaut (extensible via blocs)
+  avec étoiles d'avis. Pattern carrousel horizontal sur tablette
+  via scroll-snap natif pour rester léger et accessible.
+  ============================================================
+{%- endcomment -%}
+
+{%- liquid
+  assign couleur_fond = section.settings.couleur_fond
+  assign note_globale = section.settings.note_globale | times: 1.0
+-%}
+
+<section
+  class="temoignages"
+  style="background-color: {{ couleur_fond }};"
+  data-anim-au-scroll
+>
+  <div class="temoignages__conteneur">
+    {%- comment -%} En-tête de la section {%- endcomment -%}
+    <header class="temoignages__entete">
+      {%- if section.settings.surtitre != blank -%}
+        <p class="temoignages__surtitre">{{ section.settings.surtitre }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.titre != blank -%}
+        <h2 class="temoignages__titre">{{ section.settings.titre }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.afficher_note_globale -%}
+        <div class="temoignages__note-globale">
+          {%- render 'etoiles', note: note_globale, taille: 20 -%}
+          <p class="temoignages__note-texte">
+            <strong>{{ section.settings.note_globale }}</strong>/5
+            <span class="temoignages__note-separateur">—</span>
+            <span>{{ section.settings.nb_avis }} avis vérifiés</span>
+          </p>
+        </div>
+      {%- endif -%}
+    </header>
+
+    {%- comment -%} Liste des témoignages {%- endcomment -%}
+    {%- if section.blocks.size > 0 -%}
+      <ul class="temoignages__liste" role="list">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'avis_client' -%}
+            <li class="temoignages__item" {{ block.shopify_attributes }}>
+              <article class="carte-temoignage">
+                <div class="carte-temoignage__etoiles">
+                  {%- render 'etoiles', note: block.settings.note, taille: 16 -%}
+                </div>
+
+                {%- if block.settings.citation != blank -%}
+                  <blockquote class="carte-temoignage__citation">
+                    {{ block.settings.citation }}
+                  </blockquote>
+                {%- endif -%}
+
+                <footer class="carte-temoignage__auteur">
+                  {%- if block.settings.nom != blank -%}
+                    <p class="carte-temoignage__nom">— {{ block.settings.nom }}</p>
+                  {%- endif -%}
+                  {%- if block.settings.produit != blank -%}
+                    <p class="carte-temoignage__produit">{{ block.settings.produit }}</p>
+                  {%- endif -%}
+                </footer>
+              </article>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Témoignages",
+  "tag": "section",
+  "class": "section-temoignages",
+  "max_blocks": 12,
+  "settings": [
+    { "type": "header", "content": "En-tête" },
+    {
+      "type": "text",
+      "id": "surtitre",
+      "label": "Surtitre",
+      "default": "Avis vérifiés"
+    },
+    {
+      "type": "text",
+      "id": "titre",
+      "label": "Titre",
+      "default": "Adopté par notre communauté"
+    },
+
+    { "type": "header", "content": "Note globale" },
+    {
+      "type": "checkbox",
+      "id": "afficher_note_globale",
+      "label": "Afficher la note moyenne",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "note_globale",
+      "label": "Note moyenne (sur 5)",
+      "default": "4.9"
+    },
+    {
+      "type": "text",
+      "id": "nb_avis",
+      "label": "Nombre d'avis",
+      "default": "1 247"
+    },
+
+    { "type": "header", "content": "Apparence" },
+    {
+      "type": "color",
+      "id": "couleur_fond",
+      "label": "Couleur de fond",
+      "default": "#FAF5EB"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "avis_client",
+      "name": "Témoignage",
+      "limit": 12,
+      "settings": [
+        {
+          "type": "range",
+          "id": "note",
+          "label": "Note",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "richtext",
+          "id": "citation",
+          "label": "Citation",
+          "default": "<p>Ma peau n'a jamais été aussi douce et lumineuse. Une vraie révélation.</p>"
+        },
+        {
+          "type": "text",
+          "id": "nom",
+          "label": "Prénom et initiale",
+          "default": "Camille L."
+        },
+        {
+          "type": "text",
+          "id": "produit",
+          "label": "Produit acheté (optionnel)",
+          "default": "Sérum Éclat"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Témoignages",
+      "blocks": [
+        {
+          "type": "avis_client",
+          "settings": {
+            "note": 5,
+            "citation": "<p>Ma peau n'a jamais été aussi douce et lumineuse. Une vraie révélation au quotidien.</p>",
+            "nom": "Camille L.",
+            "produit": "Sérum Éclat"
+          }
+        },
+        {
+          "type": "avis_client",
+          "settings": {
+            "note": 5,
+            "citation": "<p>Adopté la routine complète, je ne reviens pas en arrière. Texture, parfum, résultats : tout est parfait.</p>",
+            "nom": "Sophie M.",
+            "produit": "Crème Hydratante"
+          }
+        },
+        {
+          "type": "avis_client",
+          "settings": {
+            "note": 5,
+            "citation": "<p>Enfin une marque qui tient ses promesses, sans compromis sur les ingrédients. Bravo.</p>",
+            "nom": "Inès D.",
+            "produit": "Huile Visage Bio"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

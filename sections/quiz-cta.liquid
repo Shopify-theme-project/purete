@@ -1,0 +1,140 @@
+{%- comment -%}
+  ============================================================
+  Section : CTA Quiz diagnostic peau
+  Bandeau pleine largeur (sauge par défaut) qui invite à faire
+  un quiz de profilage peau pour découvrir une routine adaptée.
+  Pattern courant en clean beauty (Typology, Codage…).
+  ============================================================
+{%- endcomment -%}
+
+{%- liquid
+  assign couleur_fond = section.settings.couleur_fond
+  assign couleur_texte = section.settings.couleur_texte
+  assign image_fond = section.settings.image_fond
+  assign intensite_voile = section.settings.intensite_voile | divided_by: 100.0
+-%}
+
+<section
+  class="quiz-cta"
+  style="background-color: {{ couleur_fond }}; color: {{ couleur_texte }};"
+  data-anim-au-scroll
+>
+  {%- if image_fond != blank -%}
+    <div class="quiz-cta__image" aria-hidden="true">
+      {{
+        image_fond
+        | image_url: width: 2000
+        | image_tag: loading: 'lazy', widths: '800, 1200, 1600, 2000', sizes: '100vw', class: 'quiz-cta__image-img'
+      }}
+      <span
+        class="quiz-cta__voile"
+        style="background-color: {{ couleur_fond }}; opacity: {{ intensite_voile }};"
+      ></span>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} Feuille décorative en filigrane {%- endcomment -%}
+  <span class="quiz-cta__deco quiz-cta__deco--gauche" aria-hidden="true">
+    {%- render 'icone', nom: 'feuille', taille: 180, classe: 'quiz-cta__deco-icone' -%}
+  </span>
+  <span class="quiz-cta__deco quiz-cta__deco--droite" aria-hidden="true">
+    {%- render 'icone', nom: 'feuille', taille: 220, classe: 'quiz-cta__deco-icone' -%}
+  </span>
+
+  <div class="quiz-cta__conteneur">
+    {%- if section.settings.surtitre != blank -%}
+      <p class="quiz-cta__surtitre">{{ section.settings.surtitre }}</p>
+    {%- endif -%}
+
+    {%- if section.settings.titre != blank -%}
+      <h2 class="quiz-cta__titre">{{ section.settings.titre }}</h2>
+    {%- endif -%}
+
+    {%- if section.settings.description != blank -%}
+      <div class="quiz-cta__description">{{ section.settings.description }}</div>
+    {%- endif -%}
+
+    {%- if section.settings.texte_bouton != blank -%}
+      <a
+        href="{{ section.settings.lien_bouton | default: '#' }}"
+        class="bouton bouton--inverse quiz-cta__bouton"
+      >
+        <span>{{ section.settings.texte_bouton }}</span>
+        {%- render 'icone', nom: 'fleche-droite', taille: 16, classe: 'quiz-cta__bouton-icone' -%}
+      </a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Quiz CTA",
+  "tag": "section",
+  "class": "section-quiz-cta",
+  "settings": [
+    { "type": "header", "content": "Contenu" },
+    {
+      "type": "text",
+      "id": "surtitre",
+      "label": "Surtitre",
+      "default": "Quiz diagnostic peau"
+    },
+    {
+      "type": "text",
+      "id": "titre",
+      "label": "Titre",
+      "default": "Trouvez votre routine sur-mesure"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Répondez à quelques questions pour découvrir les soins adaptés à votre type de peau et à vos besoins, en moins de 2 minutes.</p>"
+    },
+
+    { "type": "header", "content": "Bouton" },
+    {
+      "type": "text",
+      "id": "texte_bouton",
+      "label": "Texte du bouton",
+      "default": "Commencer le quiz"
+    },
+    { "type": "url", "id": "lien_bouton", "label": "Lien du bouton" },
+
+    { "type": "header", "content": "Apparence" },
+    {
+      "type": "color",
+      "id": "couleur_fond",
+      "label": "Couleur de fond",
+      "default": "#A8B89D"
+    },
+    {
+      "type": "color",
+      "id": "couleur_texte",
+      "label": "Couleur du texte",
+      "default": "#F2EADB"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_fond",
+      "label": "Image de fond (optionnelle)",
+      "info": "Si renseignée, sera superposée d'un voile coloré."
+    },
+    {
+      "type": "range",
+      "id": "intensite_voile",
+      "label": "Intensité du voile",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "default": 70,
+      "unit": "%"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Quiz CTA"
+    }
+  ]
+}
+{% endschema %}

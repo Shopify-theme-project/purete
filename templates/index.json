@@ -129,12 +129,68 @@
         "lien": "/pages/charte",
         "couleur_fond": "#f2eadb"
       }
+    },
+    "quiz_cta": {
+      "type": "quiz-cta",
+      "settings": {
+        "surtitre": "Quiz diagnostic peau",
+        "titre": "Trouvez votre routine sur-mesure",
+        "description": "<p>Répondez à quelques questions pour découvrir les soins adaptés à votre type de peau et à vos besoins, en moins de 2 minutes.</p>",
+        "texte_bouton": "Commencer le quiz",
+        "lien_bouton": "/pages/quiz",
+        "couleur_fond": "#A8B89D",
+        "couleur_texte": "#F2EADB",
+        "intensite_voile": 70
+      }
+    },
+    "temoignages": {
+      "type": "temoignages",
+      "blocks": {
+        "avis-1": {
+          "type": "avis_client",
+          "settings": {
+            "note": 5,
+            "citation": "<p>Ma peau n'a jamais été aussi douce et lumineuse. Une vraie révélation au quotidien.</p>",
+            "nom": "Camille L.",
+            "produit": "Sérum Éclat"
+          }
+        },
+        "avis-2": {
+          "type": "avis_client",
+          "settings": {
+            "note": 5,
+            "citation": "<p>Adopté la routine complète, je ne reviens pas en arrière. Texture, parfum, résultats : tout est parfait.</p>",
+            "nom": "Sophie M.",
+            "produit": "Crème Hydratante"
+          }
+        },
+        "avis-3": {
+          "type": "avis_client",
+          "settings": {
+            "note": 5,
+            "citation": "<p>Enfin une marque qui tient ses promesses, sans compromis sur les ingrédients. Bravo.</p>",
+            "nom": "Inès D.",
+            "produit": "Huile Visage Bio"
+          }
+        }
+      },
+      "block_order": ["avis-1", "avis-2", "avis-3"],
+      "settings": {
+        "surtitre": "Avis vérifiés",
+        "titre": "Adopté par notre communauté",
+        "afficher_note_globale": true,
+        "note_globale": "4.9",
+        "nb_avis": "1 247",
+        "couleur_fond": "#FAF5EB"
+      }
     }
   },
   "order": [
     "banniere",
     "benefices",
     "essentiels",
-    "laissons_de_cote"
+    "laissons_de_cote",
+    "quiz_cta",
+    "temoignages"
   ]
 }

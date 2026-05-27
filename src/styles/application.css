@@ -98,6 +98,11 @@
   .bouton--secondaire {
     @apply bg-transparent border border-vert-profond text-vert-profond hover:bg-vert-profond hover:text-creme;
   }
+  /* Variante claire pour fond foncé/coloré */
+  .bouton--inverse {
+    @apply bg-creme text-vert-profond hover:bg-vert-profond hover:text-creme;
+    border: 1px solid transparent;
+  }
 
   /* ----- Accessibilité : lien d'évitement ----- */
   .lien-evitement {
@@ -680,5 +685,228 @@
       transform: none;
       transition: none;
     }
+  }
+
+  /* ============================================================
+     Section Quiz CTA
+     ============================================================ */
+
+  .quiz-cta {
+    @apply relative w-full overflow-hidden;
+    padding: 4rem 1.5rem;
+  }
+  @media (min-width: 1024px) {
+    .quiz-cta {
+      padding: 5.5rem 3rem;
+    }
+  }
+
+  /* Image de fond + voile coloré */
+  .quiz-cta__image {
+    @apply absolute inset-0 w-full h-full;
+    z-index: 0;
+  }
+  .quiz-cta__image-img {
+    @apply w-full h-full object-cover;
+  }
+  .quiz-cta__voile {
+    @apply absolute inset-0 w-full h-full;
+  }
+
+  /* Feuilles décoratives en filigrane */
+  .quiz-cta__deco {
+    @apply absolute pointer-events-none hidden lg:block;
+    z-index: 1;
+    opacity: 0.12;
+  }
+  .quiz-cta__deco--gauche {
+    top: -2rem;
+    left: -1.5rem;
+    transform: rotate(-25deg);
+  }
+  .quiz-cta__deco--droite {
+    bottom: -3rem;
+    right: -2rem;
+    transform: rotate(35deg);
+  }
+  .quiz-cta__deco-icone {
+    @apply block;
+    color: currentColor;
+  }
+
+  /* Conteneur du contenu */
+  .quiz-cta__conteneur {
+    @apply relative flex flex-col items-center text-center max-w-2xl mx-auto;
+    z-index: 2;
+  }
+
+  .quiz-cta__surtitre {
+    @apply font-corps uppercase mb-4;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    opacity: 0.85;
+  }
+
+  .quiz-cta__titre {
+    @apply font-titre mb-5;
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    line-height: 1.1;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+
+  .quiz-cta__description {
+    @apply font-corps mb-8;
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    max-width: 36rem;
+    opacity: 0.92;
+  }
+  .quiz-cta__description p {
+    @apply mb-2;
+  }
+
+  .quiz-cta__bouton {
+    @apply gap-3;
+    transition: gap 250ms ease, background-color 200ms ease, color 200ms ease;
+  }
+  .quiz-cta__bouton:hover {
+    gap: 1rem;
+  }
+  .quiz-cta__bouton-icone {
+    transition: transform 250ms ease;
+  }
+  .quiz-cta__bouton:hover .quiz-cta__bouton-icone {
+    transform: translateX(2px);
+  }
+
+  /* ============================================================
+     Section Témoignages
+     ============================================================ */
+
+  .temoignages {
+    @apply w-full;
+    padding: 4rem 1.5rem;
+  }
+  @media (min-width: 1024px) {
+    .temoignages {
+      padding: 5.5rem 3rem;
+    }
+  }
+
+  .temoignages__conteneur {
+    @apply max-w-screen-xl mx-auto;
+  }
+
+  /* ----- En-tête ----- */
+  .temoignages__entete {
+    @apply flex flex-col items-center text-center mb-12;
+  }
+
+  .temoignages__surtitre {
+    @apply font-corps uppercase text-sauge-fonce mb-3;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+  }
+
+  .temoignages__titre {
+    @apply font-titre text-vert-profond mb-6;
+    font-size: clamp(1.875rem, 3.5vw, 2.75rem);
+    line-height: 1.15;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+
+  .temoignages__note-globale {
+    @apply flex flex-col items-center gap-2;
+  }
+  .temoignages__note-texte {
+    @apply font-corps text-vert-profond;
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+  }
+  .temoignages__note-texte strong {
+    font-weight: 600;
+  }
+  .temoignages__note-separateur {
+    @apply mx-2 text-vert-profond/50;
+  }
+
+  /* ----- Liste / grille ----- */
+  .temoignages__liste {
+    @apply list-none m-0 p-0 grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8;
+  }
+
+  /* Sur mobile : carrousel horizontal avec scroll-snap */
+  @media (max-width: 767px) {
+    .temoignages__liste {
+      @apply flex overflow-x-auto;
+      scroll-snap-type: x mandatory;
+      scroll-padding: 1.5rem;
+      gap: 1rem;
+      margin: 0 -1.5rem;
+      padding: 0.5rem 1.5rem 1rem;
+      -webkit-overflow-scrolling: touch;
+    }
+    .temoignages__item {
+      flex: 0 0 85%;
+      scroll-snap-align: start;
+    }
+    .temoignages__liste::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .temoignages__item {
+    @apply h-full;
+  }
+
+  /* ----- Carte témoignage ----- */
+  .carte-temoignage {
+    @apply flex flex-col h-full bg-white;
+    padding: 2rem 1.75rem;
+    border-radius: 4px;
+    box-shadow: 0 4px 20px -8px rgba(31, 45, 42, 0.08);
+    transition: transform 300ms ease, box-shadow 300ms ease;
+  }
+  .carte-temoignage:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px -10px rgba(31, 45, 42, 0.15);
+  }
+
+  .carte-temoignage__etoiles {
+    @apply mb-4;
+  }
+
+  .carte-temoignage__citation {
+    @apply font-titre text-vert-profond flex-grow m-0;
+    font-size: 1.125rem;
+    line-height: 1.5;
+    font-style: italic;
+    font-weight: 400;
+    margin-bottom: 1.5rem;
+  }
+  .carte-temoignage__citation p {
+    @apply m-0;
+  }
+
+  .carte-temoignage__auteur {
+    @apply mt-auto;
+  }
+
+  .carte-temoignage__nom {
+    @apply font-corps text-vert-profond uppercase;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.25rem;
+  }
+
+  .carte-temoignage__produit {
+    @apply font-corps text-vert-profond/60;
+    font-size: 0.8125rem;
+    font-style: italic;
   }
 }
