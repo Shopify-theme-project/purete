@@ -1,0 +1,163 @@
+{%- comment -%}
+  ============================================================
+  Section : Ce que nous laissons de côté
+  Présentation éditoriale 2 colonnes (image + texte avec liste
+  d'ingrédients exclus). Architecture par blocs pour permettre
+  l'ajout/réordonnancement des ingrédients depuis l'admin.
+  ============================================================
+{%- endcomment -%}
+
+{%- liquid
+  assign inverser = section.settings.inverser_colonnes
+  assign couleur_fond = section.settings.couleur_fond
+-%}
+
+<section
+  class="laissons-de-cote"
+  style="background-color: {{ couleur_fond }};"
+  data-anim-au-scroll
+>
+  <div class="laissons-de-cote__conteneur {% if inverser %}laissons-de-cote__conteneur--inverse{% endif %}">
+    {%- comment -%} Colonne image {%- endcomment -%}
+    <div class="laissons-de-cote__media">
+      {%- if section.settings.image != blank -%}
+        {%- assign img = section.settings.image -%}
+        {{
+          img
+          | image_url: width: 1200
+          | image_tag:
+            class: 'laissons-de-cote__image',
+            loading: 'lazy',
+            widths: '400, 600, 900, 1200',
+            sizes: '(min-width: 1024px) 50vw, 100vw'
+        }}
+      {%- else -%}
+        {{ 'lifestyle-2' | placeholder_svg_tag: 'laissons-de-cote__image laissons-de-cote__image--placeholder' }}
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Colonne contenu {%- endcomment -%}
+    <div class="laissons-de-cote__contenu">
+      {%- if section.settings.surtitre != blank -%}
+        <p class="laissons-de-cote__surtitre">{{ section.settings.surtitre }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.titre != blank -%}
+        <h2 class="laissons-de-cote__titre">{{ section.settings.titre }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.description != blank -%}
+        <div class="laissons-de-cote__description">{{ section.settings.description }}</div>
+      {%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        <ul class="laissons-de-cote__liste" role="list">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'ingredient_exclu' -%}
+              <li class="laissons-de-cote__ingredient" {{ block.shopify_attributes }}>
+                {%- render 'icone', nom: 'croix', taille: 14, classe: 'laissons-de-cote__icone' -%}
+                <span>{{ block.settings.nom }}</span>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+
+      {%- if section.settings.lien != blank and section.settings.texte_lien != blank -%}
+        <a href="{{ section.settings.lien }}" class="laissons-de-cote__lien">
+          <span>{{ section.settings.texte_lien }}</span>
+          {%- render 'icone', nom: 'fleche-droite', taille: 16, classe: 'laissons-de-cote__lien-icone' -%}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Laissons de côté",
+  "tag": "section",
+  "class": "section-laissons-de-cote",
+  "max_blocks": 10,
+  "settings": [
+    { "type": "header", "content": "Contenu" },
+    {
+      "type": "text",
+      "id": "surtitre",
+      "label": "Surtitre",
+      "default": "Notre charte clean"
+    },
+    {
+      "type": "text",
+      "id": "titre",
+      "label": "Titre",
+      "default": "Ce que nous laissons de côté"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Nos formules excluent strictement les ingrédients controversés pour préserver votre peau et la planète.</p>"
+    },
+
+    { "type": "header", "content": "Image" },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "Visuel botanique recommandé (ex. aloe vera, feuilles vertes)."
+    },
+    {
+      "type": "checkbox",
+      "id": "inverser_colonnes",
+      "label": "Inverser : image à droite",
+      "default": false
+    },
+
+    { "type": "header", "content": "Lien (optionnel)" },
+    {
+      "type": "text",
+      "id": "texte_lien",
+      "label": "Texte du lien",
+      "default": "Lire notre charte"
+    },
+    { "type": "url", "id": "lien", "label": "Cible du lien" },
+
+    { "type": "header", "content": "Apparence" },
+    {
+      "type": "color",
+      "id": "couleur_fond",
+      "label": "Couleur de fond",
+      "default": "#F2EADB"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "ingredient_exclu",
+      "name": "Ingrédient exclu",
+      "limit": 10,
+      "settings": [
+        {
+          "type": "text",
+          "id": "nom",
+          "label": "Nom de l'ingrédient",
+          "default": "Parabens"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Laissons de côté",
+      "blocks": [
+        { "type": "ingredient_exclu", "settings": { "nom": "Parabens" } },
+        { "type": "ingredient_exclu", "settings": { "nom": "Silicones" } },
+        { "type": "ingredient_exclu", "settings": { "nom": "Sulfates (SLS / SLES)" } },
+        { "type": "ingredient_exclu", "settings": { "nom": "Phénoxyéthanol" } },
+        { "type": "ingredient_exclu", "settings": { "nom": "Huiles minérales" } },
+        { "type": "ingredient_exclu", "settings": { "nom": "Parfums synthétiques" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

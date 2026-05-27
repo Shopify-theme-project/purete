@@ -537,4 +537,132 @@
     @apply font-corps text-vert-profond/60 ml-1;
     font-size: 0.75rem;
   }
+
+  /* ============================================================
+     Section "Ce que nous laissons de côté"
+     ============================================================ */
+
+  .laissons-de-cote {
+    @apply w-full overflow-hidden;
+  }
+
+  .laissons-de-cote__conteneur {
+    @apply max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-2 items-center gap-10 lg:gap-16 px-6 lg:px-12 py-16 lg:py-20;
+  }
+
+  /* Inversion des colonnes : image à droite */
+  .laissons-de-cote__conteneur--inverse .laissons-de-cote__media {
+    @apply lg:order-2;
+  }
+  .laissons-de-cote__conteneur--inverse .laissons-de-cote__contenu {
+    @apply lg:order-1;
+  }
+
+  /* ----- Colonne image ----- */
+  .laissons-de-cote__media {
+    @apply relative w-full;
+  }
+
+  .laissons-de-cote__image {
+    @apply w-full h-auto object-cover;
+    aspect-ratio: 4 / 3;
+    border-radius: 2px;
+  }
+
+  .laissons-de-cote__image--placeholder {
+    @apply bg-ivoire;
+  }
+
+  /* ----- Colonne contenu ----- */
+  .laissons-de-cote__contenu {
+    @apply flex flex-col;
+  }
+
+  .laissons-de-cote__surtitre {
+    @apply font-corps uppercase text-sauge-fonce mb-3;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+  }
+
+  .laissons-de-cote__titre {
+    @apply font-titre text-vert-profond mb-5;
+    font-size: clamp(1.875rem, 3.5vw, 2.75rem);
+    line-height: 1.15;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+
+  .laissons-de-cote__description {
+    @apply font-corps text-vert-profond/80 mb-7;
+    font-size: 1rem;
+    line-height: 1.65;
+    max-width: 32rem;
+  }
+  .laissons-de-cote__description p {
+    @apply mb-2;
+  }
+
+  /* ----- Liste d'ingrédients exclus ----- */
+  .laissons-de-cote__liste {
+    @apply grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 list-none m-0 p-0 mb-8;
+  }
+
+  .laissons-de-cote__ingredient {
+    @apply flex items-center gap-3 font-corps text-vert-profond/85;
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+
+  .laissons-de-cote__icone {
+    @apply flex-shrink-0 inline-flex items-center justify-center;
+    color: theme('colors.vert-profond');
+    background: rgba(168, 184, 157, 0.18); /* sauge à 18% */
+    border-radius: 999px;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  /* ----- Lien "Lire notre charte" ----- */
+  .laissons-de-cote__lien {
+    @apply inline-flex items-center gap-2 font-corps no-underline self-start;
+    color: theme('colors.vert-profond');
+    font-size: 0.95rem;
+    font-weight: 500;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 0.25rem;
+    transition: gap 250ms ease, color 200ms ease;
+  }
+  .laissons-de-cote__lien:hover {
+    color: theme('colors.sauge-fonce');
+    gap: 0.75rem;
+  }
+  .laissons-de-cote__lien-icone {
+    transition: transform 250ms ease;
+  }
+  .laissons-de-cote__lien:hover .laissons-de-cote__lien-icone {
+    transform: translateX(2px);
+  }
+
+  /* ============================================================
+     Utilitaire : animation au scroll (réutilisable)
+     ============================================================ */
+
+  [data-anim-au-scroll] {
+    opacity: 0;
+    transform: translateY(1.5rem);
+    transition: opacity 700ms ease-out, transform 700ms ease-out;
+  }
+  [data-anim-au-scroll].est-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-anim-au-scroll] {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
 }

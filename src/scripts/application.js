@@ -90,8 +90,52 @@ function initAjoutRapide() {
   });
 }
 
+/**
+ * Active les animations à l'apparition au scroll pour tous les éléments
+ * portant l'attribut [data-anim-au-scroll]. Utilise IntersectionObserver
+ * pour ne déclencher qu'une fois quand l'élément entre dans le viewport.
+ */
+function initAnimationsAuScroll() {
+  const elements = document.querySelectorAll('[data-anim-au-scroll]');
+  if (elements.length === 0) return;
+
+  // Si l'utilisateur préfère réduire les animations, on rend tout visible immédiatement.
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    elements.forEach((el) => el.classList.add('est-visible'));
+    return;
+  }
+
+  // Fallback : si IntersectionObserver n'existe pas, on affiche tout.
+  if (!('IntersectionObserver' in window)) {
+    elements.forEach((el) => el.classList.add('est-visible'));
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entrees) => {
+      entrees.forEach((entree) => {
+        if (entree.isIntersecting) {
+          entree.target.classList.add('est-visible');
+          observer.unobserve(entree.target);
+        }
+      });
+    },
+    { threshold: 0.05, rootMargin: '0px 0px -10% 0px' }
+  );
+
+  elements.forEach((el) => observer.observe(el));
+
+  // Filet de sécurité : si pour une raison quelconque l'observer ne déclenche
+  // pas (ex. élément déjà entièrement dans le viewport au chargement),
+  // on force la visibilité au bout de 1,5s.
+  setTimeout(() => {
+    elements.forEach((el) => el.classList.add('est-visible'));
+  }, 1500);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   console.info('[Pureté] Thème initialisé');
   synchroniserPanier();
   initAjoutRapide();
+  initAnimationsAuScroll();
 });

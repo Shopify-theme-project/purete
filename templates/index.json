@@ -55,11 +55,33 @@
         "texte_voir_tout": "Voir toute la collection",
         "lien_voir_tout": "/collections/all"
       }
+    },
+    "laissons_de_cote": {
+      "type": "laissons-de-cote",
+      "blocks": {
+        "ing-1": { "type": "ingredient_exclu", "settings": { "nom": "Parabens" } },
+        "ing-2": { "type": "ingredient_exclu", "settings": { "nom": "Silicones" } },
+        "ing-3": { "type": "ingredient_exclu", "settings": { "nom": "Sulfates (SLS / SLES)" } },
+        "ing-4": { "type": "ingredient_exclu", "settings": { "nom": "Phénoxyéthanol" } },
+        "ing-5": { "type": "ingredient_exclu", "settings": { "nom": "Huiles minérales" } },
+        "ing-6": { "type": "ingredient_exclu", "settings": { "nom": "Parfums synthétiques" } }
+      },
+      "block_order": ["ing-1", "ing-2", "ing-3", "ing-4", "ing-5", "ing-6"],
+      "settings": {
+        "surtitre": "Notre charte clean",
+        "titre": "Ce que nous laissons de côté",
+        "description": "<p>Nos formules excluent strictement les ingrédients controversés pour préserver votre peau et la planète.</p>",
+        "texte_lien": "Lire notre charte",
+        "lien": "/pages/charte",
+        "inverser_colonnes": false,
+        "couleur_fond": "#F2EADB"
+      }
     }
   },
   "order": [
     "banniere",
     "benefices",
-    "essentiels"
+    "essentiels",
+    "laissons_de_cote"
   ]
 }

@@ -14,6 +14,13 @@ module.exports = {
     './templates/**/*.liquid',
     './blocks/**/*.liquid',
   ],
+  // Classes ajoutées dynamiquement par JS (jamais présentes dans le HTML
+  // au moment du scan de purge), à conserver explicitement.
+  safelist: [
+    'est-visible',
+    'est-en-cours',
+    'est-ajoute',
+  ],
   theme: {
     extend: {
       // ----- Palette de couleurs Pureté -----
