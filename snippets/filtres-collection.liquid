@@ -1,0 +1,124 @@
+{%- comment -%}
+  ============================================================
+  Snippet : Filtres de collection (sidebar)
+  Utilise `collection.filters` (configurés dans Shopify Admin →
+  Boutique en ligne → Recherche & navigation).
+  Types supportés : list, price_range, boolean.
+  ============================================================
+{%- endcomment -%}
+
+<form class="filtres" data-filtres-form>
+  {%- comment -%} Conserve les paramètres sort_by et page courants {%- endcomment -%}
+  {%- if current_sort %}<input type="hidden" name="sort_by" value="{{ current_sort }}">{% endif -%}
+
+  <div class="filtres__entete">
+    <h2 class="filtres__titre">Filtrer</h2>
+    {%- if active_count > 0 -%}
+      <a href="{{ collection.url }}" class="filtres__reinit">Tout effacer ({{ active_count }})</a>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} Filtres actifs (tags) {%- endcomment -%}
+  {%- if active_count > 0 -%}
+    <ul class="filtres__actifs" role="list">
+      {%- for filtre in collection.filters -%}
+        {%- for valeur in filtre.active_values -%}
+          <li>
+            <a href="{{ valeur.url_to_remove }}" class="filtres__tag-actif">
+              {{ valeur.label }}
+              {%- render 'icone', nom: 'croix', taille: 10 -%}
+            </a>
+          </li>
+        {%- endfor -%}
+        {%- if filtre.type == 'price_range' and filtre.min_value.value != null or filtre.max_value.value != null -%}
+          <li>
+            <a href="{{ filtre.url_to_remove }}" class="filtres__tag-actif">
+              {%- if filtre.min_value.value -%}≥ {{ filtre.min_value.value | money }}{%- endif -%}
+              {%- if filtre.max_value.value %} · ≤ {{ filtre.max_value.value | money }}{%- endif -%}
+              {%- render 'icone', nom: 'croix', taille: 10 -%}
+            </a>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+
+  {%- comment -%} Groupes de filtres {%- endcomment -%}
+  {%- for filtre in collection.filters -%}
+    <details class="filtre-groupe" open>
+      <summary class="filtre-groupe__entete">
+        <span>{{ filtre.label }}</span>
+        {%- render 'icone', nom: 'chevron-bas', classe: 'filtre-groupe__chevron', taille: 12 -%}
+      </summary>
+
+      <div class="filtre-groupe__contenu">
+        {%- case filtre.type -%}
+
+          {%- when 'list', 'boolean' -%}
+            <ul class="filtre-groupe__valeurs" role="list">
+              {%- for valeur in filtre.values -%}
+                <li>
+                  <label class="filtre-checkbox {% if valeur.count == 0 and valeur.active == false %}est-desactive{% endif %}">
+                    <input
+                      type="checkbox"
+                      name="{{ valeur.param_name }}"
+                      value="{{ valeur.value }}"
+                      {% if valeur.active %}checked{% endif %}
+                      {% if valeur.count == 0 and valeur.active == false %}disabled{% endif %}
+                    >
+                    <span class="filtre-checkbox__case" aria-hidden="true"></span>
+                    <span class="filtre-checkbox__libelle">{{ valeur.label }}</span>
+                    <span class="filtre-checkbox__compte">({{ valeur.count }})</span>
+                  </label>
+                </li>
+              {%- endfor -%}
+            </ul>
+
+          {%- when 'price_range' -%}
+            <div class="filtre-prix">
+              <div class="filtre-prix__rangee">
+                <label class="filtre-prix__champ">
+                  <span>Min</span>
+                  <span class="filtre-prix__symbole">€</span>
+                  <input
+                    type="number"
+                    name="{{ filtre.min_value.param_name }}"
+                    value="{% if filtre.min_value.value != null %}{{ filtre.min_value.value | divided_by: 100 }}{% endif %}"
+                    placeholder="{{ filtre.range_min | divided_by: 100 }}"
+                    min="0"
+                    inputmode="numeric"
+                  >
+                </label>
+                <label class="filtre-prix__champ">
+                  <span>Max</span>
+                  <span class="filtre-prix__symbole">€</span>
+                  <input
+                    type="number"
+                    name="{{ filtre.max_value.param_name }}"
+                    value="{% if filtre.max_value.value != null %}{{ filtre.max_value.value | divided_by: 100 }}{% endif %}"
+                    placeholder="{{ filtre.range_max | divided_by: 100 }}"
+                    min="0"
+                    inputmode="numeric"
+                  >
+                </label>
+              </div>
+              <p class="filtre-prix__info">De {{ filtre.range_min | money }} à {{ filtre.range_max | money }}</p>
+            </div>
+
+        {%- endcase -%}
+      </div>
+    </details>
+  {%- endfor -%}
+
+  {%- comment -%} Si pas de filtres configurés en admin {%- endcomment -%}
+  {%- if collection.filters.size == 0 -%}
+    <p class="filtres__vide">
+      Aucun filtre configuré. Ajoutez des filtres depuis
+      <strong>Boutique en ligne → Recherche & navigation</strong>.
+    </p>
+  {%- endif -%}
+
+  <noscript>
+    <button type="submit" class="bouton bouton--primaire filtres__appliquer">Appliquer</button>
+  </noscript>
+</form>

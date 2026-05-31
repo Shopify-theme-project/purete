@@ -1,33 +1,174 @@
 {%- comment -%}
-  Section : Liste de produits d'une collection.
+  ============================================================
+  Section : Liste de collection (page /collections/xxx)
+  - Bannière (image + titre + description)
+  - Sidebar de filtres (drawer mobile via bouton "Filtrer")
+  - Tri (select)
+  - Grille de produits paginée
+  - État vide avec lien de réinitialisation
+  ============================================================
 {%- endcomment -%}
 
-<section class="collection" data-section-id="{{ section.id }}">
-  <header class="collection__entete">
-    <h1>{{ collection.title }}</h1>
-    {%- if collection.description != blank -%}
-      <div class="collection__description">{{ collection.description }}</div>
-    {%- endif -%}
-  </header>
+{%- liquid
+  assign nb_par_page = section.settings.nb_par_page | default: 24
+  assign colonnes_desktop = section.settings.colonnes_desktop | default: 4
+  assign current_sort = collection.sort_by | default: collection.default_sort_by
+  assign active_count = 0
+  for filtre in collection.filters
+    assign active_count = active_count | plus: filtre.active_values.size
+    if filtre.type == 'price_range'
+      if filtre.min_value.value != null or filtre.max_value.value != null
+        assign active_count = active_count | plus: 1
+      endif
+    endif
+  endfor
+-%}
 
-  <div class="collection__grille">
-    {%- for produit in collection.products -%}
-      {%- render 'carte-produit', produit: produit -%}
-    {%- else -%}
-      <p>{{ 'collection.aucun_produit' | t }}</p>
-    {%- endfor -%}
+<section class="collection" data-section-id="{{ section.id }}">
+
+  {%- comment -%} ---------- Bannière ---------- {%- endcomment -%}
+  {%- if section.settings.afficher_banniere -%}
+    <div class="collection__banniere {% if collection.image %}collection__banniere--image{% endif %}">
+      {%- if collection.image -%}
+        {{
+          collection.image
+          | image_url: width: 1800
+          | image_tag:
+            class: 'collection__banniere-img',
+            loading: 'eager',
+            widths: '800, 1200, 1800',
+            sizes: '100vw',
+            alt: collection.title
+        }}
+        <div class="collection__banniere-overlay"></div>
+      {%- endif -%}
+
+      <div class="collection__banniere-contenu">
+        <nav class="collection__fil-ariane" aria-label="Fil d'Ariane">
+          <a href="{{ routes.root_url }}">Accueil</a>
+          <span>›</span>
+          <span>{{ collection.title }}</span>
+        </nav>
+        <h1 class="collection__titre">{{ collection.title }}</h1>
+        {%- if collection.description != blank -%}
+          <div class="collection__description">{{ collection.description }}</div>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} ---------- Barre de contrôles (tri + bouton filtres mobile) ---------- {%- endcomment -%}
+  <div class="collection__controles">
+    <button
+      type="button"
+      class="collection__btn-filtres lg:hidden"
+      data-ouvre-filtres
+      aria-label="Ouvrir les filtres"
+    >
+      <span>Filtrer</span>
+      {%- if active_count > 0 -%}
+        <span class="collection__btn-filtres-badge">{{ active_count }}</span>
+      {%- endif -%}
+    </button>
+
+    <p class="collection__compte">
+      <span data-collection-compte>{{ collection.products_count }}</span>
+      {% if collection.products_count == 1 %}produit{% else %}produits{% endif %}
+    </p>
+
+    <form class="collection__tri" data-tri-form>
+      <label for="tri-collection" class="collection__tri-label">Trier par</label>
+      <select id="tri-collection" name="sort_by" data-tri-select>
+        {%- assign options_tri = collection.sort_options -%}
+        {%- for option in options_tri -%}
+          <option value="{{ option.value }}" {% if option.value == current_sort %}selected{% endif %}>
+            {{ option.name }}
+          </option>
+        {%- endfor -%}
+      </select>
+      {%- render 'icone', nom: 'chevron-bas', classe: 'collection__tri-chevron', taille: 12 -%}
+    </form>
   </div>
 
-  {%- if paginate.pages > 1 -%}
-    {%- render 'pagination', paginate: paginate -%}
-  {%- endif -%}
+  {%- paginate collection.products by nb_par_page -%}
+    <div class="collection__corps">
+
+      {%- comment -%} ---------- Sidebar filtres (desktop) + Drawer (mobile) ---------- {%- endcomment -%}
+      <aside class="collection__filtres" data-filtres-zone aria-hidden="true">
+        <div class="collection__filtres-overlay lg:hidden" data-ferme-filtres aria-hidden="true"></div>
+        <div class="collection__filtres-panneau">
+          <header class="collection__filtres-entete lg:hidden">
+            <h2>Filtres</h2>
+            <button type="button" class="collection__filtres-fermer" data-ferme-filtres aria-label="Fermer">
+              {%- render 'icone', nom: 'croix', taille: 18 -%}
+            </button>
+          </header>
+
+          {%- render 'filtres-collection',
+            collection: collection,
+            current_sort: current_sort,
+            active_count: active_count
+          -%}
+        </div>
+      </aside>
+
+      {%- comment -%} ---------- Grille produits ---------- {%- endcomment -%}
+      <div class="collection__principal">
+        {%- if collection.products.size > 0 -%}
+          <div
+            class="collection__grille"
+            style="--colonnes-desktop: {{ colonnes_desktop }};"
+          >
+            {%- for produit in collection.products -%}
+              {%- render 'carte-produit', produit: produit -%}
+            {%- endfor -%}
+          </div>
+
+          {%- if paginate.pages > 1 -%}
+            <div class="collection__pagination">
+              {%- render 'pagination', paginate: paginate -%}
+            </div>
+          {%- endif -%}
+        {%- else -%}
+          <div class="collection__vide">
+            <p class="collection__vide-titre">Aucun produit ne correspond à vos critères</p>
+            {%- if active_count > 0 -%}
+              <p class="collection__vide-texte">Essayez de retirer un filtre pour élargir votre recherche.</p>
+              <a href="{{ collection.url }}" class="bouton bouton--primaire">Réinitialiser les filtres</a>
+            {%- else -%}
+              <p class="collection__vide-texte">Cette collection est vide pour le moment. Revenez bientôt !</p>
+              <a href="{{ routes.all_products_collection_url }}" class="bouton bouton--primaire">Voir toute la boutique</a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endpaginate -%}
+
 </section>
 
 {% schema %}
 {
-  "name": "Collection",
+  "name": "Liste de collection",
   "tag": "section",
   "class": "section-collection",
-  "settings": []
+  "settings": [
+    { "type": "header", "content": "Bannière" },
+    { "type": "checkbox", "id": "afficher_banniere", "label": "Afficher la bannière", "default": true },
+
+    { "type": "header", "content": "Grille" },
+    {
+      "type": "range",
+      "id": "colonnes_desktop",
+      "label": "Colonnes (desktop)",
+      "min": 2, "max": 5, "step": 1, "default": 4
+    },
+    {
+      "type": "range",
+      "id": "nb_par_page",
+      "label": "Produits par page",
+      "min": 8, "max": 48, "step": 4, "default": 24
+    }
+  ]
 }
 {% endschema %}

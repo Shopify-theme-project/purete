@@ -150,6 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initAvisVoirPlus();  initTiroirPanier();
   initEnTeteScroll();
   initMenuMobile();
+  initCollection();
 });
 
 /* ============================================================
@@ -718,4 +719,82 @@ function initMenuMobile() {
   // Si on passe en desktop, on ferme automatiquement
   const mq = window.matchMedia('(min-width: 1024px)');
   mq.addEventListener('change', (e) => { if (e.matches) fermer(); });
+}
+
+/* ============================================================
+   Page Collection : tri, filtres (auto-submit + drawer mobile)
+   ============================================================ */
+function initCollection() {
+  const zone = document.querySelector('[data-filtres-zone]');
+  const formFiltres = document.querySelector('[data-filtres-form]');
+  const formTri = document.querySelector('[data-tri-form]');
+
+  // Auto-submit du tri : on transfere le sort_by sur le form de filtres
+  // (pour conserver les filtres actifs)
+  if (formTri) {
+    const select = formTri.querySelector('[data-tri-select]');
+    if (select) {
+      select.addEventListener('change', () => {
+        if (formFiltres) {
+          // Ajoute/remplace le champ sort_by dans le form filtres
+          let champSort = formFiltres.querySelector('input[name="sort_by"]');
+          if (!champSort) {
+            champSort = document.createElement('input');
+            champSort.type = 'hidden';
+            champSort.name = 'sort_by';
+            formFiltres.appendChild(champSort);
+          }
+          champSort.value = select.value;
+          formFiltres.submit();
+        } else {
+          // Pas de filtres : on submit le form de tri seul
+          formTri.submit();
+        }
+      });
+    }
+  }
+
+  // Auto-submit des filtres au changement de checkbox
+  if (formFiltres) {
+    formFiltres.addEventListener('change', (event) => {
+      if (event.target.matches('input[type="checkbox"]')) {
+        formFiltres.submit();
+      }
+    });
+
+    // Filtre prix : submit au blur (pour eviter de submit a chaque touche)
+    formFiltres.querySelectorAll('input[type="number"]').forEach((input) => {
+      let valeurInitiale = input.value;
+      input.addEventListener('focus', () => { valeurInitiale = input.value; });
+      input.addEventListener('blur', () => {
+        if (input.value !== valeurInitiale) formFiltres.submit();
+      });
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') { e.preventDefault(); formFiltres.submit(); }
+      });
+    });
+  }
+
+  // Drawer filtres mobile
+  if (!zone) return;
+  const ouvreur = document.querySelector('[data-ouvre-filtres]');
+  const fermetures = document.querySelectorAll('[data-ferme-filtres]');
+
+  function ouvrir() {
+    zone.classList.add('est-ouvert');
+    zone.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('filtres-ouverts');
+  }
+  function fermer() {
+    zone.classList.remove('est-ouvert');
+    zone.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('filtres-ouverts');
+  }
+
+  if (ouvreur) ouvreur.addEventListener('click', ouvrir);
+  fermetures.forEach((b) => b.addEventListener('click', fermer));
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && zone.classList.contains('est-ouvert')) fermer();
+  });
 }
