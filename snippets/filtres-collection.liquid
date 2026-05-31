@@ -53,7 +53,6 @@
 
       <div class="filtre-groupe__contenu">
         {%- case filtre.type -%}
-
           {%- when 'list', 'boolean' -%}
             <ul class="filtre-groupe__valeurs" role="list">
               {%- for valeur in filtre.values -%}
@@ -63,8 +62,12 @@
                       type="checkbox"
                       name="{{ valeur.param_name }}"
                       value="{{ valeur.value }}"
-                      {% if valeur.active %}checked{% endif %}
-                      {% if valeur.count == 0 and valeur.active == false %}disabled{% endif %}
+                      {% if valeur.active %}
+                        checked
+                      {% endif %}
+                      {% if valeur.count == 0 and valeur.active == false %}
+                        disabled
+                      {% endif %}
                     >
                     <span class="filtre-checkbox__case" aria-hidden="true"></span>
                     <span class="filtre-checkbox__libelle">{{ valeur.label }}</span>
@@ -104,7 +107,6 @@
               </div>
               <p class="filtre-prix__info">De {{ filtre.range_min | money }} à {{ filtre.range_max | money }}</p>
             </div>
-
         {%- endcase -%}
       </div>
     </details>

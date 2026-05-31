@@ -25,7 +25,6 @@
 -%}
 
 <section class="collection" data-section-id="{{ section.id }}">
-
   {%- comment -%} ---------- Bannière ---------- {%- endcomment -%}
   {%- if section.settings.afficher_banniere -%}
     <div class="collection__banniere {% if collection.image %}collection__banniere--image{% endif %}">
@@ -81,7 +80,12 @@
       <select id="tri-collection" name="sort_by" data-tri-select>
         {%- assign options_tri = collection.sort_options -%}
         {%- for option in options_tri -%}
-          <option value="{{ option.value }}" {% if option.value == current_sort %}selected{% endif %}>
+          <option
+            value="{{ option.value }}"
+            {% if option.value == current_sort %}
+              selected
+            {% endif %}
+          >
             {{ option.name }}
           </option>
         {%- endfor -%}
@@ -92,7 +96,6 @@
 
   {%- paginate collection.products by nb_par_page -%}
     <div class="collection__corps">
-
       {%- comment -%} ---------- Sidebar filtres (desktop) + Drawer (mobile) ---------- {%- endcomment -%}
       <aside class="collection__filtres" data-filtres-zone aria-hidden="true">
         <div class="collection__filtres-overlay lg:hidden" data-ferme-filtres aria-hidden="true"></div>
@@ -137,14 +140,15 @@
               <a href="{{ collection.url }}" class="bouton bouton--primaire">Réinitialiser les filtres</a>
             {%- else -%}
               <p class="collection__vide-texte">Cette collection est vide pour le moment. Revenez bientôt !</p>
-              <a href="{{ routes.all_products_collection_url }}" class="bouton bouton--primaire">Voir toute la boutique</a>
+              <a href="{{ routes.all_products_collection_url }}" class="bouton bouton--primaire"
+                >Voir toute la boutique</a
+              >
             {%- endif -%}
           </div>
         {%- endif -%}
       </div>
     </div>
   {%- endpaginate -%}
-
 </section>
 
 {% schema %}
@@ -161,13 +165,19 @@
       "type": "range",
       "id": "colonnes_desktop",
       "label": "Colonnes (desktop)",
-      "min": 2, "max": 5, "step": 1, "default": 4
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4
     },
     {
       "type": "range",
       "id": "nb_par_page",
       "label": "Produits par page",
-      "min": 8, "max": 48, "step": 4, "default": 24
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "default": 24
     }
   ]
 }
