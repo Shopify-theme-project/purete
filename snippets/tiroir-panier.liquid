@@ -53,8 +53,18 @@
             Plus que <strong>{{ restant | money }}</strong> pour la livraison offerte
           {%- endif -%}
         </p>
-        <div class="tiroir-panier__livraison-barre" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ progression | round }}">
-          <span class="tiroir-panier__livraison-progression" data-tiroir-livraison-barre style="width: {{ progression }}%"></span>
+        <div
+          class="tiroir-panier__livraison-barre"
+          role="progressbar"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="{{ progression | round }}"
+        >
+          <span
+            class="tiroir-panier__livraison-progression"
+            data-tiroir-livraison-barre
+            style="width: {{ progression }}%"
+          ></span>
         </div>
       </div>
     {%- endif -%}
@@ -79,18 +89,20 @@
     </div>
 
     {%- comment -%} Pied : sous-total + CTA {%- endcomment -%}
-    <footer class="tiroir-panier__pied" data-tiroir-pied {% if cart.item_count == 0 %}hidden{% endif %}>
+    <footer
+      class="tiroir-panier__pied"
+      data-tiroir-pied
+      {% if cart.item_count == 0 %}
+        hidden
+      {% endif %}
+    >
       <div class="tiroir-panier__sous-total">
         <span>Sous-total</span>
         <strong data-tiroir-soustotal>{{ cart.total_price | money }}</strong>
       </div>
       <p class="tiroir-panier__mention">Frais de port et taxes calculés au paiement.</p>
-      <a href="{{ routes.cart_url }}/checkout" class="bouton bouton--primaire tiroir-panier__cta">
-        Passer commande
-      </a>
-      <a href="{{ routes.cart_url }}" class="tiroir-panier__lien-panier" data-tiroir-fermer>
-        Voir le panier complet
-      </a>
+      <a href="{{ routes.cart_url }}/checkout" class="bouton bouton--primaire tiroir-panier__cta"> Passer commande </a>
+      <a href="{{ routes.cart_url }}" class="tiroir-panier__lien-panier" data-tiroir-fermer> Voir le panier complet </a>
     </footer>
   </aside>
 </div>

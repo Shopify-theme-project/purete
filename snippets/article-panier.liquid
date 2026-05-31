@@ -9,7 +9,11 @@
 <li class="article-panier" data-cle="{{ item.key }}">
   <a href="{{ item.url }}" class="article-panier__image-lien" data-tiroir-fermer>
     {%- if item.image -%}
-      {{ item.image | image_url: width: 200 | image_tag: loading: 'lazy', widths: '100, 200', sizes: '90px', class: 'article-panier__image', alt: item.title }}
+      {{
+        item.image
+        | image_url: width: 200
+        | image_tag: loading: 'lazy', widths: '100, 200', sizes: '90px', class: 'article-panier__image', alt: item.title
+      }}
     {%- else -%}
       {{ 'product-1' | placeholder_svg_tag: 'article-panier__image' }}
     {%- endif -%}

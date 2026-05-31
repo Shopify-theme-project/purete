@@ -182,7 +182,9 @@
         href="{{ routes.cart_url }}"
         class="en-tete__action en-tete__action--panier relative hover:text-sauge-fonce no-underline"
         aria-label="{{ 'panier.titre' | t }} ({{ cart.item_count }})"
-        {% if settings.panier_drawer_actif %}data-ouvre-tiroir-panier{% endif %}
+        {% if settings.panier_drawer_actif %}
+          data-ouvre-tiroir-panier
+        {% endif %}
       >
         {%- render 'icone', nom: 'panier' -%}
 

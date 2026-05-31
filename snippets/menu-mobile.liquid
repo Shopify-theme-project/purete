@@ -43,7 +43,11 @@
               {%- render 'icone', nom: 'chevron-bas', classe: 'menu-mobile__chevron', taille: 14 -%}
             </button>
             <ul class="menu-mobile__sous-liste" data-mm-sous-liste role="list">
-              <li><a href="{{ routes.collections_url }}" class="menu-mobile__sous-lien" data-menu-mobile-fermer>Toutes les collections</a></li>
+              <li>
+                <a href="{{ routes.collections_url }}" class="menu-mobile__sous-lien" data-menu-mobile-fermer
+                  >Toutes les collections</a
+                >
+              </li>
               <li><a href="#" class="menu-mobile__sous-lien" data-menu-mobile-fermer>Soins du visage</a></li>
               <li><a href="#" class="menu-mobile__sous-lien" data-menu-mobile-fermer>Sérums</a></li>
               <li><a href="#" class="menu-mobile__sous-lien" data-menu-mobile-fermer>Nettoyants</a></li>
@@ -57,7 +61,9 @@
             <a href="/pages/quiz-peau" class="menu-mobile__lien" data-menu-mobile-fermer>Quiz Peau</a>
           </li>
           <li class="menu-mobile__item">
-            <a href="{{ blogs.first.url | default: '/blogs/news' }}" class="menu-mobile__lien" data-menu-mobile-fermer>Blog</a>
+            <a href="{{ blogs.first.url | default: '/blogs/news' }}" class="menu-mobile__lien" data-menu-mobile-fermer
+              >Blog</a
+            >
           </li>
         {%- else -%}
           {%- for lien in menu_admin -%}
@@ -69,12 +75,24 @@
                 </button>
                 <ul class="menu-mobile__sous-liste" data-mm-sous-liste role="list">
                   {%- for sous in lien.links -%}
-                    <li><a href="{{ sous.url }}" class="menu-mobile__sous-lien" data-menu-mobile-fermer>{{ sous.title }}</a></li>
+                    <li>
+                      <a href="{{ sous.url }}" class="menu-mobile__sous-lien" data-menu-mobile-fermer>
+                        {{- sous.title -}}
+                      </a>
+                    </li>
                   {%- endfor -%}
                 </ul>
               {%- else -%}
-                <a href="{{ lien.url }}" class="menu-mobile__lien" data-menu-mobile-fermer
-                   {% if lien.active %}aria-current="page"{% endif %}>{{ lien.title }}</a>
+                <a
+                  href="{{ lien.url }}"
+                  class="menu-mobile__lien"
+                  data-menu-mobile-fermer
+                  {% if lien.active %}
+                    aria-current="page"
+                  {% endif %}
+                >
+                  {{- lien.title -}}
+                </a>
               {%- endif -%}
             </li>
           {%- endfor -%}
