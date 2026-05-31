@@ -1,0 +1,89 @@
+{%- comment -%}
+  ============================================================
+  Snippet : Galerie produit (style premium)
+  - Image principale grande à droite
+  - Vignettes verticales à gauche (desktop) / horizontales en bas (mobile)
+  - Click vignette = swap de l'image principale
+  - Comportement géré par initGalerieProduit() dans application.js
+  Paramètres :
+    - produit : objet produit (par défaut = product)
+  ============================================================
+{%- endcomment -%}
+
+{%- liquid
+  assign produit = produit | default: product
+  assign images = produit.media
+  assign image_principale = produit.featured_media | default: produit.media.first
+-%}
+
+<div class="galerie-produit" data-galerie>
+  {%- if images.size > 1 -%}
+    {%- comment -%} Vignettes (gauche desktop, bas mobile) {%- endcomment -%}
+    <div class="galerie-produit__vignettes" role="tablist" aria-label="Miniatures du produit">
+      {%- for media in images limit: 8 -%}
+        <button
+          type="button"
+          class="galerie-produit__vignette {% if media.id == image_principale.id %}est-active{% endif %}"
+          data-vignette
+          data-media-id="{{ media.id }}"
+          role="tab"
+          aria-selected="{% if media.id == image_principale.id %}true{% else %}false{% endif %}"
+          aria-label="Voir l'image {{ forloop.index }} sur {{ images.size }}"
+        >
+          {{
+            media
+            | image_url: width: 200
+            | image_tag:
+              loading: 'lazy',
+              widths: '100, 200',
+              sizes: '100px',
+              class: 'galerie-produit__vignette-img',
+              alt: media.alt
+          }}
+        </button>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} Image principale (grande) {%- endcomment -%}
+  <div class="galerie-produit__principale">
+    {%- for media in images -%}
+      <div
+        class="galerie-produit__slide {% if media.id == image_principale.id %}est-active{% endif %}"
+        data-slide
+        data-media-id="{{ media.id }}"
+        {% unless media.id == image_principale.id %}
+          aria-hidden="true"
+        {% endunless %}
+      >
+        {%- if media.media_type == 'image' -%}
+          {{
+            media
+            | image_url: width: 1400
+            | image_tag:
+              loading: 'eager',
+              widths: '400, 600, 900, 1200, 1400',
+              sizes: '(min-width: 1024px) 50vw, 100vw',
+              class: 'galerie-produit__img',
+              alt: media.alt
+          }}
+        {%- else -%}
+          {{
+            media
+            | media_tag:
+              image_size: '1400x',
+              autoplay: false,
+              loop: false,
+              controls: true,
+              class: 'galerie-produit__img'
+          }}
+        {%- endif -%}
+      </div>
+    {%- else -%}
+      {%- comment -%} Aucun media : placeholder {%- endcomment -%}
+      <div class="galerie-produit__slide est-active">
+        {{ 'product-1' | placeholder_svg_tag: 'galerie-produit__img galerie-produit__img--placeholder' }}
+      </div>
+    {%- endfor -%}
+  </div>
+</div>

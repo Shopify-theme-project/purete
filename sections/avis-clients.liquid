@@ -1,0 +1,246 @@
+{%- comment -%}
+  ============================================================
+  Section : Avis clients (textuels) — page produit
+  Liste de cartes-avis avec photo client optionnelle, étoiles,
+  citation, nom, date, variante achetée. Pattern proche de
+  Loox / Judge.me en attendant une intégration d'app dédiée.
+  Architecture par blocs (1 avis = 1 block).
+  ============================================================
+{%- endcomment -%}
+
+{%- liquid
+  assign couleur_fond = section.settings.couleur_fond
+  assign nb_visible = section.settings.nb_visible_initial | default: 4
+-%}
+
+<section
+  id="avis-clients"
+  class="avis-clients"
+  style="background-color: {{ couleur_fond }};"
+  data-anim-au-scroll
+>
+  <div class="avis-clients__conteneur">
+    {%- comment -%} En-tête {%- endcomment -%}
+    <header class="avis-clients__entete">
+      {%- if section.settings.surtitre != blank -%}
+        <p class="avis-clients__surtitre">{{ section.settings.surtitre }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.titre != blank -%}
+        <h2 class="avis-clients__titre">{{ section.settings.titre }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.afficher_resume -%}
+        <div class="avis-clients__resume">
+          <div class="avis-clients__note-grande">{{ section.settings.note_globale }}</div>
+          {%- render 'etoiles', note: section.settings.note_globale, taille: 18 -%}
+          <p class="avis-clients__nb-total">Basé sur {{ section.settings.nb_avis_total }} avis vérifiés</p>
+        </div>
+      {%- endif -%}
+    </header>
+
+    {%- comment -%} Liste des avis {%- endcomment -%}
+    {%- if section.blocks.size > 0 -%}
+      <ul class="avis-clients__liste" role="list" data-avis-liste data-nb-visible="{{ nb_visible }}">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'avis' -%}
+            {%- liquid
+              assign est_cache = false
+              if forloop.index > nb_visible
+                assign est_cache = true
+              endif
+            -%}
+            <li
+              class="avis-clients__item {% if est_cache %}est-cache{% endif %}"
+              data-avis-item
+              {{ block.shopify_attributes }}
+            >
+              <article class="carte-avis">
+                <header class="carte-avis__entete">
+                  {%- if block.settings.photo != blank -%}
+                    {{
+                      block.settings.photo
+                      | image_url: width: 120
+                      | image_tag:
+                        class: 'carte-avis__photo',
+                        loading: 'lazy',
+                        widths: '60, 120',
+                        sizes: '60px',
+                        alt: block.settings.nom
+                    }}
+                  {%- else -%}
+                    <span class="carte-avis__avatar" aria-hidden="true">
+                      {{ block.settings.nom | slice: 0, 1 | upcase }}
+                    </span>
+                  {%- endif -%}
+
+                  <div class="carte-avis__meta">
+                    <p class="carte-avis__nom">
+                      {{ block.settings.nom }}
+                      {%- if block.settings.verifie -%}
+                        <span class="carte-avis__verifie" title="Achat vérifié">
+                          {%- render 'icone', nom: 'verifie', taille: 12 -%}
+                          Vérifié
+                        </span>
+                      {%- endif -%}
+                    </p>
+                    {%- if block.settings.date != blank -%}
+                      <p class="carte-avis__date">{{ block.settings.date }}</p>
+                    {%- endif -%}
+                  </div>
+
+                  <div class="carte-avis__etoiles">
+                    {%- render 'etoiles', note: block.settings.note, taille: 14 -%}
+                  </div>
+                </header>
+
+                {%- if block.settings.titre_avis != blank -%}
+                  <h3 class="carte-avis__titre">{{ block.settings.titre_avis }}</h3>
+                {%- endif -%}
+
+                {%- if block.settings.commentaire != blank -%}
+                  <div class="carte-avis__commentaire">{{ block.settings.commentaire }}</div>
+                {%- endif -%}
+
+                {%- if block.settings.variante_achetee != blank -%}
+                  <p class="carte-avis__variante"><span>Variante :</span> {{ block.settings.variante_achetee }}</p>
+                {%- endif -%}
+              </article>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+
+      {%- if section.blocks.size > nb_visible -%}
+        <div class="avis-clients__actions">
+          <button type="button" class="bouton bouton--secondaire avis-clients__bouton-plus" data-avis-voir-plus>
+            Voir tous les avis ({{ section.blocks.size }})
+          </button>
+        </div>
+      {%- endif -%}
+    {%- else -%}
+      <p class="avis-clients__vide">Aucun avis pour le moment. Soyez le premier à laisser le vôtre.</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Avis clients",
+  "tag": "section",
+  "class": "section-avis-clients",
+  "max_blocks": 50,
+  "settings": [
+    { "type": "header", "content": "En-tête" },
+    { "type": "text", "id": "surtitre", "label": "Surtitre", "default": "Ce qu'ils en pensent" },
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Avis clients" },
+
+    { "type": "header", "content": "Résumé note globale" },
+    { "type": "checkbox", "id": "afficher_resume", "label": "Afficher le résumé", "default": true },
+    { "type": "text", "id": "note_globale", "label": "Note moyenne (sur 5)", "default": "4.9" },
+    { "type": "text", "id": "nb_avis_total", "label": "Nombre d'avis total", "default": "127" },
+
+    { "type": "header", "content": "Pagination" },
+    {
+      "type": "range",
+      "id": "nb_visible_initial",
+      "label": "Avis visibles au chargement",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4
+    },
+
+    { "type": "header", "content": "Apparence" },
+    { "type": "color", "id": "couleur_fond", "label": "Couleur de fond", "default": "#FAF5EB" }
+  ],
+  "blocks": [
+    {
+      "type": "avis",
+      "name": "Avis client",
+      "settings": [
+        { "type": "range", "id": "note", "label": "Note", "min": 1, "max": 5, "step": 1, "default": 5 },
+        { "type": "text", "id": "titre_avis", "label": "Titre de l'avis", "default": "Un coup de cœur !" },
+        {
+          "type": "richtext",
+          "id": "commentaire",
+          "label": "Commentaire",
+          "default": "<p>Texture parfaite, parfum subtil, résultats visibles dès la première semaine.</p>"
+        },
+        { "type": "text", "id": "nom", "label": "Nom (prénom + initiale)", "default": "Sophie L." },
+        { "type": "text", "id": "date", "label": "Date", "default": "Il y a 2 semaines" },
+        { "type": "text", "id": "variante_achetee", "label": "Variante achetée (optionnel)" },
+        { "type": "checkbox", "id": "verifie", "label": "Achat vérifié", "default": true },
+        { "type": "image_picker", "id": "photo", "label": "Photo du client (optionnel)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Avis clients",
+      "blocks": [
+        {
+          "type": "avis",
+          "settings": {
+            "note": 5,
+            "titre_avis": "Mon nouvel essentiel",
+            "commentaire": "<p>Texture parfaite, parfum très subtil. Ma peau est repulpée et lumineuse en 10 jours. Je recommande vivement.</p>",
+            "nom": "Camille L.",
+            "date": "Il y a 5 jours"
+          }
+        },
+        {
+          "type": "avis",
+          "settings": {
+            "note": 5,
+            "titre_avis": "Enfin du clean qui fonctionne",
+            "commentaire": "<p>J'avais essayé beaucoup de marques bio sans résultat. Là c'est vraiment efficace, et la composition est irréprochable.</p>",
+            "nom": "Inès D.",
+            "date": "Il y a 2 semaines"
+          }
+        },
+        {
+          "type": "avis",
+          "settings": {
+            "note": 4,
+            "titre_avis": "Très bon produit",
+            "commentaire": "<p>Petit point négatif : la pipette est un peu fragile. Sinon le produit en lui-même est excellent.</p>",
+            "nom": "Marc P.",
+            "date": "Il y a 3 semaines"
+          }
+        },
+        {
+          "type": "avis",
+          "settings": {
+            "note": 5,
+            "titre_avis": "Routine complète adoptée",
+            "commentaire": "<p>J'ai pris le sérum + la crème, le duo est parfait. Ma peau n'a jamais été aussi belle.</p>",
+            "nom": "Léa T.",
+            "date": "Il y a 1 mois"
+          }
+        },
+        {
+          "type": "avis",
+          "settings": {
+            "note": 5,
+            "titre_avis": "Packaging magnifique",
+            "commentaire": "<p>Reçu en cadeau, le packaging est très qualitatif et le produit tient ses promesses.</p>",
+            "nom": "Anaïs M.",
+            "date": "Il y a 1 mois"
+          }
+        },
+        {
+          "type": "avis",
+          "settings": {
+            "note": 5,
+            "titre_avis": "Conforme à mes attentes",
+            "commentaire": "<p>Produit clean, fait en France, efficace. Tout ce que je cherche.</p>",
+            "nom": "Julie B.",
+            "date": "Il y a 2 mois"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

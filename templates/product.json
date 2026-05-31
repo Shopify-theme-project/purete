@@ -1,6 +1,116 @@
 {
   "sections": {
-    "principal": { "type": "fiche-produit" }
+    "principal": {
+      "type": "principal-produit",
+      "blocks": {
+        "fil_ariane":   { "type": "fil_ariane" },
+        "etoiles":      { "type": "etoiles",    "settings": { "note": "4.9", "nb_avis": "127" } },
+        "titre":        { "type": "titre" },
+        "sous_titre":   { "type": "sous_titre", "settings": { "texte": "Concentré illuminateur" } },
+        "prix":         { "type": "prix" },
+        "variantes":    { "type": "variantes" },
+        "quantite":     { "type": "quantite" },
+        "bouton":       { "type": "bouton_panier", "settings": { "texte": "Ajouter au panier", "afficher_favoris": true } },
+        "rassurance":   { "type": "rassurance",  "settings": {
+          "ligne_1": "Livraison offerte dès 50€",
+          "ligne_2": "Retours sous 30 jours",
+          "ligne_3": "Paiement 100% sécurisé"
+        }},
+        "description":  { "type": "description" },
+        "acc_inci":     { "type": "accordeon", "settings": {
+          "titre": "Composition INCI",
+          "contenu": "<p>Aqua, Glycerin, Niacinamide, Rosa Canina Fruit Oil, Tocopherol... 98% d'ingrédients d'origine naturelle.</p>"
+        }},
+        "acc_utilisation": { "type": "accordeon", "settings": {
+          "titre": "Utilisation",
+          "contenu": "<p>Appliquer matin et soir sur peau propre, avant la crème hydratante. Quelques gouttes suffisent.</p>"
+        }},
+        "acc_engagements": { "type": "accordeon", "settings": {
+          "titre": "Nos engagements",
+          "contenu": "<p>Vegan · Cruelty-free · Sans parabens · Fabriqué en France</p>"
+        }},
+        "partager":     { "type": "partager" }
+      },
+      "block_order": [
+        "fil_ariane",
+        "etoiles",
+        "titre",
+        "sous_titre",
+        "prix",
+        "variantes",
+        "quantite",
+        "bouton",
+        "rassurance",
+        "description",
+        "acc_inci",
+        "acc_utilisation",
+        "acc_engagements",
+        "partager"
+      ]
+    },
+    "avis": {
+      "type": "avis-clients",
+      "blocks": {
+        "a1": { "type": "avis", "settings": {
+          "note": 5,
+          "titre_avis": "Mon nouvel essentiel",
+          "commentaire": "<p>Texture parfaite, parfum très subtil. Ma peau est repulpée et lumineuse en 10 jours. Je recommande vivement.</p>",
+          "nom": "Camille L.",
+          "date": "Il y a 5 jours",
+          "verifie": true
+        }},
+        "a2": { "type": "avis", "settings": {
+          "note": 5,
+          "titre_avis": "Enfin du clean qui fonctionne",
+          "commentaire": "<p>J'avais essayé beaucoup de marques bio sans résultat. Là c'est vraiment efficace, et la composition est irréprochable.</p>",
+          "nom": "Inès D.",
+          "date": "Il y a 2 semaines",
+          "verifie": true
+        }},
+        "a3": { "type": "avis", "settings": {
+          "note": 4,
+          "titre_avis": "Très bon produit",
+          "commentaire": "<p>Petit point négatif : la pipette est un peu fragile. Sinon le produit en lui-même est excellent.</p>",
+          "nom": "Marc P.",
+          "date": "Il y a 3 semaines",
+          "verifie": true
+        }},
+        "a4": { "type": "avis", "settings": {
+          "note": 5,
+          "titre_avis": "Routine complète adoptée",
+          "commentaire": "<p>J'ai pris le sérum + la crème, le duo est parfait. Ma peau n'a jamais été aussi belle.</p>",
+          "nom": "Léa T.",
+          "date": "Il y a 1 mois",
+          "verifie": true
+        }},
+        "a5": { "type": "avis", "settings": {
+          "note": 5,
+          "titre_avis": "Packaging magnifique",
+          "commentaire": "<p>Reçu en cadeau, le packaging est très qualitatif et le produit tient ses promesses.</p>",
+          "nom": "Anaïs M.",
+          "date": "Il y a 1 mois",
+          "verifie": true
+        }},
+        "a6": { "type": "avis", "settings": {
+          "note": 5,
+          "titre_avis": "Conforme à mes attentes",
+          "commentaire": "<p>Produit clean, fait en France, efficace. Tout ce que je cherche.</p>",
+          "nom": "Julie B.",
+          "date": "Il y a 2 mois",
+          "verifie": true
+        }}
+      },
+      "block_order": ["a1", "a2", "a3", "a4", "a5", "a6"]
+    },
+    "lies": {
+      "type": "grille-produits",
+      "settings": {
+        "titre": "Vous aimerez aussi",
+        "sous_titre": "Pour compléter votre routine",
+        "nb_produits": 4,
+        "afficher_lien_voir_tout": false
+      }
+    }
   },
-  "order": ["principal"]
+  "order": ["principal", "avis", "lies"]
 }

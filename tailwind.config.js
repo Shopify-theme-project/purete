@@ -20,6 +20,9 @@ module.exports = {
     'est-visible',
     'est-en-cours',
     'est-ajoute',
+    'est-active',
+    'est-cache',
+    'est-actif',
   ],
   theme: {
     extend: {

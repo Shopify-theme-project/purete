@@ -1,0 +1,311 @@
+{%- comment -%}
+  ============================================================
+  Section : Page produit principale
+  Architecture en blocs réorganisables :
+    - fil_ariane    : breadcrumb
+    - etoiles       : note + nombre d'avis
+    - titre         : nom du produit
+    - sous_titre    : baseline / type
+    - prix          : prix + prix barré + économie
+    - variantes     : pills de sélection
+    - quantite      : stepper - / +
+    - bouton_panier : CTA principal
+    - rassurance    : 3 garanties (livraison, retour, paiement)
+    - description   : description courte
+    - accordeon     : section dépliable (composition, utilisation, etc.)
+    - partager      : boutons de partage social
+  ============================================================
+{%- endcomment -%}
+
+{%- liquid
+  assign variante_courante = product.selected_or_first_available_variant
+  assign en_stock = variante_courante.available
+-%}
+
+<section class="produit" data-section-produit data-id-produit="{{ product.id }}">
+  <div class="produit__conteneur">
+    {%- comment -%} Colonne galerie (gauche desktop) {%- endcomment -%}
+    <div class="produit__galerie">
+      {%- render 'galerie-produit', produit: product -%}
+    </div>
+
+    {%- comment -%} Colonne infos (droite desktop) {%- endcomment -%}
+    <div class="produit__infos">
+      <form
+        action="{{ routes.cart_add_url }}"
+        method="post"
+        enctype="multipart/form-data"
+        class="produit__formulaire"
+        data-form-produit
+      >
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'fil_ariane' -%}
+              <nav class="produit__fil-ariane" aria-label="Fil d'Ariane" {{ block.shopify_attributes }}>
+                <a href="{{ routes.root_url }}">Accueil</a>
+                <span>›</span>
+                {%- if collection -%}
+                  <a href="{{ collection.url }}">{{ collection.title }}</a>
+                  <span>›</span>
+                {%- endif -%}
+                <span class="produit__fil-ariane-actuel">{{ product.title }}</span>
+              </nav>
+
+            {%- when 'etoiles' -%}
+              <div class="produit__etoiles" {{ block.shopify_attributes }}>
+                {%- render 'etoiles', note: block.settings.note, taille: 16 -%}
+                <span class="produit__etoiles-texte">
+                  <strong>{{ block.settings.note }}</strong>
+                  <span class="produit__etoiles-sep">·</span>
+                  <a href="#avis-clients">{{ block.settings.nb_avis }} avis</a>
+                </span>
+              </div>
+
+            {%- when 'titre' -%}
+              <h1 class="produit__titre" {{ block.shopify_attributes }}>{{ product.title }}</h1>
+
+            {%- when 'sous_titre' -%}
+              {%- if block.settings.texte != blank -%}
+                <p class="produit__sous-titre" {{ block.shopify_attributes }}>{{ block.settings.texte }}</p>
+              {%- endif -%}
+
+            {%- when 'prix' -%}
+              <div class="produit__prix" data-prix-conteneur {{ block.shopify_attributes }}>
+                {%- if variante_courante.compare_at_price > variante_courante.price -%}
+                  <span class="produit__prix-actuel produit__prix-actuel--solde" data-prix>
+                    {{ variante_courante.price | money }}
+                  </span>
+                  <span class="produit__prix-barre" data-prix-compare>
+                    {{ variante_courante.compare_at_price | money }}
+                  </span>
+                  {%- assign economie = variante_courante.compare_at_price | minus: variante_courante.price -%}
+                  <span class="produit__prix-economie"> Économisez {{ economie | money }} </span>
+                {%- else -%}
+                  <span class="produit__prix-actuel" data-prix>{{ variante_courante.price | money }}</span>
+                  <span class="produit__prix-barre" data-prix-compare hidden></span>
+                {%- endif -%}
+              </div>
+
+            {%- when 'variantes' -%}
+              <div {{ block.shopify_attributes }}>
+                {%- render 'selecteur-variantes', produit: product -%}
+              </div>
+
+            {%- when 'quantite' -%}
+              <div class="produit__quantite" {{ block.shopify_attributes }}>
+                <label for="quantite-{{ section.id }}" class="produit__quantite-label">Quantité</label>
+                <div class="stepper" data-stepper>
+                  <button type="button" class="stepper__bouton" data-stepper-moins aria-label="Diminuer la quantité">
+                    {%- render 'icone', nom: 'moins', taille: 14 -%}
+                  </button>
+                  <input
+                    id="quantite-{{ section.id }}"
+                    type="number"
+                    name="quantity"
+                    class="stepper__input"
+                    value="1"
+                    min="1"
+                    inputmode="numeric"
+                    data-stepper-input
+                  >
+                  <button type="button" class="stepper__bouton" data-stepper-plus aria-label="Augmenter la quantité">
+                    {%- render 'icone', nom: 'plus', taille: 14 -%}
+                  </button>
+                </div>
+              </div>
+
+            {%- when 'bouton_panier' -%}
+              <div class="produit__actions" {{ block.shopify_attributes }}>
+                <button
+                  type="submit"
+                  class="bouton bouton--primaire produit__bouton-panier"
+                  data-bouton-panier
+                  {% unless en_stock %}
+                    disabled
+                  {% endunless %}
+                >
+                  <span data-texte-bouton>
+                    {%- if en_stock -%}
+                      {{ block.settings.texte | default: 'Ajouter au panier' }}
+                    {%- else -%}
+                      Rupture de stock
+                    {%- endif -%}
+                  </span>
+                </button>
+
+                {%- if block.settings.afficher_favoris -%}
+                  <button type="button" class="produit__favoris" aria-label="Ajouter aux favoris">
+                    {%- render 'icone', nom: 'coeur', taille: 18 -%}
+                    <span>Favoris</span>
+                  </button>
+                {%- endif -%}
+              </div>
+
+            {%- when 'rassurance' -%}
+              <ul class="produit__rassurance" role="list" {{ block.shopify_attributes }}>
+                {%- if block.settings.ligne_1 != blank -%}
+                  <li>
+                    <span class="produit__rassurance-icone">{%- render 'icone', nom: 'camion', taille: 18 -%}</span>
+                    {{- block.settings.ligne_1 }}
+                  </li>
+                {%- endif -%}
+                {%- if block.settings.ligne_2 != blank -%}
+                  <li>
+                    <span class="produit__rassurance-icone">{%- render 'icone', nom: 'retour', taille: 18 -%}</span>
+                    {{- block.settings.ligne_2 }}
+                  </li>
+                {%- endif -%}
+                {%- if block.settings.ligne_3 != blank -%}
+                  <li>
+                    <span class="produit__rassurance-icone">{%- render 'icone', nom: 'bouclier', taille: 18 -%}</span>
+                    {{- block.settings.ligne_3 }}
+                  </li>
+                {%- endif -%}
+              </ul>
+
+            {%- when 'description' -%}
+              <div class="produit__description" {{ block.shopify_attributes }}>
+                {{ product.description }}
+              </div>
+
+            {%- when 'accordeon' -%}
+              <details class="accordeon" {{ block.shopify_attributes }}>
+                <summary class="accordeon__entete">
+                  <span class="accordeon__titre">{{ block.settings.titre }}</span>
+                  <span class="accordeon__icone" aria-hidden="true">
+                    {%- render 'icone', nom: 'plus', taille: 16 -%}
+                  </span>
+                </summary>
+                <div class="accordeon__contenu">{{ block.settings.contenu }}</div>
+              </details>
+
+            {%- when 'partager' -%}
+              <div class="produit__partager" {{ block.shopify_attributes }}>
+                {%- render 'icone', nom: 'partager', taille: 16 -%}
+                <span>Partager :</span>
+                <a
+                  href="https://www.facebook.com/sharer/sharer.php?u={{ shop.url }}{{ product.url }}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Facebook</a
+                >
+                <a
+                  href="https://twitter.com/intent/tweet?url={{ shop.url }}{{ product.url }}&text={{ product.title | url_encode }}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Twitter</a
+                >
+                <a
+                  href="https://pinterest.com/pin/create/button/?url={{ shop.url }}{{ product.url }}&media={{ product.featured_image | image_url: width: 800 }}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Pinterest</a
+                >
+              </div>
+          {%- endcase -%}
+        {%- endfor -%}
+      </form>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Page produit",
+  "tag": "section",
+  "class": "section-produit",
+  "settings": [],
+  "blocks": [
+    { "type": "fil_ariane", "name": "Fil d'Ariane", "limit": 1 },
+    {
+      "type": "etoiles",
+      "name": "Note & avis",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "note", "label": "Note (sur 5)", "default": "4.9" },
+        { "type": "text", "id": "nb_avis", "label": "Nombre d'avis", "default": "127" }
+      ]
+    },
+    { "type": "titre", "name": "Titre produit", "limit": 1 },
+    {
+      "type": "sous_titre",
+      "name": "Sous-titre / baseline",
+      "limit": 1,
+      "settings": [{ "type": "text", "id": "texte", "label": "Texte", "default": "Concentré illuminateur" }]
+    },
+    { "type": "prix", "name": "Prix", "limit": 1 },
+    { "type": "variantes", "name": "Sélecteur de variantes", "limit": 1 },
+    { "type": "quantite", "name": "Sélecteur de quantité", "limit": 1 },
+    {
+      "type": "bouton_panier",
+      "name": "Bouton d'ajout au panier",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "texte", "label": "Texte du bouton", "default": "Ajouter au panier" },
+        { "type": "checkbox", "id": "afficher_favoris", "label": "Afficher bouton favoris", "default": true }
+      ]
+    },
+    {
+      "type": "rassurance",
+      "name": "Bandeau de rassurance",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "ligne_1", "label": "Ligne 1", "default": "Livraison offerte dès 50€" },
+        { "type": "text", "id": "ligne_2", "label": "Ligne 2", "default": "Retours sous 30 jours" },
+        { "type": "text", "id": "ligne_3", "label": "Ligne 3", "default": "Paiement 100% sécurisé" }
+      ]
+    },
+    { "type": "description", "name": "Description courte", "limit": 1 },
+    {
+      "type": "accordeon",
+      "name": "Accordéon",
+      "settings": [
+        { "type": "text", "id": "titre", "label": "Titre", "default": "Composition INCI" },
+        {
+          "type": "richtext",
+          "id": "contenu",
+          "label": "Contenu",
+          "default": "<p>Ajoutez ici le détail de la composition, des conseils d'utilisation ou tout autre information utile.</p>"
+        }
+      ]
+    },
+    { "type": "partager", "name": "Boutons de partage", "limit": 1 }
+  ],
+  "presets": [
+    {
+      "name": "Page produit",
+      "blocks": [
+        { "type": "fil_ariane" },
+        { "type": "etoiles" },
+        { "type": "titre" },
+        { "type": "sous_titre" },
+        { "type": "prix" },
+        { "type": "variantes" },
+        { "type": "quantite" },
+        { "type": "bouton_panier" },
+        { "type": "rassurance" },
+        { "type": "description" },
+        {
+          "type": "accordeon",
+          "settings": { "titre": "Composition INCI", "contenu": "<p>Aqua, Glycerin, Niacinamide...</p>" }
+        },
+        {
+          "type": "accordeon",
+          "settings": {
+            "titre": "Utilisation",
+            "contenu": "<p>Appliquer matin et soir sur peau propre, avant la crème hydratante.</p>"
+          }
+        },
+        {
+          "type": "accordeon",
+          "settings": {
+            "titre": "Nos engagements",
+            "contenu": "<p>Vegan · Cruelty-free · Sans parabens · Fabriqué en France</p>"
+          }
+        },
+        { "type": "partager" }
+      ]
+    }
+  ]
+}
+{% endschema %}

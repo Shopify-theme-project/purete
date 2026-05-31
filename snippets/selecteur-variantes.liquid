@@ -1,0 +1,70 @@
+{%- comment -%}
+  ============================================================
+  Snippet : Sélecteur de variantes (pills)
+  Génère un groupe de pills par option (Taille, Couleur, etc.).
+  Le JS (initSelecteurVariantes) écoute les clics et :
+    - met à jour la variante courante
+    - update prix, image, disponibilité, URL ?variant=
+  Paramètres :
+    - produit : objet produit (défaut = product)
+  ============================================================
+{%- endcomment -%}
+
+{%- liquid
+  assign produit = produit | default: product
+  assign variante_courante = produit.selected_or_first_available_variant
+-%}
+
+{%- unless produit.has_only_default_variant -%}
+  <div class="selecteur-variantes" data-selecteur-variantes>
+    {%- for option in produit.options_with_values -%}
+      <fieldset class="selecteur-variantes__groupe">
+        <legend class="selecteur-variantes__legende">
+          {{ option.name }}
+          <span class="selecteur-variantes__valeur-active" data-valeur-active="{{ forloop.index0 }}">
+            {{ option.selected_value }}
+          </span>
+        </legend>
+
+        <div class="selecteur-variantes__pills">
+          {%- for value in option.values -%}
+            {%- liquid
+              assign est_actif = false
+              if value == option.selected_value
+                assign est_actif = true
+              endif
+            -%}
+            <label class="selecteur-variantes__pill {% if est_actif %}est-active{% endif %}">
+              <input
+                type="radio"
+                name="option-{{ option.position }}"
+                value="{{ value | escape }}"
+                data-option-index="{{ forloop.parentloop.index0 }}"
+                data-option-value="{{ value | escape }}"
+                {% if est_actif %}checked{% endif %}
+                class="sr-only"
+              >
+              <span>{{ value }}</span>
+            </label>
+          {%- endfor -%}
+        </div>
+      </fieldset>
+    {%- endfor -%}
+
+    {%- comment -%} Données JSON des variantes pour le JS {%- endcomment -%}
+    <script type="application/json" data-variantes-json>
+      {{ produit.variants | json }}
+    </script>
+
+    {%- comment -%} Champ caché pour le formulaire d'ajout panier {%- endcomment -%}
+    <input
+      type="hidden"
+      name="id"
+      value="{{ variante_courante.id }}"
+      data-variante-id
+    >
+  </div>
+{%- else -%}
+  {%- comment -%} Produit sans variantes : juste l'ID en hidden {%- endcomment -%}
+  <input type="hidden" name="id" value="{{ variante_courante.id }}" data-variante-id>
+{%- endunless -%}
