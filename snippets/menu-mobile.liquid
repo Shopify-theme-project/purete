@@ -1,0 +1,96 @@
+{%- comment -%}
+  ============================================================
+  Snippet : Menu mobile (drawer latéral gauche)
+  Rendu dans sections/en-tete.liquid (visible < lg uniquement).
+  Reprend la même logique fallback/menu admin que le header.
+  ============================================================
+{%- endcomment -%}
+
+{%- liquid
+  assign menu_admin = section.settings.menu.links
+  assign utiliser_fallback = false
+  if menu_admin.size == 0
+    assign utiliser_fallback = true
+  endif
+-%}
+
+<div
+  class="menu-mobile lg:hidden"
+  data-menu-mobile
+  aria-hidden="true"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Menu de navigation"
+>
+  <div class="menu-mobile__overlay" data-menu-mobile-fermer aria-hidden="true"></div>
+
+  <aside class="menu-mobile__panneau" data-menu-mobile-panneau>
+    <header class="menu-mobile__entete">
+      <a href="{{ routes.root_url }}" class="menu-mobile__logo font-titre" data-menu-mobile-fermer>
+        {{ section.settings.logo_texte | default: 'PURETÉ' }}
+      </a>
+      <button type="button" class="menu-mobile__fermer" data-menu-mobile-fermer aria-label="Fermer le menu">
+        {%- render 'icone', nom: 'croix', taille: 20 -%}
+      </button>
+    </header>
+
+    <nav class="menu-mobile__nav" aria-label="Navigation principale mobile">
+      <ul class="menu-mobile__liste" role="list">
+        {%- if utiliser_fallback -%}
+          <li class="menu-mobile__item menu-mobile__item--accordeon">
+            <button type="button" class="menu-mobile__lien" data-mm-toggle aria-expanded="false">
+              <span>Boutique</span>
+              {%- render 'icone', nom: 'chevron-bas', classe: 'menu-mobile__chevron', taille: 14 -%}
+            </button>
+            <ul class="menu-mobile__sous-liste" data-mm-sous-liste role="list">
+              <li><a href="{{ routes.collections_url }}" class="menu-mobile__sous-lien" data-menu-mobile-fermer>Toutes les collections</a></li>
+              <li><a href="#" class="menu-mobile__sous-lien" data-menu-mobile-fermer>Soins du visage</a></li>
+              <li><a href="#" class="menu-mobile__sous-lien" data-menu-mobile-fermer>Sérums</a></li>
+              <li><a href="#" class="menu-mobile__sous-lien" data-menu-mobile-fermer>Nettoyants</a></li>
+              <li><a href="#" class="menu-mobile__sous-lien" data-menu-mobile-fermer>Hydratants</a></li>
+            </ul>
+          </li>
+          <li class="menu-mobile__item">
+            <a href="/pages/engagements" class="menu-mobile__lien" data-menu-mobile-fermer>Engagements</a>
+          </li>
+          <li class="menu-mobile__item">
+            <a href="/pages/quiz-peau" class="menu-mobile__lien" data-menu-mobile-fermer>Quiz Peau</a>
+          </li>
+          <li class="menu-mobile__item">
+            <a href="{{ blogs.first.url | default: '/blogs/news' }}" class="menu-mobile__lien" data-menu-mobile-fermer>Blog</a>
+          </li>
+        {%- else -%}
+          {%- for lien in menu_admin -%}
+            <li class="menu-mobile__item {% if lien.links.size > 0 %}menu-mobile__item--accordeon{% endif %}">
+              {%- if lien.links.size > 0 -%}
+                <button type="button" class="menu-mobile__lien" data-mm-toggle aria-expanded="false">
+                  <span>{{ lien.title }}</span>
+                  {%- render 'icone', nom: 'chevron-bas', classe: 'menu-mobile__chevron', taille: 14 -%}
+                </button>
+                <ul class="menu-mobile__sous-liste" data-mm-sous-liste role="list">
+                  {%- for sous in lien.links -%}
+                    <li><a href="{{ sous.url }}" class="menu-mobile__sous-lien" data-menu-mobile-fermer>{{ sous.title }}</a></li>
+                  {%- endfor -%}
+                </ul>
+              {%- else -%}
+                <a href="{{ lien.url }}" class="menu-mobile__lien" data-menu-mobile-fermer
+                   {% if lien.active %}aria-current="page"{% endif %}>{{ lien.title }}</a>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        {%- endif -%}
+      </ul>
+    </nav>
+
+    <footer class="menu-mobile__pied">
+      <a href="{{ routes.account_url }}" class="menu-mobile__pied-lien" data-menu-mobile-fermer>
+        {%- render 'icone', nom: 'compte', taille: 18 -%}
+        <span>Mon compte</span>
+      </a>
+      <a href="{{ routes.search_url }}" class="menu-mobile__pied-lien" data-menu-mobile-fermer>
+        {%- render 'icone', nom: 'recherche', taille: 18 -%}
+        <span>Rechercher</span>
+      </a>
+    </footer>
+  </aside>
+</div>

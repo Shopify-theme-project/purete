@@ -1,0 +1,66 @@
+{%- comment -%}
+  ============================================================
+  Snippet : Article du tiroir panier (ligne de produit)
+  Paramètres :
+    - item : objet line_item
+  ============================================================
+{%- endcomment -%}
+
+<li class="article-panier" data-cle="{{ item.key }}">
+  <a href="{{ item.url }}" class="article-panier__image-lien" data-tiroir-fermer>
+    {%- if item.image -%}
+      {{ item.image | image_url: width: 200 | image_tag: loading: 'lazy', widths: '100, 200', sizes: '90px', class: 'article-panier__image', alt: item.title }}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'article-panier__image' }}
+    {%- endif -%}
+  </a>
+
+  <div class="article-panier__corps">
+    <div class="article-panier__entete">
+      <a href="{{ item.url }}" class="article-panier__titre" data-tiroir-fermer>
+        {{ item.product.title }}
+      </a>
+      <button
+        type="button"
+        class="article-panier__supprimer"
+        data-supprimer
+        data-cle="{{ item.key }}"
+        aria-label="Retirer {{ item.product.title }} du panier"
+      >
+        {%- render 'icone', nom: 'croix', taille: 14 -%}
+      </button>
+    </div>
+
+    {%- unless item.product.has_only_default_variant -%}
+      <p class="article-panier__variante">{{ item.variant.title }}</p>
+    {%- endunless -%}
+
+    <div class="article-panier__bas">
+      <div class="stepper stepper--mini" data-stepper>
+        <button
+          type="button"
+          class="stepper__bouton"
+          data-tiroir-qty
+          data-cle="{{ item.key }}"
+          data-delta="-1"
+          aria-label="Diminuer la quantité"
+        >
+          {%- render 'icone', nom: 'moins', taille: 12 -%}
+        </button>
+        <span class="stepper__input stepper__input--statique" aria-live="polite">{{ item.quantity }}</span>
+        <button
+          type="button"
+          class="stepper__bouton"
+          data-tiroir-qty
+          data-cle="{{ item.key }}"
+          data-delta="1"
+          aria-label="Augmenter la quantité"
+        >
+          {%- render 'icone', nom: 'plus', taille: 12 -%}
+        </button>
+      </div>
+
+      <span class="article-panier__prix">{{ item.final_line_price | money }}</span>
+    </div>
+  </div>
+</li>

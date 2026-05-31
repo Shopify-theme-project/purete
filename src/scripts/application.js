@@ -62,6 +62,11 @@ async function gererAjoutRapide(bouton) {
     bouton.classList.add('est-ajoute');
     if (libelle) libelle.textContent = 'Ajouté ✓';
 
+    if (window.PureteCart) {
+      await window.PureteCart.refresh();
+      window.PureteCart.open();
+    }
+
     setTimeout(() => {
       bouton.classList.remove('est-ajoute');
       bouton.disabled = false;
@@ -142,7 +147,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initSelecteurVariantes();
   initStepper();
   initFormulaireProduit();
-  initAvisVoirPlus();
+  initAvisVoirPlus();  initTiroirPanier();
+  initEnTeteScroll();
+  initMenuMobile();
 });
 
 /* ============================================================
@@ -365,6 +372,11 @@ function initFormulaireProduit() {
         bouton.classList.add('est-ajoute');
         if (texteBouton) texteBouton.textContent = 'Ajouté au panier ✓';
 
+        if (window.PureteCart) {
+          await window.PureteCart.refresh();
+          window.PureteCart.open();
+        }
+
         setTimeout(() => {
           bouton.classList.remove('est-ajoute');
           bouton.disabled = false;
@@ -397,4 +409,313 @@ function initAvisVoirPlus() {
       bouton.remove();
     });
   });
+}
+
+/* ============================================================
+   Tiroir panier (cart drawer)
+   ============================================================ */
+
+/**
+ * Formate des centimes en chaine euros (ex: 2890 -> "28,90 €").
+ */
+function pcFormaterPrix(centimes) {
+  const euros = (centimes / 100).toFixed(2).replace('.', ',');
+  return `${euros}\u00A0€`;
+}
+
+/**
+ * Rend la liste des articles du panier dans le drawer.
+ */
+function pcRendreArticles(panier) {
+  return panier.items.map((item) => {
+    const imgUrl = item.image ? item.image.replace(/(\.[^./?]+)(\?|$)/, '_200x$1$2') : '';
+    const variante = item.variant_title ? `<p class="article-panier__variante">${item.variant_title}</p>` : '';
+    return `
+      <li class="article-panier" data-cle="${item.key}">
+        <a href="${item.url}" class="article-panier__image-lien" data-tiroir-fermer>
+          ${imgUrl ? `<img src="${imgUrl}" alt="${item.product_title}" class="article-panier__image" loading="lazy">` : ''}
+        </a>
+        <div class="article-panier__corps">
+          <div class="article-panier__entete">
+            <a href="${item.url}" class="article-panier__titre" data-tiroir-fermer>${item.product_title}</a>
+            <button type="button" class="article-panier__supprimer" data-supprimer data-cle="${item.key}" aria-label="Retirer">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+            </button>
+          </div>
+          ${variante}
+          <div class="article-panier__bas">
+            <div class="stepper stepper--mini">
+              <button type="button" class="stepper__bouton" data-tiroir-qty data-cle="${item.key}" data-delta="-1" aria-label="Diminuer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </button>
+              <span class="stepper__input stepper__input--statique">${item.quantity}</span>
+              <button type="button" class="stepper__bouton" data-tiroir-qty data-cle="${item.key}" data-delta="1" aria-label="Augmenter">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><line x1="12" y1="5" x2="12" y2="19"/></svg>
+              </button>
+            </div>
+            <span class="article-panier__prix">${pcFormaterPrix(item.final_line_price)}</span>
+          </div>
+        </div>
+      </li>
+    `;
+  }).join('');
+}
+
+/**
+ * Met à jour l'UI du drawer à partir d'un panier JSON.
+ */
+function pcMettreAJourDrawer(panier) {
+  const tiroir = document.querySelector('[data-tiroir-panier]');
+  if (!tiroir) return;
+
+  // Badge global
+  mettreAJourBadgePanier(panier.item_count);
+
+  // Compteur
+  const compteur = tiroir.querySelector('[data-tiroir-compteur]');
+  if (compteur) compteur.textContent = `(${panier.item_count})`;
+
+  // Corps
+  const corps = tiroir.querySelector('[data-tiroir-corps]');
+  const pied = tiroir.querySelector('[data-tiroir-pied]');
+
+  if (panier.item_count === 0) {
+    if (corps) corps.innerHTML = `
+      <div class="tiroir-panier__vide">
+        <p class="tiroir-panier__vide-titre">Votre panier est vide</p>
+        <p class="tiroir-panier__vide-texte">Découvrez nos essentiels clean et composez votre routine.</p>
+        <a href="/collections/all" class="bouton bouton--primaire" data-tiroir-fermer>Voir la boutique</a>
+      </div>`;
+    if (pied) pied.hidden = true;
+  } else {
+    if (corps) corps.innerHTML = `<ul class="tiroir-panier__articles" data-tiroir-articles role="list">${pcRendreArticles(panier)}</ul>`;
+    if (pied) {
+      pied.hidden = false;
+      const total = pied.querySelector('[data-tiroir-soustotal]');
+      if (total) total.textContent = pcFormaterPrix(panier.total_price);
+    }
+  }
+
+  // Barre livraison
+  const seuil = parseInt(tiroir.dataset.seuilLivraison, 10) || 0;
+  if (seuil > 0) {
+    const barre = tiroir.querySelector('[data-tiroir-livraison-barre]');
+    const msg = tiroir.querySelector('[data-tiroir-livraison-msg]');
+    const progression = Math.min(100, (panier.total_price / seuil) * 100);
+    if (barre) barre.style.width = `${progression}%`;
+    if (msg) {
+      if (panier.total_price >= seuil) {
+        msg.innerHTML = `<span class="tiroir-panier__livraison-icone"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span> Vous bénéficiez de la livraison offerte !`;
+      } else {
+        msg.innerHTML = `Plus que <strong>${pcFormaterPrix(seuil - panier.total_price)}</strong> pour la livraison offerte`;
+      }
+    }
+  }
+}
+
+/**
+ * Ouvre le tiroir panier.
+ */
+function pcOuvrir() {
+  const tiroir = document.querySelector('[data-tiroir-panier]');
+  if (!tiroir) return;
+  tiroir.classList.add('est-ouvert');
+  tiroir.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('panier-ouvert');
+  const fermer = tiroir.querySelector('[data-tiroir-fermer]');
+  if (fermer) fermer.focus();
+}
+
+/**
+ * Ferme le tiroir panier.
+ */
+function pcFermer() {
+  const tiroir = document.querySelector('[data-tiroir-panier]');
+  if (!tiroir) return;
+  tiroir.classList.remove('est-ouvert');
+  tiroir.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('panier-ouvert');
+}
+
+/**
+ * Refetch /cart.js et redessine le drawer.
+ */
+async function pcRafraichir() {
+  try {
+    const reponse = await fetch('/cart.js');
+    if (!reponse.ok) return;
+    const panier = await reponse.json();
+    pcMettreAJourDrawer(panier);
+  } catch (e) {
+    console.warn('[Pureté] Échec rafraîchissement panier', e);
+  }
+}
+
+/**
+ * Change la quantité d'une ligne.
+ */
+async function pcChangerQuantite(cle, nouvelleQte) {
+  try {
+    const reponse = await fetch('/cart/change.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: cle, quantity: nouvelleQte }),
+    });
+    if (!reponse.ok) throw new Error(`Erreur ${reponse.status}`);
+    const panier = await reponse.json();
+    pcMettreAJourDrawer(panier);
+  } catch (e) {
+    console.error('[Pureté] Échec changement quantité', e);
+  }
+}
+
+/**
+ * Init : branche tous les listeners du drawer.
+ */
+function initTiroirPanier() {
+  const tiroir = document.querySelector('[data-tiroir-panier]');
+  if (!tiroir) return;
+
+  // Expose API globale (utilisée par les flux d''ajout)
+  window.PureteCart = {
+    open: pcOuvrir,
+    close: pcFermer,
+    refresh: pcRafraichir,
+  };
+
+  // Clic icône panier dans header
+  document.addEventListener('click', (event) => {
+    const ouvreur = event.target.closest('[data-ouvre-tiroir-panier]');
+    if (ouvreur) {
+      event.preventDefault();
+      pcOuvrir();
+    }
+  });
+
+  // Clic fermeture (croix, overlay, lien interne)
+  tiroir.addEventListener('click', (event) => {
+    if (event.target.closest('[data-tiroir-fermer]')) {
+      // Si c''est un lien (a href), on laisse naviguer puis on ferme
+      if (event.target.closest('a')) {
+        pcFermer();
+        return;
+      }
+      event.preventDefault();
+      pcFermer();
+    }
+
+    // Stepper qty
+    const btnQte = event.target.closest('[data-tiroir-qty]');
+    if (btnQte) {
+      event.preventDefault();
+      const cle = btnQte.dataset.cle;
+      const delta = parseInt(btnQte.dataset.delta, 10);
+      const li = btnQte.closest('.article-panier');
+      const span = li ? li.querySelector('.stepper__input--statique') : null;
+      const qteActuelle = span ? parseInt(span.textContent, 10) : 1;
+      const nouvelleQte = Math.max(0, qteActuelle + delta);
+      pcChangerQuantite(cle, nouvelleQte);
+    }
+
+    // Supprimer
+    const btnSup = event.target.closest('[data-supprimer]');
+    if (btnSup) {
+      event.preventDefault();
+      pcChangerQuantite(btnSup.dataset.cle, 0);
+    }
+  });
+
+  // ESC pour fermer
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && tiroir.classList.contains('est-ouvert')) {
+      pcFermer();
+    }
+  });
+}
+
+/* ============================================================
+   En-tête : ombre/compactage au scroll
+   ============================================================ */
+function initEnTeteScroll() {
+  const enTete = document.querySelector('[data-en-tete]');
+  if (!enTete) return;
+
+  const seuil = 10;
+  let dernierEtat = false;
+
+  function maj() {
+    const estScrollee = window.scrollY > seuil;
+    if (estScrollee !== dernierEtat) {
+      enTete.classList.toggle('est-scrollee', estScrollee);
+      dernierEtat = estScrollee;
+    }
+  }
+
+  maj();
+  window.addEventListener('scroll', maj, { passive: true });
+}
+
+/* ============================================================
+   Menu mobile (drawer gauche)
+   ============================================================ */
+function initMenuMobile() {
+  const menu = document.querySelector('[data-menu-mobile]');
+  if (!menu) return;
+
+  const burger = document.querySelector('[data-ouvre-menu-mobile]');
+
+  function ouvrir() {
+    menu.classList.add('est-ouvert');
+    menu.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('menu-mobile-ouvert');
+    if (burger) burger.setAttribute('aria-expanded', 'true');
+  }
+
+  function fermer() {
+    menu.classList.remove('est-ouvert');
+    menu.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('menu-mobile-ouvert');
+    if (burger) burger.setAttribute('aria-expanded', 'false');
+  }
+
+  if (burger) {
+    burger.addEventListener('click', () => {
+      if (menu.classList.contains('est-ouvert')) fermer();
+      else ouvrir();
+    });
+  }
+
+  menu.addEventListener('click', (event) => {
+    // Fermeture (overlay, croix, lien)
+    if (event.target.closest('[data-menu-mobile-fermer]')) {
+      if (event.target.closest('a')) {
+        fermer();
+        return;
+      }
+      event.preventDefault();
+      fermer();
+    }
+
+    // Toggle accordéon sous-menu
+    const toggle = event.target.closest('[data-mm-toggle]');
+    if (toggle) {
+      event.preventDefault();
+      const item = toggle.closest('.menu-mobile__item');
+      const sousListe = item ? item.querySelector('[data-mm-sous-liste]') : null;
+      const ouvert = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', ouvert ? 'false' : 'true');
+      if (sousListe) sousListe.classList.toggle('est-ouvert', !ouvert);
+    }
+  });
+
+  // ESC pour fermer
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && menu.classList.contains('est-ouvert')) {
+      fermer();
+    }
+  });
+
+  // Si on passe en desktop, on ferme automatiquement
+  const mq = window.matchMedia('(min-width: 1024px)');
+  mq.addEventListener('change', (e) => { if (e.matches) fermer(); });
 }

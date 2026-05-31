@@ -1,0 +1,96 @@
+{%- comment -%}
+  ============================================================
+  Snippet : Tiroir panier (cart drawer)
+  Rendu une fois en bas du <body> via theme.liquid.
+  Le contenu est régénéré côté client après chaque add/update.
+  L'état initial est rendu côté serveur depuis l'objet `cart`.
+  ============================================================
+{%- endcomment -%}
+
+{%- liquid
+  assign seuil_cents = settings.panier_seuil_livraison | times: 100
+  assign progression = 0
+  if seuil_cents > 0
+    assign progression = cart.total_price | times: 100.0 | divided_by: seuil_cents
+    if progression > 100
+      assign progression = 100
+    endif
+  endif
+  assign restant = seuil_cents | minus: cart.total_price
+-%}
+
+<div
+  class="tiroir-panier"
+  data-tiroir-panier
+  aria-hidden="true"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Panier"
+  data-seuil-livraison="{{ seuil_cents }}"
+>
+  <div class="tiroir-panier__overlay" data-tiroir-fermer aria-hidden="true"></div>
+
+  <aside class="tiroir-panier__panneau" data-tiroir-panneau>
+    {%- comment -%} En-tête {%- endcomment -%}
+    <header class="tiroir-panier__entete">
+      <h2 class="tiroir-panier__titre">
+        Mon panier
+        <span class="tiroir-panier__compteur" data-tiroir-compteur>({{ cart.item_count }})</span>
+      </h2>
+      <button type="button" class="tiroir-panier__fermer" data-tiroir-fermer aria-label="Fermer le panier">
+        {%- render 'icone', nom: 'croix', taille: 20 -%}
+      </button>
+    </header>
+
+    {%- comment -%} Barre livraison offerte {%- endcomment -%}
+    {%- if seuil_cents > 0 -%}
+      <div class="tiroir-panier__livraison" data-tiroir-livraison>
+        <p class="tiroir-panier__livraison-message" data-tiroir-livraison-msg>
+          {%- if cart.total_price >= seuil_cents -%}
+            <span class="tiroir-panier__livraison-icone">{%- render 'icone', nom: 'verifie', taille: 14 -%}</span>
+            {{ settings.panier_message_livraison }}
+          {%- else -%}
+            Plus que <strong>{{ restant | money }}</strong> pour la livraison offerte
+          {%- endif -%}
+        </p>
+        <div class="tiroir-panier__livraison-barre" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ progression | round }}">
+          <span class="tiroir-panier__livraison-progression" data-tiroir-livraison-barre style="width: {{ progression }}%"></span>
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} Corps : liste des articles {%- endcomment -%}
+    <div class="tiroir-panier__corps" data-tiroir-corps>
+      {%- if cart.item_count > 0 -%}
+        <ul class="tiroir-panier__articles" data-tiroir-articles role="list">
+          {%- for item in cart.items -%}
+            {%- render 'article-panier', item: item -%}
+          {%- endfor -%}
+        </ul>
+      {%- else -%}
+        <div class="tiroir-panier__vide" data-tiroir-vide>
+          <p class="tiroir-panier__vide-titre">Votre panier est vide</p>
+          <p class="tiroir-panier__vide-texte">Découvrez nos essentiels clean et composez votre routine.</p>
+          <a href="{{ routes.all_products_collection_url }}" class="bouton bouton--primaire" data-tiroir-fermer>
+            Voir la boutique
+          </a>
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Pied : sous-total + CTA {%- endcomment -%}
+    <footer class="tiroir-panier__pied" data-tiroir-pied {% if cart.item_count == 0 %}hidden{% endif %}>
+      <div class="tiroir-panier__sous-total">
+        <span>Sous-total</span>
+        <strong data-tiroir-soustotal>{{ cart.total_price | money }}</strong>
+      </div>
+      <p class="tiroir-panier__mention">Frais de port et taxes calculés au paiement.</p>
+      <a href="{{ routes.cart_url }}/checkout" class="bouton bouton--primaire tiroir-panier__cta">
+        Passer commande
+      </a>
+      <a href="{{ routes.cart_url }}" class="tiroir-panier__lien-panier" data-tiroir-fermer>
+        Voir le panier complet
+      </a>
+    </footer>
+  </aside>
+</div>

@@ -12,8 +12,22 @@
   class="en-tete sticky top-0 z-40 bg-creme border-b border-vert-profond/10 backdrop-blur-sm"
   role="banner"
   data-section-id="{{ section.id }}"
+  data-en-tete
 >
   <div class="container mx-auto flex items-center justify-between gap-6 py-5">
+    {%- comment -%} ---------- Bouton burger (mobile) ---------- {%- endcomment -%}
+    <button
+      type="button"
+      class="en-tete__burger lg:hidden"
+      data-ouvre-menu-mobile
+      aria-label="Ouvrir le menu"
+      aria-expanded="false"
+    >
+      <span class="en-tete__burger-trait"></span>
+      <span class="en-tete__burger-trait"></span>
+      <span class="en-tete__burger-trait"></span>
+    </button>
+
     {%- comment -%} ---------- Logo ---------- {%- endcomment -%}
     <a
       href="{{ routes.root_url }}"
@@ -168,6 +182,7 @@
         href="{{ routes.cart_url }}"
         class="en-tete__action en-tete__action--panier relative hover:text-sauge-fonce no-underline"
         aria-label="{{ 'panier.titre' | t }} ({{ cart.item_count }})"
+        {% if settings.panier_drawer_actif %}data-ouvre-tiroir-panier{% endif %}
       >
         {%- render 'icone', nom: 'panier' -%}
 
@@ -183,6 +198,8 @@
     </div>
   </div>
 </header>
+
+{%- render 'menu-mobile' -%}
 
 {% schema %}
 {

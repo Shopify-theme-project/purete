@@ -71,5 +71,30 @@
         "content": "Les polices Cormorant Garamond (titres) et Inter (corps) sont auto-hébergées dans /assets/. Pour les changer, modifier les fichiers .woff2 et la déclaration @font-face dans src/styles/application.css."
       }
     ]
+  },
+  {
+    "name": "Panier",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "panier_drawer_actif",
+        "label": "Activer le panier latéral (drawer)",
+        "info": "Si désactivé, le clic sur l'icône panier mène à /cart.",
+        "default": true
+      },
+      {
+        "type": "number",
+        "id": "panier_seuil_livraison",
+        "label": "Seuil livraison offerte (en €)",
+        "info": "0 pour désactiver la barre de progression.",
+        "default": 50
+      },
+      {
+        "type": "text",
+        "id": "panier_message_livraison",
+        "label": "Message livraison offerte atteinte",
+        "default": "Vous bénéficiez de la livraison offerte !"
+      }
+    ]
   }
 ]

@@ -23,6 +23,8 @@ module.exports = {
     'est-active',
     'est-cache',
     'est-actif',
+    'est-ouvert',
+    'panier-ouvert',
   ],
   theme: {
     extend: {
