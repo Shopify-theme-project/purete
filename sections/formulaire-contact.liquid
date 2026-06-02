@@ -1,0 +1,188 @@
+{%- liquid
+  assign couleur_fond = section.settings.couleur_fond | default: 'ivoire'
+-%}
+
+<section class="contact-page contact-page--{{ couleur_fond }}" data-section-id="{{ section.id }}">
+  <div class="contact-page__conteneur">
+    <header class="contact-page__entete">
+      {%- if section.settings.surtitre != blank -%}
+        <p class="contact-page__surtitre">{{ section.settings.surtitre }}</p>
+      {%- endif -%}
+      {%- if section.settings.titre != blank -%}
+        <h1 class="contact-page__titre">{{ section.settings.titre }}</h1>
+      {%- endif -%}
+      {%- if section.settings.intro != blank -%}
+        <p class="contact-page__intro">{{ section.settings.intro }}</p>
+      {%- endif -%}
+    </header>
+
+    <div class="contact-page__grille">
+      <div class="contact-page__infos">
+        {%- if section.blocks.size > 0 -%}
+          <ul class="contact-page__liste" role="list">
+            {%- for bloc in section.blocks -%}
+              <li class="contact-page__item" {{ bloc.shopify_attributes }}>
+                {%- if bloc.settings.titre != blank -%}
+                  <h2 class="contact-page__item-titre">{{ bloc.settings.titre }}</h2>
+                {%- endif -%}
+
+                {%- if bloc.settings.texte != blank -%}
+                  <div class="contact-page__item-texte rte">{{ bloc.settings.texte }}</div>
+                {%- endif -%}
+
+                {%- if bloc.settings.lien_libelle != blank and bloc.settings.lien_url != blank -%}
+                  <a href="{{ bloc.settings.lien_url }}" class="contact-page__item-lien">
+                    {{ bloc.settings.lien_libelle }}
+                  </a>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+
+      <div class="contact-page__formulaire-wrap">
+        {%- form 'contact', class: 'contact-page__formulaire' -%}
+          {%- if form.posted_successfully? -%}
+            <p class="contact-page__succes" tabindex="-1" autofocus>
+              Merci, votre message a bien été envoyé. Nous revenons vers vous rapidement.
+            </p>
+          {%- endif -%}
+
+          {%- if form.errors -%}
+            <div class="contact-page__erreurs" role="alert">
+              {{ form.errors | default_errors }}
+            </div>
+          {%- endif -%}
+
+          <div class="contact-page__champs contact-page__champs--2col">
+            <label class="contact-page__champ">
+              <span>Nom</span>
+              <input
+                type="text"
+                name="contact[name]"
+                autocomplete="name"
+                value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+                placeholder="Votre nom"
+              >
+            </label>
+
+            <label class="contact-page__champ">
+              <span>E-mail</span>
+              <input
+                type="email"
+                name="contact[email]"
+                autocomplete="email"
+                value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+                placeholder="vous@exemple.com"
+                required
+              >
+            </label>
+          </div>
+
+          <label class="contact-page__champ">
+            <span>Téléphone (optionnel)</span>
+            <input
+              type="tel"
+              name="contact[phone]"
+              autocomplete="tel"
+              value="{{ form.phone }}"
+              placeholder="06 00 00 00 00"
+            >
+          </label>
+
+          <label class="contact-page__champ">
+            <span>Message</span>
+            <textarea
+              name="contact[body]"
+              rows="7"
+              placeholder="Expliquez-nous votre demande..."
+              required
+            >{{ form.body }}</textarea>
+          </label>
+
+          <button type="submit" class="contact-page__envoyer bouton bouton--principal">Envoyer le message</button>
+        {%- endform -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Formulaire contact",
+  "tag": "section",
+  "class": "section-contact-page",
+  "settings": [
+    {
+      "type": "select",
+      "id": "couleur_fond",
+      "label": "Fond",
+      "options": [
+        { "value": "ivoire", "label": "Ivoire" },
+        { "value": "creme", "label": "Crème" },
+        { "value": "blanc", "label": "Blanc" },
+        { "value": "sauge", "label": "Sauge" }
+      ],
+      "default": "ivoire"
+    },
+    { "type": "text", "id": "surtitre", "label": "Surtitre", "default": "Contact" },
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Parlons de votre peau" },
+    {
+      "type": "text",
+      "id": "intro",
+      "label": "Introduction",
+      "default": "Une question sur un produit, une commande ou votre routine ? Notre équipe vous répond sous 24 à 48h ouvrées."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "info-contact",
+      "name": "Bloc info",
+      "settings": [
+        { "type": "text", "id": "titre", "label": "Titre", "default": "Service client" },
+        {
+          "type": "richtext",
+          "id": "texte",
+          "label": "Texte",
+          "default": "<p>Du lundi au vendredi, de 9h à 18h.<br>Réponse moyenne : 24h ouvrées.</p>"
+        },
+        { "type": "text", "id": "lien_libelle", "label": "Libellé lien" },
+        { "type": "url", "id": "lien_url", "label": "URL lien" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Formulaire contact",
+      "blocks": [
+        {
+          "type": "info-contact",
+          "settings": {
+            "titre": "Service client",
+            "texte": "<p>Du lundi au vendredi, de 9h à 18h.<br>Réponse moyenne : 24h ouvrées.</p>",
+            "lien_libelle": "Voir la FAQ"
+          }
+        },
+        {
+          "type": "info-contact",
+          "settings": {
+            "titre": "E-mail",
+            "texte": "<p>contact@purete-skin.com</p>",
+            "lien_libelle": "Nous écrire",
+            "lien_url": "mailto:contact@purete-skin.com"
+          }
+        },
+        {
+          "type": "info-contact",
+          "settings": {
+            "titre": "Retours",
+            "texte": "<p>Les demandes de retour sont possibles sous 14 jours après réception de votre commande.</p>",
+            "lien_libelle": "Politique de retour"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

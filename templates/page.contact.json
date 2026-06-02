@@ -1,0 +1,46 @@
+{
+  "sections": {
+    "contact": {
+      "type": "formulaire-contact",
+      "settings": {
+        "couleur_fond": "ivoire",
+        "surtitre": "Contact",
+        "titre": "Parlons de votre peau",
+        "intro": "Une question sur un produit, une commande ou votre routine ? Notre équipe vous répond sous 24 à 48h ouvrées."
+      },
+      "blocks": {
+        "i1": {
+          "type": "info-contact",
+          "settings": {
+            "titre": "Service client",
+            "texte": "<p>Du lundi au vendredi, de 9h à 18h.<br>Réponse moyenne : 24h ouvrées.</p>",
+            "lien_libelle": "Consulter la FAQ",
+            "lien_url": "/pages/faq"
+          }
+        },
+        "i2": {
+          "type": "info-contact",
+          "settings": {
+            "titre": "E-mail",
+            "texte": "<p>contact@purete-skin.com</p>",
+            "lien_libelle": "Nous écrire",
+            "lien_url": "mailto:contact@purete-skin.com"
+          }
+        },
+        "i3": {
+          "type": "info-contact",
+          "settings": {
+            "titre": "Adresse",
+            "texte": "<p>Pureté Skincare<br>12 rue des Ateliers<br>75010 Paris</p>"
+          }
+        }
+      },
+      "block_order": ["i1", "i2", "i3"]
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {}
+    }
+  },
+  "order": ["contact", "newsletter"]
+}
