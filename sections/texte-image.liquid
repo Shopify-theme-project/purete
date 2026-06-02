@@ -1,0 +1,90 @@
+{%- liquid
+  assign image = section.settings.image
+  assign sens = section.settings.sens_image
+  assign couleur_fond = section.settings.couleur_fond | default: 'ivoire'
+-%}
+
+<section
+  class="texte-image texte-image--{{ couleur_fond }} texte-image--image-{{ sens }}{% if image == blank %} texte-image--sans-image{% endif %}"
+  data-section-id="{{ section.id }}"
+>
+  <div class="texte-image__contenu">
+    {%- if image != blank -%}
+      <div class="texte-image__media">
+        {{
+          image
+          | image_url: width: 1200
+          | image_tag:
+            loading: 'lazy',
+            widths: '400,600,800,1000,1200',
+            sizes: '(min-width: 768px) 50vw, 100vw',
+            class: 'texte-image__img'
+        }}
+      </div>
+    {%- endif -%}
+
+    <div class="texte-image__texte">
+      {%- if section.settings.surtitre != blank -%}
+        <p class="texte-image__surtitre">{{ section.settings.surtitre }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.titre != blank -%}
+        <h2 class="texte-image__titre">{{ section.settings.titre }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.contenu != blank -%}
+        <div class="texte-image__riche rte">{{ section.settings.contenu }}</div>
+      {%- endif -%}
+
+      {%- if section.settings.lien_libelle != blank and section.settings.lien_url != blank -%}
+        <a href="{{ section.settings.lien_url }}" class="texte-image__cta bouton bouton--principal">
+          {{ section.settings.lien_libelle }}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Texte + Image",
+  "tag": "section",
+  "class": "section-texte-image",
+  "settings": [
+    {
+      "type": "select",
+      "id": "sens_image",
+      "label": "Position image",
+      "options": [
+        { "value": "gauche", "label": "À gauche" },
+        { "value": "droite", "label": "À droite" }
+      ],
+      "default": "gauche"
+    },
+    {
+      "type": "select",
+      "id": "couleur_fond",
+      "label": "Fond",
+      "options": [
+        { "value": "ivoire", "label": "Ivoire" },
+        { "value": "creme", "label": "Crème" },
+        { "value": "blanc", "label": "Blanc" },
+        { "value": "sauge", "label": "Sauge" }
+      ],
+      "default": "ivoire"
+    },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "surtitre", "label": "Surtitre", "default": "Notre histoire" },
+    { "type": "text", "id": "titre", "label": "Titre", "default": "La beauté, simplement essentielle" },
+    {
+      "type": "richtext",
+      "id": "contenu",
+      "label": "Contenu",
+      "default": "<p>Pureté est née d'une conviction : prendre soin de sa peau ne devrait pas demander de compromis. Nos formules clean, à la fois minimalistes et performantes, s'inspirent du meilleur de la nature et de la science.</p>"
+    },
+    { "type": "text", "id": "lien_libelle", "label": "Libellé du bouton" },
+    { "type": "url", "id": "lien_url", "label": "Lien du bouton" }
+  ],
+  "presets": [{ "name": "Texte + Image" }]
+}
+{% endschema %}

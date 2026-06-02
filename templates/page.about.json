@@ -1,0 +1,77 @@
+{
+  "sections": {
+    "histoire": {
+      "type": "texte-image",
+      "settings": {
+        "sens_image": "droite",
+        "couleur_fond": "ivoire",
+        "surtitre": "Notre histoire",
+        "titre": "La beauté, simplement essentielle",
+        "contenu": "<p>Pureté est née d'une conviction : prendre soin de sa peau ne devrait demander aucun compromis. Ni sur les ingrédients, ni sur les résultats, ni sur la planète.</p><p>Depuis 2021, nous formulons des soins minimalistes, hautement concentrés en actifs d'origine naturelle, pour redonner à la routine beauté sa vraie raison d'être : prendre soin de soi.</p>",
+        "lien_libelle": "Voir nos soins",
+        "lien_url": "/collections/all"
+      }
+    },
+    "valeurs": {
+      "type": "valeurs-marque",
+      "settings": {
+        "couleur_fond": "creme",
+        "surtitre": "Nos engagements",
+        "titre": "Une beauté plus juste",
+        "intro": "Quatre principes guident chacune de nos formules, du laboratoire jusqu'à votre salle de bain."
+      },
+      "blocks": {
+        "v1": {
+          "type": "valeur",
+          "settings": {
+            "icone": "feuille",
+            "titre": "Clean & naturel",
+            "texte": "Plus de 95 % d'origine naturelle, sans silicones, ni sulfates, ni perturbateurs."
+          }
+        },
+        "v2": {
+          "type": "valeur",
+          "settings": {
+            "icone": "coeur",
+            "titre": "Cruelty-free & vegan",
+            "texte": "Aucun test sur animaux, aucune matière d'origine animale dans nos formules."
+          }
+        },
+        "v3": {
+          "type": "valeur",
+          "settings": {
+            "icone": "erlenmeyer",
+            "titre": "Formulé en France",
+            "texte": "Conçu et fabriqué dans nos ateliers normands, en circuit court."
+          }
+        },
+        "v4": {
+          "type": "valeur",
+          "settings": {
+            "icone": "carton",
+            "titre": "Éco-conçu",
+            "texte": "Verre, aluminium, plastique recyclé : nos contenants pensés pour durer."
+          }
+        }
+      },
+      "block_order": ["v1", "v2", "v3", "v4"]
+    },
+    "laboratoire": {
+      "type": "texte-image",
+      "settings": {
+        "sens_image": "gauche",
+        "couleur_fond": "ivoire",
+        "surtitre": "Notre laboratoire",
+        "titre": "Moins d'ingrédients, plus d'efficacité",
+        "contenu": "<p>Chaque formule est pensée comme un essentiel : 10 à 15 ingrédients soigneusement sélectionnés, dosés à des concentrations actives, testés cliniquement sur 21 jours.</p><p>Pas de promesses marketing, juste des résultats mesurables — et une peau qui retrouve son équilibre naturel.</p>",
+        "lien_libelle": "Découvrir nos formules",
+        "lien_url": "/pages/faq"
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {}
+    }
+  },
+  "order": ["histoire", "valeurs", "laboratoire", "newsletter"]
+}

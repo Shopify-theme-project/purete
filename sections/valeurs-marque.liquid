@@ -1,0 +1,132 @@
+{%- liquid
+  assign couleur_fond = section.settings.couleur_fond | default: 'creme'
+-%}
+
+<section
+  class="valeurs valeurs--{{ couleur_fond }}"
+  data-section-id="{{ section.id }}"
+>
+  <div class="valeurs__entete">
+    {%- if section.settings.surtitre != blank -%}
+      <p class="valeurs__surtitre">{{ section.settings.surtitre }}</p>
+    {%- endif -%}
+    {%- if section.settings.titre != blank -%}
+      <h2 class="valeurs__titre">{{ section.settings.titre }}</h2>
+    {%- endif -%}
+    {%- if section.settings.intro != blank -%}
+      <p class="valeurs__intro">{{ section.settings.intro }}</p>
+    {%- endif -%}
+  </div>
+
+  {%- if section.blocks.size > 0 -%}
+    <ul class="valeurs__liste" role="list">
+      {%- for bloc in section.blocks -%}
+        <li class="valeurs__item" {{ bloc.shopify_attributes }}>
+          <span class="valeurs__icone">
+            {%- render 'icone', nom: bloc.settings.icone, taille: 32 -%}
+          </span>
+          {%- if bloc.settings.titre != blank -%}
+            <h3 class="valeurs__item-titre">{{ bloc.settings.titre }}</h3>
+          {%- endif -%}
+          {%- if bloc.settings.texte != blank -%}
+            <p class="valeurs__item-texte">{{ bloc.settings.texte }}</p>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Valeurs de marque",
+  "tag": "section",
+  "class": "section-valeurs",
+  "settings": [
+    {
+      "type": "select",
+      "id": "couleur_fond",
+      "label": "Fond",
+      "options": [
+        { "value": "creme", "label": "Crème" },
+        { "value": "ivoire", "label": "Ivoire" },
+        { "value": "sauge", "label": "Sauge" },
+        { "value": "blanc", "label": "Blanc" }
+      ],
+      "default": "creme"
+    },
+    { "type": "text", "id": "surtitre", "label": "Surtitre", "default": "Nos engagements" },
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Une beauté plus juste" },
+    { "type": "text", "id": "intro", "label": "Texte d'introduction" }
+  ],
+  "blocks": [
+    {
+      "type": "valeur",
+      "name": "Valeur",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icone",
+          "label": "Icône",
+          "options": [
+            { "value": "feuille", "label": "Feuille" },
+            { "value": "erlenmeyer", "label": "Laboratoire" },
+            { "value": "carton", "label": "Éco-emballage" },
+            { "value": "coeur", "label": "Cœur (cruelty-free)" },
+            { "value": "bouclier", "label": "Bouclier (sûreté)" },
+            { "value": "camion", "label": "Livraison" },
+            { "value": "verifie", "label": "Vérifié" }
+          ],
+          "default": "feuille"
+        },
+        { "type": "text", "id": "titre", "label": "Titre", "default": "Naturel" },
+        {
+          "type": "textarea",
+          "id": "texte",
+          "label": "Texte",
+          "default": "Des ingrédients d'origine naturelle, choisis pour leur efficacité prouvée."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Valeurs de marque",
+      "blocks": [
+        {
+          "type": "valeur",
+          "settings": {
+            "icone": "feuille",
+            "titre": "Clean & naturel",
+            "texte": "Plus de 95 % d'origine naturelle, sans ingrédients controversés."
+          }
+        },
+        {
+          "type": "valeur",
+          "settings": {
+            "icone": "coeur",
+            "titre": "Cruelty-free & vegan",
+            "texte": "Aucun test sur animaux, aucune matière d'origine animale."
+          }
+        },
+        {
+          "type": "valeur",
+          "settings": {
+            "icone": "erlenmeyer",
+            "titre": "Formulé en France",
+            "texte": "Conçu et fabriqué dans nos ateliers, en circuit court."
+          }
+        },
+        {
+          "type": "valeur",
+          "settings": {
+            "icone": "carton",
+            "titre": "Éco-conçu",
+            "texte": "Emballages recyclables, recyclés ou rechargeables."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
