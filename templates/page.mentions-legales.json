@@ -1,0 +1,60 @@
+{
+  "sections": {
+    "mentions": {
+      "type": "contenu-legal",
+      "settings": {
+        "couleur_fond": "blanc",
+        "surtitre": "Informations légales",
+        "titre": "Mentions légales",
+        "date_maj": "Dernière mise à jour : 02/06/2026",
+        "intro": "<p>Conformément à la loi n°2004-575 du 21 juin 2004 pour la confiance dans l'économie numérique, vous trouverez ci-dessous les informations relatives à l'éditeur du site.</p>",
+        "afficher_sommaire": true,
+        "avertissement": "Remplacez les champs entre crochets par vos données officielles (raison sociale, SIREN, adresse, etc.)."
+      },
+      "blocks": {
+        "m1": {
+          "type": "article-legal",
+          "settings": {
+            "titre": "Éditeur du site",
+            "ancre": "editeur",
+            "contenu": "<p>[Raison sociale]\u003cbr\u003eForme juridique : [SARL / SAS / EI]\u003cbr\u003eCapital social : [montant]\u003cbr\u003eSIREN : [numéro]\u003cbr\u003eSiège social : [adresse complète]\u003cbr\u003eN° TVA intracommunautaire : [numéro TVA]</p>"
+          }
+        },
+        "m2": {
+          "type": "article-legal",
+          "settings": {
+            "titre": "Directeur de la publication",
+            "ancre": "directeur-publication",
+            "contenu": "<p>[Nom et prénom du responsable légal], en qualité de [fonction].</p>"
+          }
+        },
+        "m3": {
+          "type": "article-legal",
+          "settings": {
+            "titre": "Hébergeur",
+            "ancre": "hebergeur",
+            "contenu": "<p>Shopify Inc.\u003cbr\u003e151 O'Connor Street, Ground floor\u003cbr\u003eOttawa, ON K2P 2L8\u003cbr\u003eCanada\u003cbr\u003ewww.shopify.com</p>"
+          }
+        },
+        "m4": {
+          "type": "article-legal",
+          "settings": {
+            "titre": "Propriété intellectuelle",
+            "ancre": "propriete-intellectuelle",
+            "contenu": "<p>L'ensemble des éléments présents sur ce site (textes, visuels, logos, éléments graphiques) est protégé par le droit de la propriété intellectuelle. Toute reproduction, exploitation ou diffusion sans autorisation préalable est interdite.</p>"
+          }
+        },
+        "m5": {
+          "type": "article-legal",
+          "settings": {
+            "titre": "Contact",
+            "ancre": "contact",
+            "contenu": "<p>E-mail : [email de contact]\u003cbr\u003eAdresse postale : [adresse complète]\u003cbr\u003eTéléphone : [numéro]</p>"
+          }
+        }
+      },
+      "block_order": ["m1", "m2", "m3", "m4", "m5"]
+    }
+  },
+  "order": ["mentions"]
+}

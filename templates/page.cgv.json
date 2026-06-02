@@ -1,0 +1,76 @@
+{
+  "sections": {
+    "cgv": {
+      "type": "contenu-legal",
+      "settings": {
+        "couleur_fond": "blanc",
+        "surtitre": "Vente en ligne",
+        "titre": "Conditions générales de vente",
+        "date_maj": "Dernière mise à jour : 02/06/2026",
+        "intro": "<p>Les présentes CGV régissent les ventes effectuées sur le site. Toute commande implique l'acceptation pleine et entière des présentes conditions.</p>",
+        "afficher_sommaire": true,
+        "avertissement": "Adaptez ces CGV à vos règles exactes de livraison, paiement, retours et garanties."
+      },
+      "blocks": {
+        "c1": {
+          "type": "article-legal",
+          "settings": {
+            "titre": "Objet",
+            "ancre": "objet",
+            "contenu": "<p>Les présentes conditions définissent les droits et obligations des parties dans le cadre de la vente de produits proposés sur le site.</p>"
+          }
+        },
+        "c2": {
+          "type": "article-legal",
+          "settings": {
+            "titre": "Produits et disponibilité",
+            "ancre": "produits",
+            "contenu": "<p>Les caractéristiques essentielles des produits sont présentées sur le site. Les offres sont valables dans la limite des stocks disponibles.</p>"
+          }
+        },
+        "c3": {
+          "type": "article-legal",
+          "settings": {
+            "titre": "Prix et paiement",
+            "ancre": "prix-paiement",
+            "contenu": "<p>Les prix sont indiqués en euros TTC. Le paiement est exigible immédiatement à la commande par les moyens proposés sur le site.</p>"
+          }
+        },
+        "c4": {
+          "type": "article-legal",
+          "settings": {
+            "titre": "Livraison",
+            "ancre": "livraison",
+            "contenu": "<p>Les délais de livraison sont indiqués à titre indicatif. Le vendeur ne pourra être tenu responsable des retards imputables au transporteur ou à un cas de force majeure.</p>"
+          }
+        },
+        "c5": {
+          "type": "article-legal",
+          "settings": {
+            "titre": "Droit de rétractation",
+            "ancre": "retractation",
+            "contenu": "<p>Conformément à la législation en vigueur, le client dispose d'un délai de 14 jours à compter de la réception pour exercer son droit de rétractation, sous réserve des exceptions prévues par la loi.</p>"
+          }
+        },
+        "c6": {
+          "type": "article-legal",
+          "settings": {
+            "titre": "Garanties légales",
+            "ancre": "garanties",
+            "contenu": "<p>Les produits bénéficient de la garantie légale de conformité et de la garantie légale contre les vices cachés, conformément aux dispositions applicables du Code de la consommation et du Code civil.</p>"
+          }
+        },
+        "c7": {
+          "type": "article-legal",
+          "settings": {
+            "titre": "Litiges et droit applicable",
+            "ancre": "litiges",
+            "contenu": "<p>Les présentes CGV sont soumises au droit français. En cas de litige, une solution amiable sera recherchée avant toute action judiciaire.</p>"
+          }
+        }
+      },
+      "block_order": ["c1", "c2", "c3", "c4", "c5", "c6", "c7"]
+    }
+  },
+  "order": ["cgv"]
+}

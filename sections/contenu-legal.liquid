@@ -1,0 +1,139 @@
+{%- liquid
+  assign couleur_fond = section.settings.couleur_fond | default: 'blanc'
+-%}
+
+<section class="legal legal--{{ couleur_fond }}" data-section-id="{{ section.id }}">
+  <div class="legal__conteneur">
+    <header class="legal__entete">
+      {%- if section.settings.surtitre != blank -%}
+        <p class="legal__surtitre">{{ section.settings.surtitre }}</p>
+      {%- endif -%}
+      {%- if section.settings.titre != blank -%}
+        <h1 class="legal__titre">{{ section.settings.titre }}</h1>
+      {%- endif -%}
+      {%- if section.settings.date_maj != blank -%}
+        <p class="legal__maj">{{ section.settings.date_maj }}</p>
+      {%- endif -%}
+      {%- if section.settings.intro != blank -%}
+        <div class="legal__intro rte">{{ section.settings.intro }}</div>
+      {%- endif -%}
+    </header>
+
+    {%- if section.settings.afficher_sommaire and section.blocks.size > 1 -%}
+      <nav class="legal__sommaire" aria-label="Sommaire légal">
+        <p class="legal__sommaire-titre">Sommaire</p>
+        <ol class="legal__sommaire-liste">
+          {%- for bloc in section.blocks -%}
+            {%- liquid
+              assign base_ancre = bloc.settings.ancre | default: bloc.settings.titre | handleize
+              if base_ancre == blank
+                assign base_ancre = 'article'
+              endif
+              assign id_article = base_ancre | append: '-' | append: forloop.index
+            -%}
+            <li>
+              <a href="#{{ id_article }}">{{ bloc.settings.titre | default: 'Article ' | append: forloop.index }}</a>
+            </li>
+          {%- endfor -%}
+        </ol>
+      </nav>
+    {%- endif -%}
+
+    {%- if section.settings.avertissement != blank -%}
+      <p class="legal__avertissement">{{ section.settings.avertissement }}</p>
+    {%- endif -%}
+
+    <div class="legal__articles">
+      {%- for bloc in section.blocks -%}
+        {%- liquid
+          assign base_ancre = bloc.settings.ancre | default: bloc.settings.titre | handleize
+          if base_ancre == blank
+            assign base_ancre = 'article'
+          endif
+          assign id_article = base_ancre | append: '-' | append: forloop.index
+        -%}
+        <article class="legal__article" id="{{ id_article }}" {{ bloc.shopify_attributes }}>
+          {%- if bloc.settings.titre != blank -%}
+            <h2 class="legal__article-titre">{{ bloc.settings.titre }}</h2>
+          {%- endif -%}
+          {%- if bloc.settings.contenu != blank -%}
+            <div class="legal__article-contenu rte">{{ bloc.settings.contenu }}</div>
+          {%- endif -%}
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Contenu legal",
+  "tag": "section",
+  "class": "section-legal",
+  "settings": [
+    {
+      "type": "select",
+      "id": "couleur_fond",
+      "label": "Fond",
+      "options": [
+        { "value": "blanc", "label": "Blanc" },
+        { "value": "ivoire", "label": "Ivoire" },
+        { "value": "creme", "label": "Crème" }
+      ],
+      "default": "blanc"
+    },
+    { "type": "text", "id": "surtitre", "label": "Surtitre", "default": "Informations légales" },
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Titre de la page légale" },
+    { "type": "text", "id": "date_maj", "label": "Date de mise à jour", "default": "Dernière mise à jour : 02/06/2026" },
+    {
+      "type": "richtext",
+      "id": "intro",
+      "label": "Introduction",
+      "default": "<p>Veuillez lire attentivement les informations ci-dessous. Les éléments entre crochets doivent être personnalisés selon votre structure juridique.</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "afficher_sommaire",
+      "label": "Afficher le sommaire",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "avertissement",
+      "label": "Avertissement",
+      "default": "Ce contenu est un modèle à adapter avec vos informations légales exactes."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "article-legal",
+      "name": "Article",
+      "settings": [
+        { "type": "text", "id": "titre", "label": "Titre", "default": "Article" },
+        {
+          "type": "text",
+          "id": "ancre",
+          "label": "Ancre (optionnel)",
+          "info": "Utilisée pour le sommaire, sans espaces. Ex: editeur-site"
+        },
+        {
+          "type": "richtext",
+          "id": "contenu",
+          "label": "Contenu",
+          "default": "<p>Contenu à personnaliser.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contenu legal",
+      "blocks": [
+        { "type": "article-legal", "settings": { "titre": "Éditeur" } },
+        { "type": "article-legal", "settings": { "titre": "Hébergement" } },
+        { "type": "article-legal", "settings": { "titre": "Contact" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

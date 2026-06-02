@@ -74,6 +74,16 @@
         {%- endfor -%}
       {%- else -%}
         {%- comment -%} Contenu par défaut tant qu'aucun bloc n'est configuré {%- endcomment -%}
+        {%- liquid
+          assign page_cgv = pages['cgv']
+          if page_cgv == blank
+            assign page_cgv = pages['conditions-generales-de-vente']
+          endif
+          assign url_cgv = '/policies/terms-of-service'
+          if page_cgv != blank
+            assign url_cgv = page_cgv.url
+          endif
+        -%}
         <div class="pied-de-page__colonne">
           <h3 class="pied-de-page__titre">Boutique</h3>
           <ul class="pied-de-page__liste" role="list">
@@ -89,7 +99,7 @@
             <li><a href="/pages/livraison" class="pied-de-page__lien">Livraison &amp; retours</a></li>
             <li><a href="/pages/faq" class="pied-de-page__lien">FAQ</a></li>
             <li><a href="/pages/contact" class="pied-de-page__lien">Nous contacter</a></li>
-            <li><a href="/policies/terms-of-service" class="pied-de-page__lien">CGV</a></li>
+            <li><a href="{{ url_cgv }}" class="pied-de-page__lien">CGV</a></li>
           </ul>
         </div>
         <div class="pied-de-page__colonne">

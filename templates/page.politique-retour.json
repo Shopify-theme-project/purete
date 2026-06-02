@@ -1,0 +1,68 @@
+{
+  "sections": {
+    "retours": {
+      "type": "contenu-legal",
+      "settings": {
+        "couleur_fond": "blanc",
+        "surtitre": "Service client",
+        "titre": "Politique de retour et remboursement",
+        "date_maj": "Dernière mise à jour : 02/06/2026",
+        "intro": "<p>Notre politique de retour vise à vous offrir une expérience claire et sereine. Merci de lire les conditions ci-dessous avant toute demande.</p>",
+        "afficher_sommaire": true,
+        "avertissement": "Ajustez les délais, frais et modalités à votre organisation réelle."
+      },
+      "blocks": {
+        "r1": {
+          "type": "article-legal",
+          "settings": {
+            "titre": "Délai de retour",
+            "ancre": "delai-retour",
+            "contenu": "<p>Vous disposez de 14 jours à compter de la réception de votre commande pour demander un retour, sous réserve d'éligibilité.</p>"
+          }
+        },
+        "r2": {
+          "type": "article-legal",
+          "settings": {
+            "titre": "Conditions d'éligibilité",
+            "ancre": "eligibilite",
+            "contenu": "<p>Les produits doivent être non ouverts, non utilisés et retournés dans leur emballage d'origine, en parfait état.</p>"
+          }
+        },
+        "r3": {
+          "type": "article-legal",
+          "settings": {
+            "titre": "Procédure de retour",
+            "ancre": "procedure-retour",
+            "contenu": "<p>Contactez le service client à [email], en indiquant votre numéro de commande et le motif du retour. Nous vous transmettrons ensuite les instructions.</p>"
+          }
+        },
+        "r4": {
+          "type": "article-legal",
+          "settings": {
+            "titre": "Frais de retour",
+            "ancre": "frais-retour",
+            "contenu": "<p>[Préciser ici qui prend en charge les frais de retour : client ou marchand, selon le cas.]</p>"
+          }
+        },
+        "r5": {
+          "type": "article-legal",
+          "settings": {
+            "titre": "Remboursement",
+            "ancre": "remboursement",
+            "contenu": "<p>Après réception et validation du retour, le remboursement est effectué via le moyen de paiement initial dans un délai de [x] jours ouvrés.</p>"
+          }
+        },
+        "r6": {
+          "type": "article-legal",
+          "settings": {
+            "titre": "Produits non retournables",
+            "ancre": "exceptions",
+            "contenu": "<p>Pour des raisons d'hygiène et de sécurité, certains produits ouverts ou personnalisés peuvent être exclus du droit de retour.</p>"
+          }
+        }
+      },
+      "block_order": ["r1", "r2", "r3", "r4", "r5", "r6"]
+    }
+  },
+  "order": ["retours"]
+}

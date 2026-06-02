@@ -1,0 +1,68 @@
+{
+  "sections": {
+    "confidentialite": {
+      "type": "contenu-legal",
+      "settings": {
+        "couleur_fond": "blanc",
+        "surtitre": "Données personnelles",
+        "titre": "Politique de confidentialité",
+        "date_maj": "Dernière mise à jour : 02/06/2026",
+        "intro": "<p>Cette politique explique quelles données nous collectons, pourquoi, et comment vous pouvez exercer vos droits conformément au RGPD.</p>",
+        "afficher_sommaire": true,
+        "avertissement": "Ce modèle doit être validé selon vos outils réels (paiement, analytics, e-mailing, support)."
+      },
+      "blocks": {
+        "p1": {
+          "type": "article-legal",
+          "settings": {
+            "titre": "Responsable de traitement",
+            "ancre": "responsable-traitement",
+            "contenu": "<p>Le responsable de traitement est : [Raison sociale], [adresse], [email de contact RGPD].</p>"
+          }
+        },
+        "p2": {
+          "type": "article-legal",
+          "settings": {
+            "titre": "Données collectées",
+            "ancre": "donnees-collectees",
+            "contenu": "<p>Nous collectons les données nécessaires au traitement des commandes : identité, coordonnées, adresse de livraison et informations de suivi de commande. Des données techniques peuvent également être collectées via des cookies.</p>"
+          }
+        },
+        "p3": {
+          "type": "article-legal",
+          "settings": {
+            "titre": "Finalités et base légale",
+            "ancre": "finalites",
+            "contenu": "<p>Les traitements sont réalisés pour l'exécution du contrat (commande, livraison, service client), le respect de nos obligations légales (facturation), et, avec votre consentement, l'envoi de communications marketing.</p>"
+          }
+        },
+        "p4": {
+          "type": "article-legal",
+          "settings": {
+            "titre": "Durée de conservation",
+            "ancre": "duree-conservation",
+            "contenu": "<p>Les données sont conservées pendant la durée strictement nécessaire aux finalités poursuivies et conformément aux obligations légales applicables.</p>"
+          }
+        },
+        "p5": {
+          "type": "article-legal",
+          "settings": {
+            "titre": "Vos droits",
+            "ancre": "vos-droits",
+            "contenu": "<p>Conformément au RGPD, vous disposez d'un droit d'accès, de rectification, d'effacement, d'opposition, de limitation et de portabilité. Vous pouvez exercer ces droits à l'adresse : [email RGPD].</p>"
+          }
+        },
+        "p6": {
+          "type": "article-legal",
+          "settings": {
+            "titre": "Cookies",
+            "ancre": "cookies",
+            "contenu": "<p>Le site utilise des cookies techniques nécessaires au fonctionnement, et, le cas échéant, des cookies de mesure d'audience et marketing selon vos préférences.</p>"
+          }
+        }
+      },
+      "block_order": ["p1", "p2", "p3", "p4", "p5", "p6"]
+    }
+  },
+  "order": ["confidentialite"]
+}
