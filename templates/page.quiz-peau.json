@@ -1,0 +1,63 @@
+{
+  "sections": {
+    "intro": {
+      "type": "texte-image",
+      "settings": {
+        "sens_image": "droite",
+        "couleur_fond": "ivoire",
+        "surtitre": "Diagnostic peau",
+        "titre": "Trouvez votre routine en 2 minutes",
+        "contenu": "<p>Repondez a quelques questions simples pour identifier les besoins de votre peau et recevoir une routine ciblee.</p><p>Le quiz est rapide, gratuit et sans engagement.</p>",
+        "lien_libelle": "Commencer le quiz",
+        "lien_url": "/pages/contact"
+      }
+    },
+    "explication": {
+      "type": "texte-image",
+      "settings": {
+        "sens_image": "gauche",
+        "couleur_fond": "creme",
+        "surtitre": "Comment ca marche",
+        "titre": "Un parcours simple en 3 etapes",
+        "contenu": "<p>1. Vous repondez a quelques questions sur votre peau et votre routine actuelle.</p><p>2. Nous identifions vos besoins prioritaires.</p><p>3. Vous obtenez une selection de soins Purete adaptee.</p>",
+        "lien_libelle": "Voir les produits",
+        "lien_url": "/collections/all"
+      }
+    },
+    "faq_quiz": {
+      "type": "accordeon-faq",
+      "settings": {
+        "couleur_fond": "ivoire",
+        "surtitre": "FAQ quiz",
+        "titre": "Questions frequentes",
+        "intro": "Tout ce qu'il faut savoir avant de commencer.",
+        "ouvrir_premiere": true
+      },
+      "blocks": {
+        "q1": {
+          "type": "question_faq",
+          "settings": {
+            "question": "Le quiz est-il gratuit ?",
+            "reponse": "<p>Oui, le quiz est 100% gratuit.</p>"
+          }
+        },
+        "q2": {
+          "type": "question_faq",
+          "settings": {
+            "question": "Combien de temps faut-il ?",
+            "reponse": "<p>En general moins de 2 minutes.</p>"
+          }
+        },
+        "q3": {
+          "type": "question_faq",
+          "settings": {
+            "question": "Puis-je refaire le quiz ?",
+            "reponse": "<p>Oui, vous pouvez le refaire a tout moment.</p>"
+          }
+        }
+      },
+      "block_order": ["q1", "q2", "q3"]
+    }
+  },
+  "order": ["intro", "explication", "faq_quiz"]
+}

@@ -19,9 +19,10 @@
   data-menu-mobile
   aria-hidden="true"
   role="dialog"
-  aria-modal="true"
-  aria-label="Menu de navigation"
+  if
+  lien.links.size
 >
+  0 and a_un_lien_principal_actif == false aria-label="Menu de navigation" >
   <div class="menu-mobile__overlay" data-menu-mobile-fermer aria-hidden="true"></div>
 
   <aside class="menu-mobile__panneau" data-menu-mobile-panneau>
@@ -37,8 +38,99 @@
     <nav class="menu-mobile__nav" aria-label="Navigation principale mobile">
       <ul class="menu-mobile__liste" role="list">
         {%- if utiliser_fallback -%}
+          {%- liquid
+            assign current_path = request.path | downcase
+            assign page_engagements = pages.engagements
+            assign url_engagements = '/pages/engagements'
+            if page_engagements != blank
+              assign url_engagements = page_engagements.url
+            endif
+
+            assign page_quiz = pages['quiz-peau']
+            if page_quiz == blank
+              assign page_quiz = pages['quiz-de-peau']
+            endif
+            assign url_quiz = '/pages/quiz-peau'
+            if page_quiz != blank
+              assign url_quiz = page_quiz.url
+            endif
+
+            assign page_apropos = pages['a-propos']
+            if page_apropos == blank
+              assign page_apropos = pages.about
+            endif
+            assign url_apropos = '/pages/a-propos'
+            if page_apropos != blank
+              assign url_apropos = page_apropos.url
+            endif
+
+            assign url_blog = '/blogs/news'
+            if blogs.news != blank
+              assign url_blog = blogs.news.url
+            elsif blogs.first != blank
+              assign url_blog = blogs.first.url
+            endif
+
+            assign url_visage = routes.collections_url
+            if collections.visage != blank
+              assign url_visage = collections.visage.url
+            elsif collections['soins-visage'] != blank
+              assign url_visage = collections['soins-visage'].url
+            endif
+
+            assign url_serums = routes.collections_url
+            if collections.serums != blank
+              assign url_serums = collections.serums.url
+            elsif collections.serum != blank
+              assign url_serums = collections.serum.url
+            endif
+
+            assign url_nettoyants = routes.collections_url
+            if collections.nettoyants != blank
+              assign url_nettoyants = collections.nettoyants.url
+            endif
+
+            assign url_hydratants = routes.collections_url
+            if collections.hydratants != blank
+              assign url_hydratants = collections.hydratants.url
+            endif
+
+            assign actif_boutique = false
+            if request.page_type == 'collection' or request.page_type == 'product' or current_path contains '/collections/'
+              assign actif_boutique = true
+            endif
+
+            assign actif_engagements = false
+            if current_path contains '/pages/engagement'
+              assign actif_engagements = true
+            endif
+
+            assign actif_quiz = false
+            if current_path contains '/pages/quiz'
+              assign actif_quiz = true
+            endif
+
+            assign actif_blog = false
+            if request.page_type == 'blog' or request.page_type == 'article' or current_path contains '/blogs/'
+              assign actif_blog = true
+            endif
+
+            assign actif_apropos = false
+            if current_path contains '/pages/a-propos' or current_path contains '/pages/about'
+              assign actif_apropos = true
+            endif
+
+            if actif_engagements or actif_quiz or actif_blog or actif_apropos
+              assign actif_boutique = false
+            endif
+          -%}
           <li class="menu-mobile__item menu-mobile__item--accordeon">
-            <button type="button" class="menu-mobile__lien" data-mm-toggle aria-expanded="false">
+            <button
+              type="button"
+              class="menu-mobile__lien {% if actif_boutique %}est-actif{% endif %}"
+              data-mm-toggle
+              aria-expanded="false"
+            >
               <span>Boutique</span>
               {%- render 'icone', nom: 'chevron-bas', classe: 'menu-mobile__chevron', taille: 14 -%}
             </button>
@@ -48,35 +140,129 @@
                   >Toutes les collections</a
                 >
               </li>
-              <li><a href="#" class="menu-mobile__sous-lien" data-menu-mobile-fermer>Soins du visage</a></li>
-              <li><a href="#" class="menu-mobile__sous-lien" data-menu-mobile-fermer>Sérums</a></li>
-              <li><a href="#" class="menu-mobile__sous-lien" data-menu-mobile-fermer>Nettoyants</a></li>
-              <li><a href="#" class="menu-mobile__sous-lien" data-menu-mobile-fermer>Hydratants</a></li>
+              <li>
+                <a href="{{ url_visage }}" class="menu-mobile__sous-lien" data-menu-mobile-fermer>Soins du visage</a>
+              </li>
+              <li><a href="{{ url_serums }}" class="menu-mobile__sous-lien" data-menu-mobile-fermer>Sérums</a></li>
+              <li>
+                <a href="{{ url_nettoyants }}" class="menu-mobile__sous-lien" data-menu-mobile-fermer>Nettoyants</a>
+              </li>
+              <li>
+                <a href="{{ url_hydratants }}" class="menu-mobile__sous-lien" data-menu-mobile-fermer>Hydratants</a>
+              </li>
             </ul>
           </li>
           <li class="menu-mobile__item">
-            <a href="/pages/engagements" class="menu-mobile__lien" data-menu-mobile-fermer>Engagements</a>
-          </li>
-          <li class="menu-mobile__item">
-            <a href="/pages/quiz-peau" class="menu-mobile__lien" data-menu-mobile-fermer>Quiz Peau</a>
-          </li>
-          <li class="menu-mobile__item">
-            <a href="{{ blogs.first.url | default: '/blogs/news' }}" class="menu-mobile__lien" data-menu-mobile-fermer
-              >Blog</a
+            <a
+              href="{{ url_engagements }}"
+              class="menu-mobile__lien {% if actif_engagements %}est-actif{% endif %}"
+              data-menu-mobile-fermer
+              {% if actif_engagements %}
+                aria-current="page"
+              {% endif %}
             >
+              Engagements
+            </a>
+          </li>
+          <li class="menu-mobile__item">
+            <a
+              href="{{ url_quiz }}"
+              class="menu-mobile__lien {% if actif_quiz %}est-actif{% endif %}"
+              data-menu-mobile-fermer
+              {% if actif_quiz %}
+                aria-current="page"
+              {% endif %}
+            >
+              Quiz Peau
+            </a>
+          </li>
+          <li class="menu-mobile__item">
+            <a
+              href="{{ url_blog }}"
+              class="menu-mobile__lien {% if actif_blog %}est-actif{% endif %}"
+              data-menu-mobile-fermer
+              {% if actif_blog %}
+                aria-current="page"
+              {% endif %}
+            >
+              Blog
+            </a>
+          </li>
+          <li class="menu-mobile__item">
+            <a
+              href="{{ url_apropos }}"
+              class="menu-mobile__lien {% if actif_apropos %}est-actif{% endif %}"
+              data-menu-mobile-fermer
+              {% if actif_apropos %}
+                aria-current="page"
+              {% endif %}
+            >
+              À propos
+            </a>
           </li>
         {%- else -%}
+          {%- liquid
+            assign current_path = request.path | downcase
+          -%}
           {%- for lien in menu_admin -%}
+            {%- liquid
+              assign est_actif_lien = false
+              assign lien_url_normalise = lien.url | split: '?' | first | downcase
+
+              if lien_url_normalise == current_path
+                assign est_actif_lien = true
+              endif
+
+              if lien_url_normalise == '/collections' and request.page_type == 'collection' or lien_url_normalise == '/collections' and request.page_type == 'product' or lien_url_normalise == '/collections' and current_path contains '/collections/'
+                assign est_actif_lien = true
+              endif
+
+              if lien_url_normalise contains '/blogs/' and request.page_type == 'blog' or lien_url_normalise contains '/blogs/' and request.page_type == 'article' or lien_url_normalise contains '/blogs/' and current_path contains '/blogs/'
+                assign est_actif_lien = true
+              endif
+
+              if lien.links.size > 0
+                for sous_lien in lien.links
+                  assign sous_url_normalise = sous_lien.url | split: '?' | first | downcase
+                  if sous_url_normalise == current_path
+                    assign est_actif_lien = true
+                    break
+                  endif
+                endfor
+              endif
+            -%}
             <li class="menu-mobile__item {% if lien.links.size > 0 %}menu-mobile__item--accordeon{% endif %}">
               {%- if lien.links.size > 0 -%}
-                <button type="button" class="menu-mobile__lien" data-mm-toggle aria-expanded="false">
+                <button
+                  type="button"
+                  class="menu-mobile__lien {% if est_actif_lien %}est-actif{% endif %}"
+                  data-mm-toggle
+                  aria-expanded="false"
+                  {% if est_actif_lien %}
+                    aria-current="page"
+                  {% endif %}
+                >
                   <span>{{ lien.title }}</span>
                   {%- render 'icone', nom: 'chevron-bas', classe: 'menu-mobile__chevron', taille: 14 -%}
                 </button>
                 <ul class="menu-mobile__sous-liste" data-mm-sous-liste role="list">
                   {%- for sous in lien.links -%}
+                    {%- liquid
+                      assign sous_url_normalise = sous.url | split: '?' | first | downcase
+                      assign est_actif_sous_lien = false
+                      if sous_url_normalise == current_path
+                        assign est_actif_sous_lien = true
+                      endif
+                    -%}
                     <li>
-                      <a href="{{ sous.url }}" class="menu-mobile__sous-lien" data-menu-mobile-fermer>
+                      <a
+                        href="{{ sous.url }}"
+                        class="menu-mobile__sous-lien"
+                        data-menu-mobile-fermer
+                        {% if est_actif_sous_lien %}
+                          aria-current="page"
+                        {% endif %}
+                      >
                         {{- sous.title -}}
                       </a>
                     </li>
@@ -85,9 +271,9 @@
               {%- else -%}
                 <a
                   href="{{ lien.url }}"
-                  class="menu-mobile__lien"
+                  class="menu-mobile__lien {% if est_actif_lien %}est-actif{% endif %}"
                   data-menu-mobile-fermer
-                  {% if lien.active %}
+                  {% if est_actif_lien %}
                     aria-current="page"
                   {% endif %}
                 >
