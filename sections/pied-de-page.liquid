@@ -75,7 +75,7 @@
       {%- else -%}
         {%- comment -%} Contenu par défaut tant qu'aucun bloc n'est configuré {%- endcomment -%}
         {%- liquid
-          assign page_cgv = pages['cgv']
+          assign page_cgv = pages.cgv
           if page_cgv == blank
             assign page_cgv = pages['conditions-generales-de-vente']
           endif
