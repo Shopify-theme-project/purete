@@ -1,0 +1,78 @@
+{
+  "sections": {
+    "faq_principale": {
+      "type": "accordeon-faq",
+      "settings": {
+        "couleur_fond": "ivoire",
+        "surtitre": "FAQ",
+        "titre": "Vos questions, nos réponses",
+        "intro": "Toutes les informations essentielles pour commander sereinement chez Pureté.",
+        "ouvrir_premiere": true
+      },
+      "blocks": {
+        "q1": {
+          "type": "question_faq",
+          "settings": {
+            "question": "En combien de temps vais-je recevoir ma commande ?",
+            "reponse": "<p>Les commandes sont préparées sous 24 à 48h ouvrées. En France métropolitaine, comptez ensuite 2 à 4 jours ouvrés pour la livraison.</p>"
+          }
+        },
+        "q2": {
+          "type": "question_faq",
+          "settings": {
+            "question": "La livraison est-elle offerte ?",
+            "reponse": "<p>Oui, la livraison est offerte dès 50€ d'achat en France métropolitaine.</p>"
+          }
+        },
+        "q3": {
+          "type": "question_faq",
+          "settings": {
+            "question": "Puis-je modifier ou annuler ma commande ?",
+            "reponse": "<p>Oui, dans l'heure qui suit la validation de votre commande. Contactez-nous rapidement via le formulaire de contact.</p>"
+          }
+        },
+        "q4": {
+          "type": "question_faq",
+          "settings": {
+            "question": "Quels sont les délais de retour ?",
+            "reponse": "<p>Vous disposez de 14 jours après réception pour retourner un produit non ouvert dans son emballage d'origine.</p>"
+          }
+        },
+        "q5": {
+          "type": "question_faq",
+          "settings": {
+            "question": "Vos produits conviennent-ils aux peaux sensibles ?",
+            "reponse": "<p>Nos formules sont pensées pour respecter la barrière cutanée. Nous recommandons tout de même un test localisé avant une première utilisation.</p>"
+          }
+        },
+        "q6": {
+          "type": "question_faq",
+          "settings": {
+            "question": "Vos soins sont-ils vegan et cruelty-free ?",
+            "reponse": "<p>Oui, toutes nos formules sont vegan et nous ne réalisons aucun test sur les animaux.</p>"
+          }
+        },
+        "q7": {
+          "type": "question_faq",
+          "settings": {
+            "question": "Comment suivre ma commande ?",
+            "reponse": "<p>Après expédition, vous recevez un e-mail avec votre lien de suivi. Vous pouvez également nous écrire si besoin.</p>"
+          }
+        },
+        "q8": {
+          "type": "question_faq",
+          "settings": {
+            "question": "Comment vous contacter ?",
+            "reponse": "<p>Rendez-vous sur la page Contact pour nous écrire. Notre équipe répond sous 24 à 48h ouvrées.</p>"
+          }
+        }
+      },
+      "block_order": ["q1", "q2", "q3", "q4", "q5", "q6", "q7", "q8"]
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {}
+    }
+  },
+  "order": ["faq_principale", "newsletter"]
+}

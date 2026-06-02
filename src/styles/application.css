@@ -2853,4 +2853,101 @@
     color: rgba(31, 45, 42, 0.74);
     line-height: 1.55;
   }
+
+  /* ============================================================
+     PAGES CONTENU : FAQ
+     ============================================================ */
+
+  .faq {
+    padding: 3.25rem 1rem 3.8rem;
+  }
+  @media (min-width: 1024px) {
+    .faq {
+      padding: 4.5rem 3rem 5rem;
+    }
+  }
+  .faq--ivoire {
+    background: theme('colors.ivoire');
+  }
+  .faq--creme {
+    background: theme('colors.creme');
+  }
+  .faq--blanc {
+    background: #ffffff;
+  }
+  .faq--sauge {
+    background: #edf3ea;
+  }
+
+  .faq__conteneur {
+    @apply max-w-screen-md mx-auto;
+  }
+  .faq__entete {
+    @apply text-center;
+    margin-bottom: 1.6rem;
+  }
+  .faq__surtitre {
+    @apply font-corps m-0 uppercase tracking-[0.18em];
+    font-size: 0.7rem;
+    color: theme('colors.sauge-fonce');
+  }
+  .faq__titre {
+    @apply font-titre m-0;
+    margin-top: 0.65rem;
+    color: theme('colors.vert-profond');
+    font-size: clamp(1.9rem, 4vw, 3rem);
+    line-height: 1.05;
+  }
+  .faq__intro {
+    @apply font-corps m-0;
+    margin-top: 0.8rem;
+    color: rgba(31, 45, 42, 0.72);
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  .faq__liste {
+    @apply flex flex-col;
+    gap: 0.7rem;
+  }
+  .faq__item {
+    background: rgba(255, 255, 255, 0.62);
+    border: 1px solid rgba(31, 45, 42, 0.12);
+    border-radius: 12px;
+    overflow: clip;
+  }
+  .faq__question {
+    @apply list-none cursor-pointer font-corps flex items-center justify-between;
+    gap: 1rem;
+    color: theme('colors.vert-profond');
+    font-size: 0.96rem;
+    line-height: 1.45;
+    font-weight: 500;
+    padding: 1rem 1rem;
+  }
+  .faq__question::-webkit-details-marker {
+    display: none;
+  }
+  .faq__chevron {
+    @apply shrink-0;
+    transition: transform 220ms ease;
+  }
+  .faq__item[open] .faq__chevron {
+    transform: rotate(180deg);
+  }
+  .faq__reponse {
+    @apply font-corps;
+    color: rgba(31, 45, 42, 0.8);
+    font-size: 0.9rem;
+    line-height: 1.65;
+    padding: 0 1rem 1rem;
+  }
+  .faq__reponse p {
+    margin: 0;
+  }
+  .faq__vide {
+    @apply font-corps m-0 text-center;
+    color: rgba(31, 45, 42, 0.6);
+    padding: 1.25rem 0;
+  }
 }

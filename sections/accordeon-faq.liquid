@@ -1,0 +1,126 @@
+{%- liquid
+  assign couleur_fond = section.settings.couleur_fond | default: 'ivoire'
+-%}
+
+<section class="faq faq--{{ couleur_fond }}" data-section-id="{{ section.id }}">
+  <div class="faq__conteneur">
+    <header class="faq__entete">
+      {%- if section.settings.surtitre != blank -%}
+        <p class="faq__surtitre">{{ section.settings.surtitre }}</p>
+      {%- endif -%}
+      {%- if section.settings.titre != blank -%}
+        <h1 class="faq__titre">{{ section.settings.titre }}</h1>
+      {%- endif -%}
+      {%- if section.settings.intro != blank -%}
+        <p class="faq__intro">{{ section.settings.intro }}</p>
+      {%- endif -%}
+    </header>
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="faq__liste" role="list">
+        {%- for bloc in section.blocks -%}
+          <details
+            class="faq__item"
+            {{ bloc.shopify_attributes }}
+            {% if section.settings.ouvrir_premiere and forloop.first %}
+              open
+            {% endif %}
+          >
+            <summary class="faq__question">
+              <span>{{ bloc.settings.question }}</span>
+              {%- render 'icone', nom: 'chevron-bas', classe: 'faq__chevron', taille: 14 -%}
+            </summary>
+            <div class="faq__reponse rte">
+              {{ bloc.settings.reponse }}
+            </div>
+          </details>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <p class="faq__vide">Ajoutez vos questions dans l'éditeur de thème.</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Accordéon FAQ",
+  "tag": "section",
+  "class": "section-faq",
+  "settings": [
+    {
+      "type": "select",
+      "id": "couleur_fond",
+      "label": "Fond",
+      "options": [
+        { "value": "ivoire", "label": "Ivoire" },
+        { "value": "creme", "label": "Crème" },
+        { "value": "blanc", "label": "Blanc" },
+        { "value": "sauge", "label": "Sauge" }
+      ],
+      "default": "ivoire"
+    },
+    { "type": "text", "id": "surtitre", "label": "Surtitre", "default": "FAQ" },
+    {
+      "type": "text",
+      "id": "titre",
+      "label": "Titre",
+      "default": "Vos questions, nos réponses"
+    },
+    {
+      "type": "text",
+      "id": "intro",
+      "label": "Introduction",
+      "default": "Retrouvez ici toutes les informations utiles sur la livraison, les retours et nos produits."
+    },
+    {
+      "type": "checkbox",
+      "id": "ouvrir_premiere",
+      "label": "Ouvrir la première question",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "question_faq",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "En combien de temps vais-je recevoir ma commande ?"
+        },
+        {
+          "type": "richtext",
+          "id": "reponse",
+          "label": "Réponse",
+          "default": "<p>Les commandes sont expédiées sous 24 à 48h ouvrées. En France métropolitaine, la livraison prend ensuite 2 à 4 jours ouvrés.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Accordéon FAQ",
+      "blocks": [
+        { "type": "question_faq" },
+        {
+          "type": "question_faq",
+          "settings": {
+            "question": "La livraison est-elle offerte ?",
+            "reponse": "<p>Oui, la livraison est offerte dès 50€ d'achat en France métropolitaine.</p>"
+          }
+        },
+        {
+          "type": "question_faq",
+          "settings": {
+            "question": "Puis-je retourner un produit ?",
+            "reponse": "<p>Vous disposez de 14 jours après réception pour retourner un produit non ouvert dans son emballage d'origine.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
